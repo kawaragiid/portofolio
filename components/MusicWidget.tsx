@@ -11,7 +11,12 @@ export default function MusicWidget() {
   const playlistId = "PL-W6TZk0nvH6YD_Fi1LtUxGxGVb7F5sYj"; 
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      // Cek apakah ini layar HP (lebar di bawah 768px)
+      const isMobile = window.innerWidth < 768;
+      // Bergeser HANYA jika sedang di-scroll DAN di layar HP
+      setIsScrolled(window.scrollY > 50 && isMobile);
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
@@ -19,7 +24,6 @@ export default function MusicWidget() {
 
   return (
     <>
-      {/* OVERLAY GELAP KHUSUS HP */}
       <AnimatePresence>
         {isOpen && (
           <motion.div 
@@ -32,7 +36,6 @@ export default function MusicWidget() {
         )}
       </AnimatePresence>
 
-      {/* WIDGET UTAMA (PERSISTENT - Rahasia agar musik tidak mati saat di-close) */}
       <motion.div
         initial={false}
         animate={{ 
@@ -45,9 +48,8 @@ export default function MusicWidget() {
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
         className="fixed z-[9999] flex flex-col overflow-hidden bg-[#0a0a0a]/90 backdrop-blur-3xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.8)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]
           max-md:bottom-[100px] max-md:left-4 max-md:right-4 max-md:rounded-3xl
-          md:bottom-6 md:left-6 md:w-[320px] md:rounded-2xl"
+          md:bottom-6 md:left-6 md:w-[350px] md:rounded-2xl"
       >
-        {/* Header Widget */}
         <div className="bg-white/5 border-b border-white/10 p-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-xl">🎧</span>
@@ -63,11 +65,16 @@ export default function MusicWidget() {
           </button>
         </div>
 
-        {/* YouTube Iframe Embed untuk Playlist */}
-        <div className="w-full bg-black flex flex-col">
+        <div className="w-full bg-black flex flex-col relative">
+          {/* Petunjuk UI untuk user baru */}
+          <div className="absolute top-1 right-12 pointer-events-none z-10 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white opacity-70">
+            Pilih lagu di pojok kanan ↗
+          </div>
+          
           <iframe 
             width="100%" 
-            height="180" 
+            // Tinggi diperbesar ke 280px agar menu playlist YT muat dibuka
+            height="280" 
             src={`https://www.youtube.com/embed/videoseries?list=${playlistId}`} 
             title="YouTube video player" 
             frameBorder="0" 
@@ -78,19 +85,20 @@ export default function MusicWidget() {
         </div>
       </motion.div>
 
-      {/* TOMBOL TRIGGER (Kiri Bawah) */}
+      {/* Tombol Trigger */}
       <motion.div
         animate={{ y: isScrolled && !isOpen ? -90 : 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className={`fixed bottom-6 left-6 z-[9997] flex flex-col items-start pointer-events-none transition-opacity duration-300 ${isOpen ? 'opacity-0 md:opacity-100' : 'opacity-100'}`}
+        // Saat isOpen, jadikan tombol menghilang (opacity-0) dan tidak bisa diklik (pointer-events-none)
+        className={`fixed bottom-6 left-6 z-[9997] flex flex-col items-start transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}
       >
         <motion.button
           type="button"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen(true)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.85 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className="bg-white/[0.05] backdrop-blur-3xl border border-white/20 w-14 h-14 rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.5)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] pointer-events-auto relative"
+          className="bg-white/[0.05] backdrop-blur-3xl border border-white/20 w-14 h-14 rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.5)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
           aria-label="Buka Music Player"
         >
           <span className="text-white text-xl">🎵</span>

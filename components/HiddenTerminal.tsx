@@ -13,11 +13,15 @@ export default function HiddenTerminal() {
     { type: 'system', text: 'Tap a command below or type manually.' }
   ]);
 
-  // Daftar perintah cepat untuk mobile
   const quickCommands = ["help", "about", "skills", "contact", "clear"];
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      // Cek apakah ini layar HP (lebar di bawah 768px)
+      const isMobile = window.innerWidth < 768;
+      // Bergeser HANYA jika sedang di-scroll DAN di layar HP
+      setIsScrolled(window.scrollY > 50 && isMobile);
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
@@ -73,7 +77,6 @@ export default function HiddenTerminal() {
 
   return (
     <>
-      {/* OVERLAY GELAP KHUSUS SAAT TERMINAL TERBUKA */}
       <AnimatePresence>
         {isOpen && (
           <motion.div 
@@ -89,25 +92,20 @@ export default function HiddenTerminal() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            // Animasi popup melayang (skala membesar dari tengah)
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            
-            // Layout: Center di HP (fixed inset), Bottom-Right di Desktop
             className="fixed z-[9999] flex flex-col font-mono text-sm overflow-hidden bg-[#0a0a0a]/80 backdrop-blur-3xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.8)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]
               max-md:inset-x-4 max-md:top-[15%] max-md:bottom-[15%] max-md:rounded-3xl
               md:bottom-6 md:right-6 md:w-[600px] md:h-[400px] md:rounded-2xl"
           >
-            {/* Header Terminal */}
             <div className="bg-white/5 border-b border-white/10 p-4 flex items-center justify-between">
               <div className="flex gap-2">
                 <div 
                   className="w-3.5 h-3.5 rounded-full bg-red-500 cursor-pointer hover:bg-red-400 flex items-center justify-center transition-colors" 
                   onClick={() => setIsOpen(false)} 
                 >
-                  {/* Ikon X kecil muncul saat di-hover (Native Mac Feel) */}
                   <span className="opacity-0 hover:opacity-100 text-[8px] font-bold text-red-900">x</span>
                 </div>
                 <div className="w-3.5 h-3.5 rounded-full bg-yellow-500" />
@@ -117,7 +115,6 @@ export default function HiddenTerminal() {
               <div className="w-10"></div>
             </div>
 
-            {/* Quick Commands (Panduan Ketikan) */}
             <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 py-3 border-b border-white/5 bg-white/[0.02]">
               {quickCommands.map(cmd => (
                 <button
@@ -130,7 +127,6 @@ export default function HiddenTerminal() {
               ))}
             </div>
 
-            {/* Body Terminal */}
             <div 
               ref={terminalRef}
               className="p-4 flex-1 overflow-y-auto scrollbar-hide text-green-400 space-y-3"
@@ -141,7 +137,6 @@ export default function HiddenTerminal() {
                 </div>
               ))}
               
-              {/* Form Input Manual */}
               <form onSubmit={onSubmit} className="flex items-center mt-4">
                 <span className="text-white mr-2">guest@ilmi:~$</span>
                 <input
@@ -159,12 +154,11 @@ export default function HiddenTerminal() {
         )}
       </AnimatePresence>
 
-      {/* Tombol Trigger Mobile */}
       <motion.div
         animate={{ y: isScrolled && !isOpen ? -90 : 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        // Disembunyikan kalau terminal terbuka agar tidak bertumpuk
-        className={`fixed bottom-6 right-6 z-[9997] md:hidden flex flex-col items-end pointer-events-none ${isOpen ? 'opacity-0' : 'opacity-100'}`}
+        // Di PC, md:hidden kita HAPUS. Tapi kita ganti dengan layout responsif biasa.
+        className={`fixed bottom-6 right-6 z-[9997] md:block flex flex-col items-end transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}
       >
         <motion.button
           type="button"
@@ -172,7 +166,7 @@ export default function HiddenTerminal() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.85 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className="bg-white/[0.05] backdrop-blur-3xl border border-white/20 text-cyan-400 font-mono font-bold w-14 h-14 rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.5)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] pointer-events-auto"
+          className="bg-white/[0.05] backdrop-blur-3xl border border-white/20 text-cyan-400 font-mono font-bold w-14 h-14 rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.5)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
           aria-label="Buka Terminal"
         >
           {">_"}
