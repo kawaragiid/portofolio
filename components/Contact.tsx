@@ -5,9 +5,8 @@ import { motion } from "framer-motion";
 import { useLanguage } from "./LanguageProvider";
 
 export default function Contact() {
-  // Ambil dict dari context yang sudah kita sediakan
   const { dict } = useLanguage();
-  const t = dict.contact; // Mengarah langsung ke dictionary contact
+  const t = dict.contact;
   
   const [copied, setCopied] = useState(false);
   const [senderEmail, setSenderEmail] = useState("");
@@ -17,6 +16,10 @@ export default function Contact() {
   const upworkLink = "https://www.upwork.com/freelancers/~01705729bdc457ff0f?mp_source=share";
 
   const copyToClipboard = () => {
+    // Menambahkan Haptic Feedback (getaran) saat teks dicopy (jika didukung HP)
+    if (typeof window !== "undefined" && navigator.vibrate) {
+      navigator.vibrate(50);
+    }
     navigator.clipboard.writeText(myEmail);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -24,6 +27,9 @@ export default function Contact() {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
+    if (typeof window !== "undefined" && navigator.vibrate) {
+      navigator.vibrate(50);
+    }
     const subject = encodeURIComponent(t.subject);
     const body = encodeURIComponent(`From: ${senderEmail}\n\nMessage:\n${message}`);
     window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
@@ -74,9 +80,11 @@ export default function Contact() {
                 />
               </div>
 
+              {/* SQUISH EFFECT PADA TOMBOL SUBMIT */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 type="submit"
                 className="w-full py-3 rounded-xl bg-white text-black font-bold text-sm tracking-wide hover:bg-gray-200 transition-colors flex justify-center items-center gap-2 shadow-lg"
               >
@@ -86,8 +94,13 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* CARD 2: LOKASI */}
-        <div className="bg-white/[0.02] backdrop-blur-md border border-white/10 rounded-3xl p-8 flex flex-col justify-center items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+        {/* CARD 2: LOKASI DENGAN SQUISH EFFECT */}
+        <motion.div 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          className="bg-white/[0.02] backdrop-blur-md border border-white/10 rounded-3xl p-8 flex flex-col justify-center items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.2)] cursor-default"
+        >
           <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4 border border-white/10">
             <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -97,12 +110,13 @@ export default function Contact() {
           <p className="text-gray-400 text-sm font-semibold tracking-widest uppercase mb-1">{t.location}</p>
           <h3 className="text-xl font-bold text-white">Surabaya, ID</h3>
           <p className="text-xs text-gray-500 mt-2">{t.remote}</p>
-        </div>
+        </motion.div>
 
-        {/* CARD 3: EMAIL QUICK COPY */}
+        {/* CARD 3: EMAIL QUICK COPY DENGAN SQUISH EFFECT */}
         <motion.div 
-          whileHover={{ scale: 0.99 }}
-          whileTap={{ scale: 0.97 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
           onClick={copyToClipboard}
           className="md:col-span-2 group cursor-pointer relative bg-white/[0.02] hover:bg-white/[0.04] backdrop-blur-md border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.2)] overflow-hidden"
         >
@@ -128,12 +142,15 @@ export default function Contact() {
           </div>
         </motion.div>
 
-        {/* CARD 4: UPWORK */}
-        <a 
+        {/* CARD 4: UPWORK DENGAN SQUISH EFFECT */}
+        <motion.a 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
           href={upworkLink}
           target="_blank" 
           rel="noopener noreferrer"
-          className="group bg-white/[0.02] hover:bg-[#14a800]/10 backdrop-blur-md border border-white/10 hover:border-[#14a800]/50 rounded-3xl p-8 flex flex-col justify-center items-center text-center transition-all duration-300"
+          className="group bg-white/[0.02] hover:bg-[#14a800]/10 backdrop-blur-md border border-white/10 hover:border-[#14a800]/50 rounded-3xl p-8 flex flex-col justify-center items-center text-center transition-colors duration-300"
         >
           <div className="w-12 h-12 bg-white/5 group-hover:bg-[#14a800]/20 rounded-full flex items-center justify-center mb-4 border border-white/10 group-hover:border-[#14a800]/50 transition-colors">
             <svg className="w-6 h-6 text-gray-400 group-hover:text-[#14a800]" viewBox="0 0 24 24" fill="currentColor">
@@ -142,7 +159,7 @@ export default function Contact() {
           </div>
           <p className="text-gray-400 text-sm font-semibold tracking-widest uppercase mb-1">{t.freelance}</p>
           <h3 className="text-lg font-bold text-white group-hover:text-[#14a800] transition-colors">Upwork</h3>
-        </a>
+        </motion.a>
 
       </div>
 
