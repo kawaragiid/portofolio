@@ -23,7 +23,7 @@ const dictionary = {
           icon: "📝", 
           title: "Lokalisasi Multibahasa", 
           desc: "Menerjemahkan dan menyelaraskan subtitle untuk film dan konten digital.",
-          fullDesc: "Sebagai seorang penerjemah multibahasa, saya tidak sekadar mengartikan kata-kata, melainkan memindahkan nyawa dan emosi dari bahasa sumber (Inggris/Jepang) ke bahasa target (Indonesia). Saya memiliki jam terbang tinggi dalam menangani sinkronisasi waktu (timing) yang akurat, menjaga nuansa budaya (honorifics), hingga proses hardcoding video.",
+          fullDesc: "Sebagai penerjemah, saya berfokus memindahkan makna dan emosi dari bahasa sumber (Inggris/Jepang) ke bahasa target (Indonesia). Saya terbiasa menangani sinkronisasi waktu (timing), menjaga nuansa budaya (honorifics), serta melakukan proses hardcoding video.",
           tools: ["Subtitle Edit", "Aegisub", "VS Code", "Format Factory", "Notepad++"],
           capabilities: [
             "Terjemahan Kontekstual (EN/JP ke ID)",
@@ -36,14 +36,14 @@ const dictionary = {
           id: "video-editing",
           icon: "🎬", 
           title: "Produksi & Editing Video", 
-          desc: "Produksi konten dari editing kreatif hingga pengaturan siaran langsung.",
-          fullDesc: "Berpengalaman dalam meracik visual untuk berbagai platform modern (YouTube Shorts, Instagram Reels, TikTok). Saya memahami ritme retensi penonton dan terbiasa bekerja dengan tenggat waktu ketat. Selain pasca-produksi, saya juga berpengalaman dalam pengaturan teknis untuk siaran langsung (Broadcasting) skala komunitas dan perusahaan.",
-          tools: ["CapCut Pro", "DaVinci Resolve", "Canva", "OBS Studio", "TikTok Live Studio"],
+          desc: "Produksi konten video pendek dan pengaturan dasar siaran langsung.",
+          fullDesc: "Terbiasa meracik visual untuk platform modern (YouTube Shorts, Instagram Reels, TikTok). Sebagai video editor yang masih terus belajar, saya fokus memahami ritme retensi penonton. Selain pasca-produksi, saya juga familier dengan pengaturan teknis siaran langsung (live streaming) skala komunitas.",
+          tools: ["CapCut Pro", "Canva", "OBS Studio", "TikTok Live Studio"],
           capabilities: [
             "Video Editing Ritme Cepat (Short-form Content)",
             "Color Grading & Audio Mixing Dasar",
             "Manajemen Aset & Alur Kerja Pasca-Produksi",
-            "Pengaturan Setup Live Streaming"
+            "Pengaturan Setup Dasar Live Streaming"
           ]
         },
         { 
@@ -51,26 +51,26 @@ const dictionary = {
           icon: "🌐", 
           title: "Teknik Jaringan", 
           desc: "Konfigurasi router, flashing OpenWrt, dan manajemen Access Point.",
-          fullDesc: "Mampu merancang dan merawat infrastruktur jaringan lokal untuk menunjang alur kerja multimedia yang berat. Saya berspesialisasi dalam modifikasi firmware router kelas gigabit untuk memaksimalkan bandwidth, stabilitas transmisi data antar PC, dan mengelola lalu lintas data tanpa hambatan.",
+          fullDesc: "Mampu mengonfigurasi jaringan lokal untuk kebutuhan transfer data multimedia. Berspesialisasi dalam pemanfaatan firmware custom (OpenWrt) pada router untuk mengoptimalkan bandwidth dan stabilitas koneksi antar perangkat dalam skala rumahan atau komunitas.",
           tools: ["OpenWrt", "Tailscale", "Putty/SSH", "WinSCP", "Terminal"],
           capabilities: [
             "Flashing & Konfigurasi Custom Firmware (OpenWrt)",
             "Manajemen Access Point (AP) & Local Area Network",
-            "Setup P2P File Transfer untuk pengiriman data besar",
-            "Troubleshooting Jaringan & Optimalisasi Bandwidth"
+            "Setup P2P File Transfer untuk pengiriman data lokal",
+            "Troubleshooting Jaringan Sederhana"
           ]
         },
         { 
           id: "hardware",
           icon: "⚙️", 
           title: "Perakitan PC & Hardware", 
-          desc: "Merakit, mengoptimalkan, dan memelihara workstation performa tinggi.",
-          fullDesc: "Memiliki pemahaman teknis mendalam mengenai arsitektur perangkat keras PC. Saya merakit dan mengkonfigurasi sistem dari nol, memastikan setiap komponen (terutama ekosistem AMD Ryzen) berjalan pada efisiensi maksimal. Saya memastikan suhu tetap dingin dan performa tetap stabil saat digunakan untuk rendering video berat.",
+          desc: "Merakit, mengoptimalkan, dan memelihara PC untuk kebutuhan rendering.",
+          fullDesc: "Memiliki pemahaman praktis mengenai perangkat keras PC. Saya bisa merakit sistem dari nol (terutama ekosistem AMD Ryzen), serta memastikan setiap komponen berjalan efisien. Saya juga terus belajar dalam menjaga suhu perangkat dan stabilitas untuk kebutuhan harian maupun editing video.",
           tools: ["BIOS/UEFI", "HWMonitor", "CPU-Z", "Windows OS", "Thermal Tools"],
           capabilities: [
-            "Pemilihan & Perakitan Komponen Workstation",
+            "Pemilihan & Perakitan Komponen PC/Workstation",
             "Update BIOS & Manajemen Driver",
-            "Overclocking ringan & Optimalisasi TDP",
+            "Optimasi performa & efisiensi daya dasar",
             "Maintenance Perangkat Keras & Manajemen Suhu"
           ]
         }
@@ -120,7 +120,7 @@ const dictionary = {
       resSudo: "Nice try. Akses root ditolak. Tindakan ini telah dicatat ke server.",
       resHelp: "Perintah tersedia: clear, sudo.\nAtau tanyakan hal seperti:\n- \"siapa kamu?\"\n- \"apa kemampuanmu?\"\n- \"pernah kerja dimana?\"\n- \"kamu tinggal dimana?\"",
       resAbout: "Ilmi adalah seorang Penerjemah Multibahasa (EN/JP ke ID) dan Video Editor yang berfokus pada pelokalan dan produksi konten digital kreatif.",
-      resSkill: "Keahlian utamanya meliputi:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut, DaVinci Resolve)\n- Networking (OpenWrt)\n- PC Hardware & Workstation.",
+      resSkill: "Keahlian utamanya meliputi:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut Pro)\n- Networking (OpenWrt)\n- PC Hardware & Perakitan.",
       resExperience: "Ilmi pernah bekerja sebagai Multimedia Specialist di Mitra Berkah Pratama, Content Creator di Muhajirin Center, dan saat ini aktif sebagai Freelance Subtitler.",
       resLocation: "Ilmi berdomisili di Surabaya, Indonesia 🇮🇩, namun sangat terbuka untuk pekerjaan remote dari seluruh penjuru dunia.",
       resContact: "Pilihan yang tepat! Kamu bisa langsung mengirimkan pesan atau penawaran kerja ke: ilmi@kawaragi.id",
@@ -145,7 +145,7 @@ const dictionary = {
           icon: "📝", 
           title: "Multilingual Localization", 
           desc: "Translating and hardcoding subtitles for movies and digital content.",
-          fullDesc: "As a multilingual translator, I don't just translate words; I transfer the soul and emotion from the source language (English/Japanese) to the target language (Indonesian). I have extensive experience in precise time synchronization, preserving cultural nuances (honorifics), and the video hardcoding process.",
+          fullDesc: "As a translator, I focus on transferring meaning and emotion from the source language (English/Japanese) to the target language (Indonesian). I am accustomed to handling precise time synchronization, preserving cultural nuances (honorifics), and performing the video hardcoding process.",
           tools: ["Subtitle Edit", "Aegisub", "VS Code", "Format Factory", "Notepad++"],
           capabilities: [
             "Contextual Translation (EN/JP to ID)",
@@ -158,14 +158,14 @@ const dictionary = {
           id: "video-editing",
           icon: "🎬", 
           title: "Video Editing & Production", 
-          desc: "Content production from creative editing to live broadcast setups.",
-          fullDesc: "Experienced in crafting visuals for modern platforms (YouTube Shorts, Instagram Reels, TikTok). I understand viewer retention rhythms and am accustomed to working under tight deadlines. Beyond post-production, I also handle technical setups for community and corporate-scale live broadcasting.",
-          tools: ["CapCut Pro", "DaVinci Resolve", "Canva", "OBS Studio", "TikTok Live Studio"],
+          desc: "Short-form video content production and basic live broadcast setups.",
+          fullDesc: "Accustomed to crafting visuals for modern platforms (YouTube Shorts, Instagram Reels, TikTok). As a continuously learning video editor, I focus on understanding viewer retention rhythms. Beyond post-production, I am also familiar with technical setups for community-scale live broadcasting.",
+          tools: ["CapCut Pro", "Canva", "OBS Studio", "TikTok Live Studio"],
           capabilities: [
             "Fast-paced Video Editing (Short-form Content)",
             "Basic Color Grading & Audio Mixing",
             "Asset Management & Post-Production Workflow",
-            "Live Streaming Setup & Management"
+            "Basic Live Streaming Setup & Management"
           ]
         },
         { 
@@ -173,26 +173,26 @@ const dictionary = {
           icon: "🌐", 
           title: "Network Engineering", 
           desc: "Router configuration, OpenWrt flashing, and AP management.",
-          fullDesc: "Capable of designing and maintaining local network infrastructures to support heavy multimedia workflows. I specialize in modifying gigabit-class router firmware to maximize bandwidth, stabilize PC-to-PC data transmission, and seamlessly manage data traffic.",
+          fullDesc: "Capable of configuring local networks for multimedia data transfer needs. I specialize in utilizing custom firmware (OpenWrt) on routers to optimize bandwidth and connection stability between devices for home or community scale.",
           tools: ["OpenWrt", "Tailscale", "Putty/SSH", "WinSCP", "Terminal"],
           capabilities: [
             "Flashing & Configuring Custom Firmware (OpenWrt)",
             "Access Point (AP) & LAN Management",
-            "P2P File Transfer Setup for Large Files",
-            "Network Troubleshooting & Bandwidth Optimization"
+            "P2P File Transfer Setup for Local Data",
+            "Basic Network Troubleshooting"
           ]
         },
         { 
           id: "hardware",
           icon: "⚙️", 
           title: "PC Building & Hardware", 
-          desc: "Building, optimizing, and maintaining high-performance workstations.",
-          fullDesc: "Possess deep technical understanding of PC hardware architecture. I assemble and configure systems from scratch, ensuring every component (especially the AMD Ryzen ecosystem) runs at peak efficiency. I ensure thermals remain cool and performance remains stable during heavy video rendering.",
+          desc: "Building, optimizing, and maintaining PCs for rendering needs.",
+          fullDesc: "Possess a practical understanding of PC hardware. I can assemble systems from scratch (especially the AMD Ryzen ecosystem) and ensure components run efficiently. I am also continuously learning to manage device thermals and stability for daily use and video editing.",
           tools: ["BIOS/UEFI", "HWMonitor", "CPU-Z", "Windows OS", "Thermal Tools"],
           capabilities: [
-            "Workstation Component Selection & Assembly",
+            "PC/Workstation Component Selection & Assembly",
             "BIOS Updates & Driver Management",
-            "Light Overclocking & TDP Optimization",
+            "Basic Performance & Power Efficiency Optimization",
             "Hardware Maintenance & Thermal Management"
           ]
         }
@@ -242,7 +242,7 @@ const dictionary = {
       resSudo: "Nice try. Root access denied. This incident will be reported.",
       resHelp: "Available commands: clear, sudo.\nOr ask things like:\n- \"who are you?\"\n- \"what are your skills?\"\n- \"where have you worked?\"\n- \"where do you live?\"",
       resAbout: "Ilmi is a Multilingual Translator (EN/JP to ID) and Video Editor focusing on localization and creative digital content production.",
-      resSkill: "Core expertise includes:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut, DaVinci Resolve)\n- Networking (OpenWrt)\n- PC Hardware & Workstation.",
+      resSkill: "Core expertise includes:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut Pro)\n- Networking (OpenWrt)\n- PC Hardware & Assembly.",
       resExperience: "Ilmi has worked as a Multimedia Specialist at Mitra Berkah Pratama, Content Creator at Muhajirin Center, and is currently active as a Freelance Subtitler.",
       resLocation: "Ilmi is based in Surabaya, Indonesia 🇮🇩, but is highly open to remote work from around the globe.",
       resContact: "Great choice! You can directly send a message or job offer to: ilmi@kawaragi.id",
@@ -267,7 +267,7 @@ const dictionary = {
           icon: "📝", 
           title: "多言語ローカリゼーション", 
           desc: "映画やデジタルコンテンツの字幕翻訳とハードコーディング。",
-          fullDesc: "多言語翻訳者として、単に言葉を訳すだけでなく、原文（英語/日本語）の魂と感情を対象言語（インドネシア語）に伝えます。正確なタイミング同期、文化的ニュアンス（敬語）の維持、ビデオのハードコーディングプロセスにおいて豊富な経験を持っています。",
+          fullDesc: "翻訳者として、原文（英語/日本語）の意味と感情を対象言語（インドネシア語）に伝えることに焦点を当てています。正確なタイミング同期、文化的ニュアンス（敬語）の維持、ビデオのハードコーディングプロセスに慣れています。",
           tools: ["Subtitle Edit", "Aegisub", "VS Code", "Format Factory", "Notepad++"],
           capabilities: [
             "文脈翻訳 (英語/日本語 から インドネシア語)",
@@ -280,14 +280,14 @@ const dictionary = {
           id: "video-editing",
           icon: "🎬", 
           title: "動画編集・制作", 
-          desc: "クリエイティブな編集からライブ配信設定までのコンテンツ制作。",
-          fullDesc: "最新プラットフォーム（YouTube Shorts、Instagram Reels、TikTok）向けの映像制作に精通。視聴者の維持率のリズムを理解し、厳しい締め切りの中での作業にも慣れています。ポストプロダクションに加え、コミュニティや企業規模のライブ配信の技術設定も担当します。",
-          tools: ["CapCut Pro", "DaVinci Resolve", "Canva", "OBS Studio", "TikTok Live Studio"],
+          desc: "ショートビデオのコンテンツ制作と基本的なライブ配信設定。",
+          fullDesc: "最新プラットフォーム（YouTube Shorts、Instagram Reels、TikTok）向けの映像制作に慣れています。現在も学習中の動画編集者として、視聴者維持のリズムを理解することに焦点を当てています。ポストプロダクションに加え、コミュニティ規模のライブ配信の技術的な設定にも精通しています。",
+          tools: ["CapCut Pro", "Canva", "OBS Studio", "TikTok Live Studio"],
           capabilities: [
             "テンポの速い動画編集 (ショートコンテンツ)",
             "基本的なカラーグレーディングとオーディオミキシング",
             "アセット管理とポストプロダクションのワークフロー",
-            "ライブ配信の設定と管理"
+            "基本的なライブ配信の設定と管理"
           ]
         },
         { 
@@ -295,26 +295,26 @@ const dictionary = {
           icon: "🌐", 
           title: "ネットワーク構築", 
           desc: "ルーター設定、OpenWrt導入、AP管理。",
-          fullDesc: "重いマルチメディアワークフローをサポートするためのローカルネットワークインフラの設計と保守が可能です。ギガビットクラスのルーターのファームウェアを変更し、帯域幅を最大化し、PC間のデータ転送を安定させ、データトラフィックをスムーズに管理することを専門としています。",
+          fullDesc: "マルチメディアデータ転送のニーズに合わせてローカルネットワークを設定できます。家庭やコミュニティ規模でのデバイス間の帯域幅と接続の安定性を最適化するためのルーターカスタムファームウェア（OpenWrt）の活用を専門としています。",
           tools: ["OpenWrt", "Tailscale", "Putty/SSH", "WinSCP", "Terminal"],
           capabilities: [
             "カスタムファームウェアの導入と設定 (OpenWrt)",
             "アクセスポイント(AP)とLANの管理",
-            "大容量ファイル用のP2Pファイル転送設定",
-            "ネットワークのトラブルシューティングと帯域幅の最適化"
+            "ローカルデータ用のP2Pファイル転送設定",
+            "基本的なネットワークのトラブルシューティング"
           ]
         },
         { 
           id: "hardware",
           icon: "⚙️", 
           title: "PC自作・ハードウェア", 
-          desc: "高性能ワークステーションの構築、最適化、保守。",
-          fullDesc: "PCハードウェアアーキテクチャに関する深い技術的理解を持っています。システムを一から組み立てて設定し、すべてのコンポーネント（特にAMD Ryzenエコシステム）が最大効率で動作するようにします。重い動画レンダリング時でも、温度を低く保ち、パフォーマンスを安定させます。",
+          desc: "レンダリングニーズに合わせたPCの構築、最適化、保守。",
+          fullDesc: "PCハードウェアに関する実践的な理解を持っています。システムを一から組み立て（特にAMD Ryzenエコシステム）、コンポーネントを効率的に動作させることができます。また、日常使用や動画編集におけるデバイスの温度管理と安定性についても継続的に学んでいます。",
           tools: ["BIOS/UEFI", "HWMonitor", "CPU-Z", "Windows OS", "Thermal Tools"],
           capabilities: [
-            "ワークステーションコンポーネントの選択と組み立て",
+            "PC/ワークステーションコンポーネントの選択と組み立て",
             "BIOSアップデートとドライバー管理",
-            "ライトオーバークロックとTDP最適化",
+            "基本的なパフォーマンスと電力効率の最適化",
             "ハードウェアの保守と温度管理"
           ]
         }
@@ -364,7 +364,7 @@ const dictionary = {
       resSudo: "惜しいですね。ルートアクセスが拒否されました。このインシデントは報告されます。",
       resHelp: "利用可能なコマンド: clear, sudo.\nまたは次のように質問してください：\n- \"あなたは誰？\"\n- \"スキルは何？\"\n- \"職歴は？\"\n- \"どこに住んでいるの？\"",
       resAbout: "Ilmi は、ローカリゼーションとクリエイティブなデジタルコンテンツ制作に焦点を当てた多言語翻訳者（英語/日本語からインドネシア語）および動画編集者です。",
-      resSkill: "主な専門知識は以下の通りです：\n- 字幕翻訳 (Aegisub, Subtitle Edit)\n- 動画編集 (CapCut, DaVinci Resolve)\n- ネットワーク (OpenWrt)\n- PCハードウェアとワークステーション",
+      resSkill: "主な専門知識は以下の通りです：\n- 字幕翻訳 (Aegisub, Subtitle Edit)\n- 動画編集 (CapCut Pro)\n- ネットワーク (OpenWrt)\n- PCハードウェアと組み立て",
       resExperience: "Ilmi は Mitra Berkah Pratama でマルチメディアスペシャリスト、Muhajirin Center でコンテンツクリエイターとして勤務し、現在はフリーランスの字幕翻訳者として活動しています。",
       resLocation: "Ilmi はインドネシアのスラバヤ 🇮🇩 を拠点としていますが、世界中からのリモートワークにも積極的に対応しています。",
       resContact: "素晴らしい選択です！ メッセージや仕事の依頼は、直接こちらへお送りください: ilmi@kawaragi.id",
