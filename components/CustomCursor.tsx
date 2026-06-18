@@ -4,44 +4,72 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(true);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+    // Matikan custom cursor jika diakses dari layar sentuh (HP)
+    if (window.matchMedia("(pointer: coarse)").matches) {
+      setIsMobile(true);
+      return;
+    }
 
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    // Deteksi apakah kursor sedang menyentuh elemen yang bisa diklik (tombol/link/kartu)
+    const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      setIsHovered(!!target.closest("a, button, .tilt-card, .cursor-pointer"));
+      if (
+        target.tagName.toLowerCase() === 'button' || 
+        target.tagName.toLowerCase() === 'a' || 
+        target.closest('button') || 
+        target.closest('a') ||
+        target.closest('.cursor-pointer') // Mendeteksi kartu keahlianmu
+      ) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
     };
 
     window.addEventListener("mousemove", updateMousePosition);
-    return () => window.removeEventListener("mousemove", updateMousePosition);
+    window.addEventListener("mouseover", handleMouseOver);
+
+    return () => {
+      window.removeEventListener("mousemove", updateMousePosition);
+      window.removeEventListener("mouseover", handleMouseOver);
+    };
   }, []);
 
   if (isMobile) return null;
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 z-[10000] pointer-events-none flex items-center justify-center rounded-full"
-      animate={{
-        x: mousePosition.x - (isHovered ? 24 : 8),
-        y: mousePosition.y - (isHovered ? 24 : 8),
-        width: isHovered ? 48 : 16,
-        height: isHovered ? 48 : 16,
-        backgroundColor: isHovered ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.6)",
-        backdropFilter: isHovered ? "blur(4px)" : "blur(0px)",
-        border: isHovered ? "1px solid rgba(255,255,255,0.4)" : "0px solid rgba(255,255,255,0)",
-      }}
-      transition={{ type: "spring", stiffness: 400, damping: 25, mass: 0.1 }}
-    >
-      <motion.div 
-        className="bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-        animate={{ width: isHovered ? 0 : 6, height: isHovered ? 0 : 6, opacity: isHovered ? 0 : 1 }}
-        transition={{ duration: 0.2 }}
+    <>
+      {/* Lingkaran Luar (Liquid Glass yang mengikuti dengan gaya pegas) */}
+      {/* Kunci ada di z-[9999999] agar selalu berada di atas Portal Modal */}
+      <motion.div
+        className="fixed top-0 left-0 w-8 h-8 rounded-full border border-cyan-400/50 bg-cyan-400/10 backdrop-blur-sm pointer-events-none z-[9999999]"
+        animate={{
+          x: mousePosition.x - 16,
+          y: mousePosition.y - 16,
+          scale: isHovering ? 1.5 : 1, // Membesar saat menyentuh tombol
+        }}
+        transition={{ type: "spring", stiffness: 200, damping: 20, mass: 0.2 }}
       />
-    </motion.div>
+      
+      {/* Titik Inti (Mengikuti pergerakan mouse secara instan/presisi) */}
+      <div 
+        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-cyan-400 pointer-events-none z-[9999999]"
+        style={{
+          transform: `translate(${mousePosition.x - 4}px, ${mousePosition.y - 4}px)`,
+          // Efek menyala saat klik
+          boxShadow: isHovering ? "0 0 10px 2px rgba(34, 211, 238, 0.8)" : "none",
+          transition: "box-shadow 0.2s ease"
+        }}
+      />
+    </>
   );
 }
