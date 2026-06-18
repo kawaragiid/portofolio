@@ -76,6 +76,33 @@ export default function HiddenTerminal() {
       } else if (trimmedCmd === 'help') {
         response = t.resHelp;
       } 
+      // ==========================================
+      // NEW EASTER EGGS: SPECS & NEOFETCH
+      // ==========================================
+      else if (trimmedCmd === 'specs') {
+        response = 
+          "[HARDWARE SCAN COMPLETED]\n" +
+          "----------------------------------------\n" +
+          "CPU      : AMD Ryzen 5 5600GT (6C/12T)\n" +
+          "MBO      : Asrock B450M Steel Legend\n" +
+          "RAM      : Optimized Dual-Channel Config\n" +
+          "GRAPHICS : Radeon Vega Graphics (iGPU Optimized)\n" +
+          "STATUS   : Ready for 4K Video Editing & Subtitling\n" +
+          "----------------------------------------";
+      } else if (trimmedCmd === 'neofetch') {
+        response = 
+          "   ___ _           _ \n" +
+          "  |_ _| | font    (_) \n" +
+          "   | || |__  _ __  _ \n" +
+          "   | || '_ \\| '_ \\| |\n" +
+          "  |___|_| |_|_| |_|_|\n\n" +
+          "OS          : Kawaragi UI Mint v2.0\n" +
+          "CREATOR     : Miftakhul Ilmi\n" +
+          "ROLE        : Video Editor & Subtitler\n" +
+          "LANGUAGES   : Indonesian (Native), English, Japanese\n" +
+          "SHELL       : Bash/NextJS-AppRouter\n" +
+          "WIDGETS     : Framer Motion / Liquid Glass";
+      }
       // Tentang/Profil (ID, EN, JP)
       else if (trimmedCmd.includes('siapa') || trimmedCmd.includes('who') || trimmedCmd.includes('だれ') || trimmedCmd.includes('誰') || trimmedCmd.includes('about') || trimmedCmd.includes('profil')) {
         response = t.resAbout;
