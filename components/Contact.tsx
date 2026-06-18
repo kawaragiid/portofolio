@@ -4,66 +4,17 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "./LanguageProvider";
 
-// Kamus lengkap untuk 3 bahasa
-const translations = {
-  en: {
-    title: "Let's Collaborate.",
-    desc: "Feel free to reach out for video editing projects, subtitling, or other collaborative opportunities.",
-    quickMessage: "Quick Message",
-    emailPlaceholder: "enter your email here...",
-    msgPlaceholder: "write your message or project offer here...",
-    btnSend: "Send Me a Message 🚀",
-    location: "Location",
-    remote: "Available for Remote Work",
-    copyTitle: "Direct Copy Email",
-    copiedText: "✓ Copied to clipboard!",
-    copyText: "Copy Email Address",
-    freelance: "Freelance Profile",
-    subject: "Project Inquiry from Portfolio"
-  },
-  id: {
-    title: "Mari Berkolaborasi.",
-    desc: "Silakan hubungi saya untuk proyek penyuntingan video, pembuatan subtitle, atau peluang kerja sama lainnya.",
-    quickMessage: "Pesan Cepat",
-    emailPlaceholder: "masukkan email kamu di sini...",
-    msgPlaceholder: "tulis pesan atau penawaran proyekmu di sini...",
-    btnSend: "Kirimi Saya Pesan 🚀",
-    location: "Lokasi",
-    remote: "Bisa Bekerja Secara Remote",
-    copyTitle: "Salin Email Langsung",
-    copiedText: "✓ Berhasil disalin!",
-    copyText: "Salin Alamat Email",
-    freelance: "Profil Freelance",
-    subject: "Pertanyaan Proyek dari Portofolio"
-  },
-  jp: {
-    title: "コラボしましょう。",
-    desc: "ビデオ編集、字幕制作、またはその他のコラボレーションについて、お気軽にお問い合わせください。",
-    quickMessage: "クイックメッセージ",
-    emailPlaceholder: "ここにメールアドレスを入力してください...",
-    msgPlaceholder: "ここにメッセージやプロジェクトの提案を書いてください...",
-    btnSend: "メッセージを送信 🚀",
-    location: "所在地",
-    remote: "リモートワーク対応可能",
-    copyTitle: "メールアドレスをコピー",
-    copiedText: "✓ コピーしました！",
-    copyText: "アドレスをコピーする",
-    freelance: "フリーランスプロフィール",
-    subject: "ポートフォリオからのお問い合わせ"
-  }
-};
-
 export default function Contact() {
-  const { language } = useLanguage();
+  // Ambil dict dari context yang sudah kita sediakan
+  const { dict } = useLanguage();
+  const t = dict.contact; // Mengarah langsung ke dictionary contact
+  
   const [copied, setCopied] = useState(false);
   const [senderEmail, setSenderEmail] = useState("");
   const [message, setMessage] = useState("");
   
   const myEmail = "ilmi@kawaragi.id";
   const upworkLink = "https://www.upwork.com/freelancers/~01705729bdc457ff0f?mp_source=share";
-
-  // Ambil kamus sesuai bahasa yang sedang aktif (fallback ke 'id' jika tidak ditemukan)
-  const t = translations[language as keyof typeof translations] || translations.id;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(myEmail);

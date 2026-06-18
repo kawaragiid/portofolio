@@ -36,6 +36,22 @@ const dictionary = {
         { title: "Multimedia Specialist & Broadcast Lead", company: "Mitra Berkah Pratama", date: "Apr 2025 - Feb 2026", desc: "Mengelola operasi multimedia skala penuh, termasuk siaran langsung dan produksi video. Bertanggung jawab atas pengaturan teknis dan editing pasca-produksi." },
         { title: "Content Creator & Videographer", company: "Muhajirin Center", date: "Jan 2023 - Des 2024", desc: "Memimpin proses kreatif untuk konten digital. Menangani produksi end-to-end termasuk penulisan naskah, sinematografi, dan editing video." }
       ]
+    },
+    // --- TAMBAHAN BARU UNTUK CONTACT ---
+    contact: {
+      title: "Mari Berkolaborasi.",
+      desc: "Silakan hubungi saya untuk proyek penyuntingan video, pembuatan subtitle, atau peluang kerja sama lainnya.",
+      quickMessage: "Pesan Cepat",
+      emailPlaceholder: "masukkan email kamu di sini...",
+      msgPlaceholder: "tulis pesan atau penawaran proyekmu di sini...",
+      btnSend: "Kirimi Saya Pesan 🚀",
+      location: "Lokasi",
+      remote: "Bisa Bekerja Secara Remote",
+      copyTitle: "Salin Email Langsung",
+      copiedText: "✓ Berhasil disalin!",
+      copyText: "Salin Alamat Email",
+      freelance: "Profil Freelance",
+      subject: "Pertanyaan Proyek dari Portofolio"
     }
   },
   EN: {
@@ -69,6 +85,22 @@ const dictionary = {
         { title: "Multimedia Specialist & Broadcast Lead", company: "Mitra Berkah Pratama", date: "Apr 2025 - Feb 2026", desc: "Managed full-scale multimedia operations, including live broadcasting and video production. Responsible for technical setups and post-production editing." },
         { title: "Content Creator & Videographer", company: "Muhajirin Center", date: "Jan 2023 - Dec 2024", desc: "Led the creative process for digital content. Handled end-to-end production including scriptwriting, filming (cinematography), and creative video editing." }
       ]
+    },
+    // --- TAMBAHAN BARU UNTUK CONTACT ---
+    contact: {
+      title: "Let's Collaborate.",
+      desc: "Feel free to reach out for video editing projects, subtitling, or other collaborative opportunities.",
+      quickMessage: "Quick Message",
+      emailPlaceholder: "enter your email here...",
+      msgPlaceholder: "write your message or project offer here...",
+      btnSend: "Send Me a Message 🚀",
+      location: "Location",
+      remote: "Available for Remote Work",
+      copyTitle: "Direct Copy Email",
+      copiedText: "✓ Copied to clipboard!",
+      copyText: "Copy Email Address",
+      freelance: "Freelance Profile",
+      subject: "Project Inquiry from Portfolio"
     }
   },
   JP: {
@@ -102,6 +134,22 @@ const dictionary = {
         { title: "マルチメディアスペシャリスト", company: "Mitra Berkah Pratama", date: "2025年4月 - 2026年2月", desc: "ライブ配信や映像制作を含むマルチメディア業務全般を管理。技術設定や編集を担当。" },
         { title: "コンテンツクリエイター & ビデオグラファー", company: "Muhajirin Center", date: "2023年1月 - 2024年12月", desc: "デジタルコンテンツの制作を主導。脚本作成、撮影、クリエイティブな動画編集を担当。" }
       ]
+    },
+    // --- TAMBAHAN BARU UNTUK CONTACT ---
+    contact: {
+      title: "コラボしましょう。",
+      desc: "ビデオ編集、字幕制作、またはその他のコラボレーションについて、お気軽にお問い合わせください。",
+      quickMessage: "クイックメッセージ",
+      emailPlaceholder: "ここにメールアドレスを入力してください...",
+      msgPlaceholder: "ここにメッセージやプロジェクトの提案を書いてください...",
+      btnSend: "メッセージを送信 🚀",
+      location: "所在地",
+      remote: "リモートワーク対応可能",
+      copyTitle: "メールアドレスをコピー",
+      copiedText: "✓ コピーしました！",
+      copyText: "アドレスをコピーする",
+      freelance: "フリーランスプロフィール",
+      subject: "ポートフォリオからのお問い合わせ"
     }
   }
 };
