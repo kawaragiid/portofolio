@@ -76,7 +76,6 @@ const dictionary = {
         }
       ]
     },
-    // DATA KARYA DIKEMBALIKAN
     projects: {
       title: "Karya Pilihan.",
       items: [
@@ -85,7 +84,6 @@ const dictionary = {
         { title: "Jaringan & Server", desc: "Manajemen OpenWrt & AP" }
       ]
     },
-    // DATA PENGALAMAN DIKEMBALIKAN
     experience: {
       title: "Riwayat Kerja.",
       jobs: [
@@ -108,6 +106,25 @@ const dictionary = {
       copyText: "Salin Alamat Email",
       freelance: "Profil Freelance",
       subject: "Pertanyaan Proyek dari Portofolio"
+    },
+    terminal: {
+      assistantName: "Asisten AI",
+      boot: [
+        "Memulai sistem inti Ilmi.OS...",
+        "Memuat Modul Asisten AI... [OK]",
+        "Membangun koneksi aman... [OK]",
+        "Halo! Saya adalah Asisten AI virtual Ilmi 🤖",
+        "Kamu bisa bertanya tentang profil, skill, atau ketik 'help'."
+      ],
+      quickCommands: ["help", "siapa kamu?", "apa skillmu?", "pengalaman kerja", "lokasi", "clear"],
+      resSudo: "Nice try. Akses root ditolak. Tindakan ini telah dicatat ke server.",
+      resHelp: "Perintah tersedia: clear, sudo.\nAtau tanyakan hal seperti:\n- \"siapa kamu?\"\n- \"apa kemampuanmu?\"\n- \"pernah kerja dimana?\"\n- \"kamu tinggal dimana?\"",
+      resAbout: "Ilmi adalah seorang Penerjemah Multibahasa (EN/JP ke ID) dan Video Editor yang berfokus pada pelokalan dan produksi konten digital kreatif.",
+      resSkill: "Keahlian utamanya meliputi:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut, DaVinci Resolve)\n- Networking (OpenWrt)\n- PC Hardware & Workstation.",
+      resExperience: "Ilmi pernah bekerja sebagai Multimedia Specialist di Mitra Berkah Pratama, Content Creator di Muhajirin Center, dan saat ini aktif sebagai Freelance Subtitler.",
+      resLocation: "Ilmi berdomisili di Surabaya, Indonesia 🇮🇩, namun sangat terbuka untuk pekerjaan remote dari seluruh penjuru dunia.",
+      resContact: "Pilihan yang tepat! Kamu bisa langsung mengirimkan pesan atau penawaran kerja ke: ilmi@kawaragi.id",
+      resFallback: "Maaf, saya belum memiliki data untuk menjawab perintah tersebut.\nJika Anda memiliki pertanyaan spesifik atau tawaran kolaborasi, silakan hubungi langsung via email di: ilmi@kawaragi.id 🚀"
     }
   },
   EN: {
@@ -211,6 +228,25 @@ const dictionary = {
       copyText: "Copy Email Address",
       freelance: "Freelance Profile",
       subject: "Project Inquiry from Portfolio"
+    },
+    terminal: {
+      assistantName: "AI Assistant",
+      boot: [
+        "Starting Ilmi.OS core system...",
+        "Loading AI Assistant Module... [OK]",
+        "Establishing secure connection... [OK]",
+        "Hello! I am Ilmi's virtual AI Assistant 🤖",
+        "You can ask about profile, skills, or type 'help'."
+      ],
+      quickCommands: ["help", "who are you?", "your skills?", "work experience", "location", "clear"],
+      resSudo: "Nice try. Root access denied. This incident will be reported.",
+      resHelp: "Available commands: clear, sudo.\nOr ask things like:\n- \"who are you?\"\n- \"what are your skills?\"\n- \"where have you worked?\"\n- \"where do you live?\"",
+      resAbout: "Ilmi is a Multilingual Translator (EN/JP to ID) and Video Editor focusing on localization and creative digital content production.",
+      resSkill: "Core expertise includes:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut, DaVinci Resolve)\n- Networking (OpenWrt)\n- PC Hardware & Workstation.",
+      resExperience: "Ilmi has worked as a Multimedia Specialist at Mitra Berkah Pratama, Content Creator at Muhajirin Center, and is currently active as a Freelance Subtitler.",
+      resLocation: "Ilmi is based in Surabaya, Indonesia 🇮🇩, but is highly open to remote work from around the globe.",
+      resContact: "Great choice! You can directly send a message or job offer to: ilmi@kawaragi.id",
+      resFallback: "Sorry, I don't have the data to answer that command yet.\nIf you have specific questions or collaboration offers, please contact directly via email at: ilmi@kawaragi.id 🚀"
     }
   },
   JP: {
@@ -314,6 +350,25 @@ const dictionary = {
       copyText: "アドレスをコピーする",
       freelance: "フリーランスプロフィール",
       subject: "ポートフォリオからのお問い合わせ"
+    },
+    terminal: {
+      assistantName: "AI アシスタント",
+      boot: [
+        "Ilmi.OS コアシステムを起動中...",
+        "AI アシスタントモジュールを読み込み中... [OK]",
+        "安全な接続を確立中... [OK]",
+        "こんにちは！私はIlmiのバーチャルAIアシスタントです 🤖",
+        "プロフィールやスキルについて質問するか、'help' と入力してください。"
+      ],
+      quickCommands: ["help", "あなたは誰？", "スキルは何？", "職歴", "所在地", "clear"],
+      resSudo: "惜しいですね。ルートアクセスが拒否されました。このインシデントは報告されます。",
+      resHelp: "利用可能なコマンド: clear, sudo.\nまたは次のように質問してください：\n- \"あなたは誰？\"\n- \"スキルは何？\"\n- \"職歴は？\"\n- \"どこに住んでいるの？\"",
+      resAbout: "Ilmi は、ローカリゼーションとクリエイティブなデジタルコンテンツ制作に焦点を当てた多言語翻訳者（英語/日本語からインドネシア語）および動画編集者です。",
+      resSkill: "主な専門知識は以下の通りです：\n- 字幕翻訳 (Aegisub, Subtitle Edit)\n- 動画編集 (CapCut, DaVinci Resolve)\n- ネットワーク (OpenWrt)\n- PCハードウェアとワークステーション",
+      resExperience: "Ilmi は Mitra Berkah Pratama でマルチメディアスペシャリスト、Muhajirin Center でコンテンツクリエイターとして勤務し、現在はフリーランスの字幕翻訳者として活動しています。",
+      resLocation: "Ilmi はインドネシアのスラバヤ 🇮🇩 を拠点としていますが、世界中からのリモートワークにも積極的に対応しています。",
+      resContact: "素晴らしい選択です！ メッセージや仕事の依頼は、直接こちらへお送りください: ilmi@kawaragi.id",
+      resFallback: "申し訳ありませんが、そのコマンドに答えるデータがまだありません。\n具体的な質問やコラボレーションの提案がある場合は、直接メールでお問い合わせください: ilmi@kawaragi.id 🚀"
     }
   }
 };

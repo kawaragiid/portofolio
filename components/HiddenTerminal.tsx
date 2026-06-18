@@ -2,24 +2,27 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from './LanguageProvider'; // Mengambil fungsi multibahasa
 
 export default function HiddenTerminal() {
+  // Ambil kamus terminal dari context
+  const { dict } = useLanguage();
+  const t = dict.terminal;
+
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  
+  const [hasBooted, setHasBooted] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  
   const terminalRef = useRef<HTMLDivElement>(null);
   const [input, setInput] = useState('');
-  const [history, setHistory] = useState([
-    { type: 'system', text: 'Welcome to Ilmi.OS v2.0' },
-    { type: 'system', text: 'Tap a command below or type manually.' }
-  ]);
-
-  const quickCommands = ["help", "about", "skills", "contact", "clear"];
+  
+  const [history, setHistory] = useState<{type: string, text: string}[]>([]);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Cek apakah ini layar HP (lebar di bawah 768px)
       const isMobile = window.innerWidth < 768;
-      // Bergeser HANYA jika sedang di-scroll DAN di layar HP
       setIsScrolled(window.scrollY > 50 && isMobile);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -31,42 +34,76 @@ export default function HiddenTerminal() {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
-  }, [history, isOpen]);
+  }, [history, isOpen, isTyping]);
 
-  const handleCommand = (cmd: string) => {
-    const trimmedCmd = cmd.trim().toLowerCase();
-    let response = '';
-
-    switch (trimmedCmd) {
-      case 'help':
-        response = 'Available commands: about, skills, contact, clear, sudo';
-        break;
-      case 'about':
-        response = 'Ilmi - Trilingual Subtitler & Video Editor.';
-        break;
-      case 'skills':
-        response = 'CapCut, OpenWrt, Python, VS Code, Canva, Node.js, Subtitle Edit.';
-        break;
-      case 'contact':
-        response = 'Email: miftakhulilmi54@gmail.com';
-        break;
-      case 'clear':
-        setHistory([]);
-        return;
-      case 'sudo':
-        response = 'Nice try. This incident will be reported.';
-        break;
-      case '':
-        return;
-      default:
-        response = `Command not found: ${trimmedCmd}. Tap "help" for a list.`;
+  // EFEK BOOTING SESUAI BAHASA AKTIF
+  useEffect(() => {
+    if (isOpen && !hasBooted) {
+      setHasBooted(true);
+      setIsTyping(true);
+      
+      let i = 0;
+      const interval = setInterval(() => {
+        setHistory(prev => [...prev, { type: 'system', text: t.boot[i] }]);
+        i++;
+        if (i >= t.boot.length) {
+          clearInterval(interval);
+          setIsTyping(false); 
+        }
+      }, 600); 
     }
+  }, [isOpen, hasBooted, t.boot]);
 
-    setHistory(prev => [
-      ...prev,
-      { type: 'user', text: `guest@ilmi:~$ ${cmd}` },
-      { type: 'system', text: response }
-    ]);
+  // PENDETEKSI KATA KUNCI MULTI-BAHASA (Merespons sesuai bahasa UI saat ini)
+  const handleCommand = (cmd: string) => {
+    if (isTyping || !cmd.trim()) return;
+
+    const trimmedCmd = cmd.trim().toLowerCase();
+    
+    setHistory(prev => [...prev, { type: 'user', text: `guest@ilmi:~$ ${cmd}` }]);
+    setIsTyping(true);
+
+    setTimeout(() => {
+      let response = '';
+
+      // Sistem
+      if (trimmedCmd === 'clear') {
+        setHistory([]);
+        setIsTyping(false);
+        return;
+      } else if (trimmedCmd === 'sudo') {
+        response = t.resSudo;
+      } else if (trimmedCmd === 'help') {
+        response = t.resHelp;
+      } 
+      // Tentang/Profil (ID, EN, JP)
+      else if (trimmedCmd.includes('siapa') || trimmedCmd.includes('who') || trimmedCmd.includes('だれ') || trimmedCmd.includes('誰') || trimmedCmd.includes('about') || trimmedCmd.includes('profil')) {
+        response = t.resAbout;
+      } 
+      // Kemampuan/Skill
+      else if (trimmedCmd.includes('skill') || trimmedCmd.includes('kemampuan') || trimmedCmd.includes('bisa') || trimmedCmd.includes('tools') || trimmedCmd.includes('スキル') || trimmedCmd.includes('何')) {
+        response = t.resSkill;
+      } 
+      // Pengalaman/Kerja
+      else if (trimmedCmd.includes('pengalaman') || trimmedCmd.includes('kerja') || trimmedCmd.includes('experience') || trimmedCmd.includes('work') || trimmedCmd.includes('riwayat') || trimmedCmd.includes('職歴') || trimmedCmd.includes('仕事')) {
+        response = t.resExperience;
+      } 
+      // Lokasi/Domisili
+      else if (trimmedCmd.includes('lokasi') || trimmedCmd.includes('tinggal') || trimmedCmd.includes('where') || trimmedCmd.includes('asal') || trimmedCmd.includes('surabaya') || trimmedCmd.includes('location') || trimmedCmd.includes('所在地') || trimmedCmd.includes('住')) {
+        response = t.resLocation;
+      } 
+      // Kontak
+      else if (trimmedCmd.includes('kontak') || trimmedCmd.includes('hubungi') || trimmedCmd.includes('hire') || trimmedCmd.includes('email') || trimmedCmd.includes('contact') || trimmedCmd.includes('連絡') || trimmedCmd.includes('メール')) {
+        response = t.resContact;
+      } 
+      // Fallback (Tidak ditemukan)
+      else {
+        response = t.resFallback;
+      }
+
+      setHistory(prev => [...prev, { type: 'system', text: response }]);
+      setIsTyping(false);
+    }, 800); 
   };
 
   const onSubmit = (e: React.FormEvent) => {
@@ -100,7 +137,8 @@ export default function HiddenTerminal() {
               max-md:inset-x-4 max-md:top-[15%] max-md:bottom-[15%] max-md:rounded-3xl
               md:bottom-6 md:right-6 md:w-[600px] md:h-[400px] md:rounded-2xl"
           >
-            <div className="bg-white/5 border-b border-white/10 p-4 flex items-center justify-between">
+            {/* HEADER */}
+            <div className="bg-white/5 border-b border-white/10 p-4 flex items-center justify-between shrink-0">
               <div className="flex gap-2">
                 <div 
                   className="w-3.5 h-3.5 rounded-full bg-red-500 cursor-pointer hover:bg-red-400 flex items-center justify-center transition-colors" 
@@ -111,44 +149,60 @@ export default function HiddenTerminal() {
                 <div className="w-3.5 h-3.5 rounded-full bg-yellow-500" />
                 <div className="w-3.5 h-3.5 rounded-full bg-green-500" />
               </div>
-              <div className="text-gray-400 text-xs font-semibold tracking-widest uppercase">Terminal</div>
+              <div className="text-gray-400 text-xs font-semibold tracking-widest uppercase flex items-center gap-2">
+                <span>{t.assistantName}</span>
+                {isTyping && <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />}
+              </div>
               <div className="w-10"></div>
             </div>
 
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 py-3 border-b border-white/5 bg-white/[0.02]">
-              {quickCommands.map(cmd => (
+            {/* QUICK COMMANDS DARI BAHASA AKTIF */}
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 py-3 border-b border-white/5 bg-white/[0.02] shrink-0">
+              {t.quickCommands.map(cmd => (
                 <button
                   key={cmd}
                   onClick={() => handleCommand(cmd)}
-                  className="px-4 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/10 rounded-full text-xs text-gray-300 font-semibold tracking-wider whitespace-nowrap transition-all"
+                  disabled={isTyping}
+                  className="px-4 py-1.5 bg-white/10 hover:bg-white/20 disabled:opacity-50 active:scale-95 border border-white/10 rounded-full text-xs text-gray-300 font-semibold tracking-wider whitespace-nowrap transition-all"
                 >
                   {cmd}
                 </button>
               ))}
             </div>
 
+            {/* BODY TERMINAL */}
             <div 
               ref={terminalRef}
-              className="p-4 flex-1 overflow-y-auto scrollbar-hide text-green-400 space-y-3"
+              className="p-4 flex-1 overflow-y-auto overscroll-contain scrollbar-hide text-green-400 space-y-4"
             >
               {history.map((line, i) => (
-                <div key={i} className={`${line.type === 'user' ? 'text-white' : 'text-cyan-400'} leading-relaxed`}>
+                <div key={i} className={`${line.type === 'user' ? 'text-white font-bold' : 'text-cyan-400 font-light'} leading-relaxed whitespace-pre-wrap`}>
                   {line.text}
                 </div>
               ))}
               
-              <form onSubmit={onSubmit} className="flex items-center mt-4">
-                <span className="text-white mr-2">guest@ilmi:~$</span>
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  className="flex-1 bg-transparent outline-none text-green-400 placeholder-green-700/50"
-                  autoFocus
-                  spellCheck="false"
-                  autoComplete="off"
-                />
-              </form>
+              {isTyping && (
+                <div className="text-cyan-400/50 animate-pulse flex gap-1 items-center h-6">
+                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" />
+                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" style={{ animationDelay: '0.2s' }} />
+                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" style={{ animationDelay: '0.4s' }} />
+                </div>
+              )}
+              
+              {!isTyping && hasBooted && (
+                <form onSubmit={onSubmit} className="flex items-center mt-4">
+                  <span className="text-white mr-2">guest@ilmi:~$</span>
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    className="flex-1 bg-transparent outline-none text-green-400 placeholder-green-700/50"
+                    autoFocus
+                    spellCheck="false"
+                    autoComplete="off"
+                  />
+                </form>
+              )}
             </div>
           </motion.div>
         )}
@@ -157,7 +211,6 @@ export default function HiddenTerminal() {
       <motion.div
         animate={{ y: isScrolled && !isOpen ? -90 : 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        // Di PC, md:hidden kita HAPUS. Tapi kita ganti dengan layout responsif biasa.
         className={`fixed bottom-6 right-6 z-[9997] md:block flex flex-col items-end transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}
       >
         <motion.button
@@ -167,7 +220,7 @@ export default function HiddenTerminal() {
           whileTap={{ scale: 0.85 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
           className="bg-white/[0.05] backdrop-blur-3xl border border-white/20 text-cyan-400 font-mono font-bold w-14 h-14 rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.5)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
-          aria-label="Buka Terminal"
+          aria-label="Buka Terminal AI"
         >
           {">_"}
         </motion.button>
