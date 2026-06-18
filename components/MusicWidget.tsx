@@ -7,10 +7,8 @@ export default function MusicWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Ganti ID ini dengan ID video YouTube/YT Music pilihanmu.
-  // Contoh: https://www.youtube.com/watch?v=mngEGGoXzmM -> ID-nya adalah "mngEGGoXzmM"
-  // Kamu juga bisa memakai ID Playlist YouTube dengan parameter "?list=ID_PLAYLIST"
-  const youtubeVideoId = "o1sUaVJUeB0"; 
+  // ID Playlist YT Music milikmu
+  const playlistId = "PL-W6TZk0nvH6YD_Fi1LtUxGxGVb7F5sYj"; 
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -34,10 +32,7 @@ export default function MusicWidget() {
         )}
       </AnimatePresence>
 
-      {/* WIDGET UTAMA (PERSISTENT)
-        Kita TIDAK memakai AnimatePresence di sini. Kita selalu me-render kotak ini, 
-        hanya saja opacity-nya kita jadikan 0 saat ditutup. Ini rahasia agar musik tidak mati!
-      */}
+      {/* WIDGET UTAMA (PERSISTENT - Rahasia agar musik tidak mati saat di-close) */}
       <motion.div
         initial={false}
         animate={{ 
@@ -45,7 +40,6 @@ export default function MusicWidget() {
           scale: isOpen ? 1 : 0.9, 
           y: isOpen ? 0 : 20, 
           x: isOpen ? 0 : -20,
-          // pointerEvents "none" membuat kotak yang tak terlihat ini tidak menghalangi klik ke website-mu
           pointerEvents: isOpen ? "auto" : "none" 
         }}
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
@@ -58,7 +52,7 @@ export default function MusicWidget() {
           <div className="flex items-center gap-2">
             <span className="text-xl">🎧</span>
             <span className="text-white text-xs font-bold tracking-widest uppercase">
-              YouTube Player
+              My Playlist
             </span>
           </div>
           <button 
@@ -69,12 +63,12 @@ export default function MusicWidget() {
           </button>
         </div>
 
-        {/* YouTube Iframe Embed */}
+        {/* YouTube Iframe Embed untuk Playlist */}
         <div className="w-full bg-black flex flex-col">
           <iframe 
             width="100%" 
             height="180" 
-            src={`https://www.youtube.com/embed/${youtubeVideoId}`} 
+            src={`https://www.youtube.com/embed/videoseries?list=${playlistId}`} 
             title="YouTube video player" 
             frameBorder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
