@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     siteName: "Ilmi Portfolio",
     images: [
       {
-        url: "https://kawaragi.id/og-banner-main.png", // Kita akan siapkan gambarnya setelah ini
+        url: "https://keigo.kawaragi.id/og-banner-main.png", // Kita akan siapkan gambarnya setelah ini
         width: 1200,
         height: 630,
         alt: "Ilmi Portfolio Preview",
