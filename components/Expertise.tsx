@@ -10,8 +10,6 @@ export default function Expertise() {
   const t = dict.expertise;
   
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  
-  // State untuk memastikan Portal hanya berjalan di sisi Client (Browser)
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -44,7 +42,11 @@ export default function Expertise() {
               layoutId={`card-${item.id}`}
               key={item.id}
               onClick={() => setSelectedId(item.id)}
-              className="group bg-white/[0.02] hover:bg-white/[0.05] backdrop-blur-md border border-white/10 hover:border-white/20 p-8 rounded-3xl transition-all duration-300 cursor-pointer shadow-lg relative overflow-hidden"
+              // ANIMASI HOVER DAN PRESS (SQUISH EFFECT)
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              className="group bg-white/[0.02] hover:bg-white/[0.05] backdrop-blur-md border border-white/10 hover:border-white/20 p-8 rounded-3xl cursor-pointer shadow-lg relative overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               
@@ -67,7 +69,6 @@ export default function Expertise() {
       </div>
 
       {/* PORTAL AJAIB UNTUK FULL-SCREEN MODAL */}
-      {/* Menggunakan createPortal agar popup benar-benar berada di lapisan absolut tertinggi, menembus batasan Navbar */}
       {mounted && createPortal(
         <AnimatePresence>
           {selectedId && selectedItem && (
@@ -179,7 +180,7 @@ export default function Expertise() {
             </div>
           )}
         </AnimatePresence>,
-        document.body // <-- Di sinilah letak sihirnya. Merender langsung ke root HTML!
+        document.body 
       )}
     </section>
   );
