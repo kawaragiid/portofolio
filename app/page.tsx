@@ -5,9 +5,10 @@ import Experience from "../components/Experience";
 import FadeUp from "../components/FadeUp";
 import HeroShowreel from "../components/HeroShowreel";
 import HiddenTerminal from "../components/HiddenTerminal";
+import MusicWidget from "../components/MusicWidget"; // <--- 1. Import ini
 import LiquidBackground from "../components/LiquidBackground";
 import CustomCursor from "../components/CustomCursor";
-import InfiniteMarquee from "../components/InfiniteMarquee"; // <--- 1. Import komponennya
+import InfiniteMarquee from "../components/InfiniteMarquee";
 import { LanguageProvider } from "../components/LanguageProvider";
 
 export default function Home() {
@@ -21,7 +22,6 @@ export default function Home() {
         
         <HeroShowreel />
 
-        {/* 2. Sisipkan Infinite Marquee di sini (Z-10 agar di atas background) */}
         <InfiniteMarquee />
 
         <div className="relative z-10">
@@ -37,6 +37,7 @@ export default function Home() {
         </div>
         
         <HiddenTerminal />
+        <MusicWidget /> {/* <--- 2. Pasang di sini */}
 
         <footer id="contact" className="border-t border-white/5 py-12 text-center relative z-10">
           <p className="text-gray-400 text-sm mb-4">
