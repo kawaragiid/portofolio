@@ -2,10 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLanguage } from './LanguageProvider'; // Mengambil fungsi multibahasa
+import { useLanguage } from './LanguageProvider'; 
 
 export default function HiddenTerminal() {
-  // Ambil kamus terminal dari context
   const { dict } = useLanguage();
   const t = dict.terminal;
 
@@ -19,6 +18,9 @@ export default function HiddenTerminal() {
   const [input, setInput] = useState('');
   
   const [history, setHistory] = useState<{type: string, text: string}[]>([]);
+
+  // Trik Menyuntikkan Tombol Rahasia Tanpa Mengedit Kamus Bahasa
+  const allQuickCommands = [...t.quickCommands, 'specs', 'neofetch'];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,7 +38,6 @@ export default function HiddenTerminal() {
     }
   }, [history, isOpen, isTyping]);
 
-  // EFEK BOOTING SESUAI BAHASA AKTIF
   useEffect(() => {
     if (isOpen && !hasBooted) {
       setHasBooted(true);
@@ -54,7 +55,6 @@ export default function HiddenTerminal() {
     }
   }, [isOpen, hasBooted, t.boot]);
 
-  // PENDETEKSI KATA KUNCI MULTI-BAHASA (Merespons sesuai bahasa UI saat ini)
   const handleCommand = (cmd: string) => {
     if (isTyping || !cmd.trim()) return;
 
@@ -66,7 +66,6 @@ export default function HiddenTerminal() {
     setTimeout(() => {
       let response = '';
 
-      // Sistem
       if (trimmedCmd === 'clear') {
         setHistory([]);
         setIsTyping(false);
@@ -76,9 +75,6 @@ export default function HiddenTerminal() {
       } else if (trimmedCmd === 'help') {
         response = t.resHelp;
       } 
-      // ==========================================
-      // NEW EASTER EGGS: SPECS & NEOFETCH
-      // ==========================================
       else if (trimmedCmd === 'specs') {
         response = 
           "[HARDWARE SCAN COMPLETED]\n" +
@@ -103,27 +99,21 @@ export default function HiddenTerminal() {
           "SHELL       : Bash/NextJS-AppRouter\n" +
           "WIDGETS     : Framer Motion / Liquid Glass";
       }
-      // Tentang/Profil (ID, EN, JP)
       else if (trimmedCmd.includes('siapa') || trimmedCmd.includes('who') || trimmedCmd.includes('だれ') || trimmedCmd.includes('誰') || trimmedCmd.includes('about') || trimmedCmd.includes('profil')) {
         response = t.resAbout;
       } 
-      // Kemampuan/Skill
       else if (trimmedCmd.includes('skill') || trimmedCmd.includes('kemampuan') || trimmedCmd.includes('bisa') || trimmedCmd.includes('tools') || trimmedCmd.includes('スキル') || trimmedCmd.includes('何')) {
         response = t.resSkill;
       } 
-      // Pengalaman/Kerja
       else if (trimmedCmd.includes('pengalaman') || trimmedCmd.includes('kerja') || trimmedCmd.includes('experience') || trimmedCmd.includes('work') || trimmedCmd.includes('riwayat') || trimmedCmd.includes('職歴') || trimmedCmd.includes('仕事')) {
         response = t.resExperience;
       } 
-      // Lokasi/Domisili
       else if (trimmedCmd.includes('lokasi') || trimmedCmd.includes('tinggal') || trimmedCmd.includes('where') || trimmedCmd.includes('asal') || trimmedCmd.includes('surabaya') || trimmedCmd.includes('location') || trimmedCmd.includes('所在地') || trimmedCmd.includes('住')) {
         response = t.resLocation;
       } 
-      // Kontak
       else if (trimmedCmd.includes('kontak') || trimmedCmd.includes('hubungi') || trimmedCmd.includes('hire') || trimmedCmd.includes('email') || trimmedCmd.includes('contact') || trimmedCmd.includes('連絡') || trimmedCmd.includes('メール')) {
         response = t.resContact;
       } 
-      // Fallback (Tidak ditemukan)
       else {
         response = t.resFallback;
       }
@@ -164,7 +154,6 @@ export default function HiddenTerminal() {
               max-md:inset-x-4 max-md:top-[15%] max-md:bottom-[15%] max-md:rounded-3xl
               md:bottom-6 md:right-6 md:w-[600px] md:h-[400px] md:rounded-2xl"
           >
-            {/* HEADER */}
             <div className="bg-white/5 border-b border-white/10 p-4 flex items-center justify-between shrink-0">
               <div className="flex gap-2">
                 <div 
@@ -183,9 +172,9 @@ export default function HiddenTerminal() {
               <div className="w-10"></div>
             </div>
 
-            {/* QUICK COMMANDS DARI BAHASA AKTIF */}
             <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 py-3 border-b border-white/5 bg-white/[0.02] shrink-0">
-              {t.quickCommands.map(cmd => (
+              {/* MENGGUNAKAN VARIABEL BARU YANG SUDAH DIGABUNG */}
+              {allQuickCommands.map(cmd => (
                 <button
                   key={cmd}
                   onClick={() => handleCommand(cmd)}
@@ -197,7 +186,6 @@ export default function HiddenTerminal() {
               ))}
             </div>
 
-            {/* BODY TERMINAL */}
             <div 
               ref={terminalRef}
               className="p-4 flex-1 overflow-y-auto overscroll-contain scrollbar-hide text-green-400 space-y-4"
