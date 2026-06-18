@@ -10,7 +10,7 @@ export default function MusicWidget() {
   // Ganti ID ini dengan ID video YouTube/YT Music pilihanmu.
   // Contoh: https://www.youtube.com/watch?v=mngEGGoXzmM -> ID-nya adalah "mngEGGoXzmM"
   // Kamu juga bisa memakai ID Playlist YouTube dengan parameter "?list=ID_PLAYLIST"
-  const youtubeVideoId = "mngEGGoXzmM"; 
+  const youtubeVideoId = "o1sUaVJUeB0"; 
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
