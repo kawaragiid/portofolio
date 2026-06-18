@@ -16,18 +16,17 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    // passive: true membantu performa scroll di HP
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleLanguageChange = (newLang: Language) => {
-    if (lang === newLang) return; // Jangan lakukan apa-apa jika bahasanya sama
+    if (lang === newLang) return; 
     
     // Memicu getaran (Haptic Feedback) di device yang mendukung
     if (typeof window !== "undefined" && navigator.vibrate) {
-      navigator.vibrate(50); // Getar singkat 50ms
+      navigator.vibrate(50);
     }
     
     setLang(newLang);
@@ -40,16 +39,15 @@ export default function Navbar() {
   ];
 
   return (
-    // Pembungkus penuh layar. Menggunakan Flexbox agar perpindahan atas-bawah sangat mulus.
-    // Di PC (md): selalu justify-start (di atas). Di HP: justify-end (di bawah) saat di-scroll.
-    <div className={`fixed inset-0 z-[100] pointer-events-none flex flex-col items-center px-4 md:px-6 py-6 transition-all duration-500 ${
+    // PERBAIKAN 1: Menghapus 'transition-all' dari CSS. 
+    // Biarkan 100% pergerakan ditangani oleh mesin fisika 'layout' Framer Motion agar selembut mentega!
+    <div className={`fixed inset-0 z-[100] pointer-events-none flex flex-col items-center px-4 md:px-6 py-6 ${
       isScrolled ? "justify-end md:justify-start" : "justify-start"
     }`}>
       
       <motion.nav 
-        layout
-        // Fisika spring yang dihaluskan khusus untuk perpindahan jarak jauh
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        layout // <-- Mesin fisika utama
+        transition={{ type: "spring", stiffness: 250, damping: 25, mass: 0.5 }}
         className="w-full max-w-4xl pointer-events-auto relative"
       >
         <div className="relative z-20 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
@@ -62,8 +60,14 @@ export default function Navbar() {
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
               {menuItems.map((item) => (
-                <motion.div key={item.href} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link href={item.href} className="hover:text-white transition-colors">
+                <motion.div 
+                  key={item.href} 
+                  whileHover={{ scale: 1.05 }} 
+                  whileTap={{ scale: 0.9 }} 
+                  // PERBAIKAN 2: Mencegah browser HP memblokir animasi squish
+                  style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                >
+                  <Link href={item.href} className="hover:text-white transition-colors block">
                     {item.label}
                   </Link>
                 </motion.div>
@@ -72,34 +76,49 @@ export default function Navbar() {
 
             <div className="flex items-center gap-3 md:gap-4">
               
-              {/* TOGGLE BAHASA SQUISH & SLIDING ALA APPLE */}
-              <div className="flex items-center bg-[#0a0a0a]/80 backdrop-blur-3xl border border-white/10 rounded-full p-1 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)]">
-                {languages.map((l) => (
-                  <motion.button
-                    key={l}
-                    onClick={() => handleLanguageChange(l)}
-                    // Squish Effect saat ditekan
-                    whileTap={{ scale: 0.9 }}
-                    className={`relative px-3 md:px-4 py-1.5 text-[10px] md:text-xs font-bold tracking-widest rounded-full transition-colors z-10 ${
-                      lang === l ? "text-white" : "text-gray-500 hover:text-gray-300"
-                    }`}
+              {/* PERBAIKAN 3: TOGGLE BAHASA HANYA MUNCUL JIKA SUDAH DI-SCROLL */}
+              <AnimatePresence>
+                {isScrolled && (
+                  <motion.div 
+                    initial={{ opacity: 0, x: 20, scale: 0.8 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: 20, scale: 0.8 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    className="flex items-center bg-[#0a0a0a]/80 backdrop-blur-3xl border border-white/10 rounded-full p-1 shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)] overflow-hidden"
                   >
-                    {/* Ini adalah kapsul putih yang meluncur mulus ke bahasa aktif */}
-                    {lang === l && (
-                      <motion.div
-                        layoutId="active-lang-pill"
-                        className="absolute inset-0 bg-white/10 border border-white/20 rounded-full z-[-1] shadow-sm"
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      />
-                    )}
-                    {l}
-                  </motion.button>
-                ))}
-              </div>
+                    {languages.map((l) => (
+                      <motion.button
+                        key={l}
+                        onClick={() => handleLanguageChange(l)}
+                        // Efek Squish yang lebih dalam (0.85)
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.85 }}
+                        // Mematikan efek blok biru bawaan HP agar Squish berjalan mulus
+                        style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                        className={`relative px-3 md:px-4 py-1.5 text-[10px] md:text-xs font-bold tracking-widest rounded-full transition-colors z-10 ${
+                          lang === l ? "text-white" : "text-gray-500 hover:text-gray-300"
+                        }`}
+                      >
+                        {/* Kapsul putih yang meluncur */}
+                        {lang === l && (
+                          <motion.div
+                            layoutId="active-lang-pill"
+                            className="absolute inset-0 bg-white/10 border border-white/20 rounded-full z-[-1] shadow-sm"
+                            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                          />
+                        )}
+                        {l}
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Hamburger Button untuk HP */}
-              <button 
+              <motion.button 
+                whileTap={{ scale: 0.8 }} // Squish effect
                 onClick={() => setIsOpen(!isOpen)}
+                style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
                 className="md:hidden text-gray-300 hover:text-white transition-colors p-1"
                 aria-label="Toggle Menu"
               >
@@ -117,7 +136,7 @@ export default function Navbar() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
                   )}
                 </motion.svg>
-              </button>
+              </motion.button>
 
             </div>
           </div>
@@ -136,7 +155,13 @@ export default function Navbar() {
               }`}
             >
               {menuItems.map((item) => (
-                <motion.div key={item.href} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <motion.div 
+                  key={item.href} 
+                  whileHover={{ scale: 1.02 }} 
+                  whileTap={{ scale: 0.95 }}
+                  // Mematikan highlight bawaan agar squish berfungsi di menu dropdown
+                  style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                >
                   <Link 
                     href={item.href} 
                     onClick={() => setIsOpen(false)}
