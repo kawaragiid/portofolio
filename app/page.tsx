@@ -39,7 +39,7 @@ export default function Home() {
         <HiddenTerminal />
         <MusicWidget /> {/* <--- 2. Pasang di sini */}
 
-        <footer id="contact" className="border-t border-white/5 py-12 text-center relative z-10">
+        <footer id="contact" className="border-t border-white/5 pt-12 pb-36 text-center relative z-10">
           <p className="text-gray-400 text-sm mb-4">
             Ready to build something together?
           </p>
