@@ -1,155 +1,183 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-type Log = {
-  type: "input" | "output" | "system";
-  text: string;
-};
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function HiddenTerminal() {
   const [isOpen, setIsOpen] = useState(false);
-  const [input, setInput] = useState("");
-  const [logs, setLogs] = useState<Log[]>([
-    { type: "system", text: "IlmiOS Terminal [Version 1.0.0]" },
-    { type: "system", text: "Type 'help' to see available commands." },
+  const [isScrolled, setIsScrolled] = useState(false);
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const [input, setInput] = useState('');
+  const [history, setHistory] = useState([
+    { type: 'system', text: 'Welcome to Ilmi.OS v2.0' },
+    { type: 'system', text: 'Tap a command below or type manually.' }
   ]);
-  
-  const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Fungsi untuk mendeteksi shortcut keyboard (Ctrl + I)
+  // Daftar perintah cepat untuk mobile
+  const quickCommands = ["help", "about", "skills", "contact", "clear"];
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Menggunakan e.key.toLowerCase() agar bisa mendeteksi 'i' kecil atau 'I' kapital
-      if (e.ctrlKey && e.key.toLowerCase() === "i") {
-        e.preventDefault();
-        setIsOpen((prev) => !prev);
-      }
-      // Tekan ESC untuk menutup terminal
-      if (e.key === "Escape" && isOpen) {
-        setIsOpen(false);
-      }
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
-
-  // Auto-scroll ke bawah setiap ada log baru
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [logs]);
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [history, isOpen]);
 
-  // Logika pemrosesan perintah (Command logic)
-  const handleCommand = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  const handleCommand = (cmd: string) => {
+    const trimmedCmd = cmd.trim().toLowerCase();
+    let response = '';
 
-    const newLogs = [...logs, { type: "input", text: `admin@ilmi-server:~$ ${input}` } as Log];
-    const cmd = input.trim().toLowerCase();
-
-    switch (cmd) {
-      case "help":
-        newLogs.push({ type: "output", text: "Available commands: help, whoami, skills, ping openwrt, run bot.js, clear, exit" });
+    switch (trimmedCmd) {
+      case 'help':
+        response = 'Available commands: about, skills, contact, clear, sudo';
         break;
-      case "whoami":
-        newLogs.push({ type: "output", text: "Ilmi - Visual Creator, Trilingual Subtitler, & Tech Enthusiast." });
+      case 'about':
+        response = 'Ilmi - Trilingual Subtitler & Video Editor.';
         break;
-      case "skills":
-        newLogs.push({ type: "output", text: "-> Visuals: CapCut, DaVinci, Premiere, Canva" });
-        newLogs.push({ type: "output", text: "-> Code: Python, Node.js, Next.js, API Integrations" });
-        newLogs.push({ type: "output", text: "-> Hardware: PC Building, Ryzen Overclocking, Router Modding" });
+      case 'skills':
+        response = 'CapCut, OpenWrt, Python, VS Code, Canva, Node.js, Subtitle Edit.';
         break;
-      case "ping openwrt":
-        newLogs.push({ type: "system", text: "Pinging 192.168.1.1 with 32 bytes of data:" });
-        newLogs.push({ type: "output", text: "Reply from 192.168.1.1: bytes=32 time<1ms TTL=64 (Network Stable)" });
+      case 'contact':
+        response = 'Email: miftakhulilmi54@gmail.com';
         break;
-      case "run bot.js":
-        newLogs.push({ type: "system", text: "Starting Discord bot..." });
-        newLogs.push({ type: "output", text: "[OK] Connected to Kawaragi server. Automation scripts active." });
-        break;
-      case "clear":
-        setLogs([]);
-        setInput("");
+      case 'clear':
+        setHistory([]);
         return;
-      case "exit":
-        setIsOpen(false);
+      case 'sudo':
+        response = 'Nice try. This incident will be reported.';
         break;
+      case '':
+        return;
       default:
-        newLogs.push({ type: "output", text: `Command not found: ${cmd}. Type 'help' for available commands.` });
+        response = `Command not found: ${trimmedCmd}. Tap "help" for a list.`;
     }
 
-    setLogs(newLogs);
-    setInput("");
+    setHistory(prev => [
+      ...prev,
+      { type: 'user', text: `guest@ilmi:~$ ${cmd}` },
+      { type: 'system', text: response }
+    ]);
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleCommand(input);
+    setInput('');
   };
 
   return (
     <>
-      {/* Tombol Trigger Khusus Mobile (Liquid Glass + Bouncy) */}
-      <motion.button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        // Animasi hover dan tap khas Apple (Spring Physics)
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.85 }}
-        transition={{ type: "spring", stiffness: 400, damping: 20 }}
-        // Styling Liquid Glass
-        className="fixed bottom-6 right-6 z-[9999] md:hidden bg-white/[0.05] backdrop-blur-3xl border border-white/20 text-green-400 font-mono font-bold w-14 h-14 rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.5)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]"
-        aria-label="Buka Terminal"
-      >
-        {">_"}
-      </motion.button>
+      {/* OVERLAY GELAP KHUSUS SAAT TERMINAL TERBUKA */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
+          />
+        )}
+      </AnimatePresence>
 
-      {/* Jendela Terminal */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            // CLASS DI BAWAH INI YANG DIUBAH UNTUK EFEK LIQUID GLASS:
-            className="fixed bottom-0 md:bottom-6 right-0 md:right-6 w-full md:w-[600px] h-[50vh] md:h-[400px] bg-black/40 backdrop-blur-3xl border-t md:border border-white/10 md:rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] z-[9999] flex flex-col font-mono text-sm overflow-hidden"
+            // Animasi popup melayang (skala membesar dari tengah)
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            
+            // Layout: Center di HP (fixed inset), Bottom-Right di Desktop
+            className="fixed z-[9999] flex flex-col font-mono text-sm overflow-hidden bg-[#0a0a0a]/80 backdrop-blur-3xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.8)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]
+              max-md:inset-x-4 max-md:top-[15%] max-md:bottom-[15%] max-md:rounded-3xl
+              md:bottom-6 md:right-6 md:w-[600px] md:h-[400px] md:rounded-2xl"
           >
             {/* Header Terminal */}
-            <div className="bg-white/10 px-4 py-3 flex items-center justify-between border-b border-white/10 select-none">
+            <div className="bg-white/5 border-b border-white/10 p-4 flex items-center justify-between">
               <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500 cursor-pointer" onClick={() => setIsOpen(false)} />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
+                <div 
+                  className="w-3.5 h-3.5 rounded-full bg-red-500 cursor-pointer hover:bg-red-400 flex items-center justify-center transition-colors" 
+                  onClick={() => setIsOpen(false)} 
+                >
+                  {/* Ikon X kecil muncul saat di-hover (Native Mac Feel) */}
+                  <span className="opacity-0 hover:opacity-100 text-[8px] font-bold text-red-900">x</span>
+                </div>
+                <div className="w-3.5 h-3.5 rounded-full bg-yellow-500" />
+                <div className="w-3.5 h-3.5 rounded-full bg-green-500" />
               </div>
-              <span className="text-gray-400 text-xs hidden md:block">admin@ilmi-server ~ (Ctrl + I to toggle)</span>
-              <span className="text-gray-400 text-xs md:hidden">admin@ilmi-server</span>
-              <div className="w-12"></div> {/* Spacer untuk keseimbangan */}
+              <div className="text-gray-400 text-xs font-semibold tracking-widest uppercase">Terminal</div>
+              <div className="w-10"></div>
             </div>
 
-            {/* Area Log */}
-            <div className="flex-1 p-4 overflow-y-auto text-gray-300 space-y-1">
-              {logs.map((log, i) => (
-                <div key={i} className={`${log.type === "system" ? "text-blue-400" : log.type === "input" ? "text-green-400" : "text-gray-300"}`}>
-                  {log.text}
+            {/* Quick Commands (Panduan Ketikan) */}
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide px-4 py-3 border-b border-white/5 bg-white/[0.02]">
+              {quickCommands.map(cmd => (
+                <button
+                  key={cmd}
+                  onClick={() => handleCommand(cmd)}
+                  className="px-4 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/10 rounded-full text-xs text-gray-300 font-semibold tracking-wider whitespace-nowrap transition-all"
+                >
+                  {cmd}
+                </button>
+              ))}
+            </div>
+
+            {/* Body Terminal */}
+            <div 
+              ref={terminalRef}
+              className="p-4 flex-1 overflow-y-auto scrollbar-hide text-green-400 space-y-3"
+            >
+              {history.map((line, i) => (
+                <div key={i} className={`${line.type === 'user' ? 'text-white' : 'text-cyan-400'} leading-relaxed`}>
+                  {line.text}
                 </div>
               ))}
-              <div ref={bottomRef} />
+              
+              {/* Form Input Manual */}
+              <form onSubmit={onSubmit} className="flex items-center mt-4">
+                <span className="text-white mr-2">guest@ilmi:~$</span>
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  className="flex-1 bg-transparent outline-none text-green-400 placeholder-green-700/50"
+                  autoFocus
+                  spellCheck="false"
+                  autoComplete="off"
+                />
+              </form>
             </div>
-
-            {/* Area Input */}
-            <form onSubmit={handleCommand} className="p-4 border-t border-white/10 flex items-center bg-black/40">
-              <span className="text-green-400 mr-2">~$</span>
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                className="flex-1 bg-transparent outline-none text-gray-100"
-                autoFocus
-                spellCheck="false"
-                autoComplete="off"
-              />
-            </form>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Tombol Trigger Mobile */}
+      <motion.div
+        animate={{ y: isScrolled && !isOpen ? -90 : 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        // Disembunyikan kalau terminal terbuka agar tidak bertumpuk
+        className={`fixed bottom-6 right-6 z-[9997] md:hidden flex flex-col items-end pointer-events-none ${isOpen ? 'opacity-0' : 'opacity-100'}`}
+      >
+        <motion.button
+          type="button"
+          onClick={() => setIsOpen(true)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+          className="bg-white/[0.05] backdrop-blur-3xl border border-white/20 text-cyan-400 font-mono font-bold w-14 h-14 rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.5)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] pointer-events-auto"
+          aria-label="Buka Terminal"
+        >
+          {">_"}
+        </motion.button>
+      </motion.div>
     </>
   );
 }

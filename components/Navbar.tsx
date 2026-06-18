@@ -10,15 +10,11 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Efek untuk mendeteksi apakah layar sedang di-scroll
   useEffect(() => {
-    const handleScroll = () => {
-      // Jika scroll lebih dari 50px ke bawah, isScrolled = true
-      setIsScrolled(window.scrollY > 50);
-    };
-    
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Cek posisi saat pertama kali muat
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    // passive: true membantu performa scroll di HP
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -29,17 +25,17 @@ export default function Navbar() {
   ];
 
   return (
-    // Wrapper Transparan: Di HP akan pindah ke bottom-6 jika di-scroll, di PC selalu top-6
-    <div 
-      className={`fixed inset-x-0 z-[100] flex justify-center pointer-events-none ${
-        isScrolled ? "max-md:bottom-6 max-md:top-auto top-6" : "top-6 max-md:bottom-auto"
-      }`}
-    >
+    // Pembungkus penuh layar. Menggunakan Flexbox agar perpindahan atas-bawah sangat mulus.
+    // Di PC (md): selalu justify-start (di atas). Di HP: justify-end (di bawah) saat di-scroll.
+    <div className={`fixed inset-0 z-[100] pointer-events-none flex flex-col items-center px-6 py-6 transition-all duration-500 ${
+      isScrolled ? "justify-end md:justify-start" : "justify-start"
+    }`}>
+      
       <motion.nav 
-        // Prop 'layout' ini adalah sihir Framer Motion agar perpindahannya melayang mulus
         layout
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className="w-[90%] max-w-4xl pointer-events-auto relative"
+        // Fisika spring yang dihaluskan khusus untuk perpindahan jarak jauh
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="w-full max-w-4xl pointer-events-auto relative"
       >
         <div className="relative z-20 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
           <div className="px-8 py-4 flex justify-between items-center">
@@ -47,7 +43,6 @@ export default function Navbar() {
               Ilmi.
             </Link>
             
-            {/* Menu Desktop */}
             <div className="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
               {menuItems.map((item) => (
                 <Link key={item.href} href={item.href} className="hover:text-white transition-colors">
@@ -56,7 +51,6 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Tombol Hamburger/X untuk Mobile */}
             <button 
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden text-gray-300 hover:text-white transition-colors"
@@ -80,17 +74,13 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Popup Menu Mobile (Liquid Glass) */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              // Logika Animasi: Kalau di bawah muncul dari y: 20 (bawah ke atas), kalau di atas muncul dari y: -20
               initial={{ opacity: 0, y: isScrolled ? 20 : -20, filter: "blur(10px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               exit={{ opacity: 0, y: isScrolled ? 20 : -20, filter: "blur(10px)" }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              
-              // Logika Posisi: Kalau di bawah (isScrolled), posisinya 'bottom-full mb-2' (di atas navbar).
               className={`absolute left-0 w-full z-10 md:hidden bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.5)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] flex flex-col py-2 px-4 overflow-hidden ${
                 isScrolled ? "bottom-full mb-2" : "top-full mt-2"
               }`}
