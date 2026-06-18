@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Ilmi | Video Editor & Multilingual Translator",
   description: "Portofolio profesional Ilmi. Spesialis pelokalan bahasa (Inggris & Jepang ke Indonesia), Video Editor, dan teknisi jaringan/hardware.",
+  icons: {
+    icon: "/ico.png",
+  },
   keywords: ["Video Editor", "Subtitler", "Penerjemah Bahasa Jepang", "Freelance Video Editor Indonesia", "OpenWrt", "PC Builder", "Ilmi Kawaragi"],
   authors: [{ name: "Miftakhul Ilmi" }],
   creator: "Miftakhul Ilmi",
