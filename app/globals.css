@@ -48,16 +48,18 @@ body {
   }
 }
 
-/* Optimasi GPU: kurangi beban blur pada perangkat dengan spek rendah */
+/* Optimasi GPU untuk HP spek menengah/rendah (mis. Redmi Note 9 / Mali-G52):
+   Matikan backdrop-filter sepenuhnya agar scroll tetap 60fps tanpa frame drop */
 html[data-perf="low"] .backdrop-blur-3xl,
 html[data-perf="low"] .backdrop-blur-2xl,
-html[data-perf="low"] .backdrop-blur-xl {
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-html[data-perf="low"] .backdrop-blur-md {
+html[data-perf="low"] .backdrop-blur-xl,
+html[data-perf="low"] .backdrop-blur-md,
+html[data-perf="low"] .backdrop-blur-sm {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+}
+
+html[data-perf="low"] nav > div {
+  background-color: rgba(12, 12, 16, 0.92) !important;
 }
 

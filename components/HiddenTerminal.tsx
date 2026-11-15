@@ -9,8 +9,7 @@ export default function HiddenTerminal() {
   const t = dict.terminal;
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  
+
   const [hasBooted, setHasBooted] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   
@@ -23,23 +22,36 @@ export default function HiddenTerminal() {
   const allQuickCommands = [...t.quickCommands, 'specs', 'neofetch'];
 
   useEffect(() => {
-    const handleScroll = () => {
-      const isMobile = window.innerWidth < 768;
-      setIsScrolled(window.scrollY > 50 && isMobile);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [history, isOpen, isTyping]);
 
+  const startBootSequence = () => {
+    setHasBooted(true);
+    setIsTyping(true);
+
+    let i = 0;
+    const interval = setInterval(() => {
+      setHistory(prev => [...prev, { type: 'system', text: t.boot[i] }]);
+      i++;
+      if (i >= t.boot.length) {
+        clearInterval(interval);
+        setIsTyping(false);
+      }
+    }, 600);
+  };
+
   useEffect(() => {
-    const handleToggle = () => setIsOpen((prev) => !prev);
+    const handleToggle = () => {
+      setIsOpen((prev) => {
+        const next = !prev;
+        if (next && !hasBooted) {
+          startBootSequence();
+        }
+        return next;
+      });
+    };
     const handleClose = () => setIsOpen(false);
     window.addEventListener("toggle-terminal", handleToggle);
     window.addEventListener("close-all-modals", handleClose);
@@ -47,23 +59,13 @@ export default function HiddenTerminal() {
       window.removeEventListener("toggle-terminal", handleToggle);
       window.removeEventListener("close-all-modals", handleClose);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasBooted]);
 
   const handleOpenTerminal = () => {
     setIsOpen(true);
     if (!hasBooted) {
-      setHasBooted(true);
-      setIsTyping(true);
-      
-      let i = 0;
-      const interval = setInterval(() => {
-        setHistory(prev => [...prev, { type: 'system', text: t.boot[i] }]);
-        i++;
-        if (i >= t.boot.length) {
-          clearInterval(interval);
-          setIsTyping(false); 
-        }
-      }, 600); 
+      startBootSequence();
     }
   };
 
@@ -235,10 +237,11 @@ export default function HiddenTerminal() {
         )}
       </AnimatePresence>
 
-      <motion.div
-        animate={{ y: isScrolled && !isOpen ? -90 : 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className={`fixed bottom-6 right-6 z-[9997] md:block flex flex-col items-end transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}
+      {/* Tombol Trigger: Hanya tampil melayang di Desktop (HP memakai tombol di Navbar) */}
+      <div
+        className={`fixed bottom-6 right-6 z-[9997] hidden md:flex flex-col items-end transition-opacity duration-300 ${
+          isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
+        }`}
       >
         <motion.button
           type="button"
@@ -251,7 +254,7 @@ export default function HiddenTerminal() {
         >
           {">_"}
         </motion.button>
-      </motion.div>
+      </div>
     </>
   );
 }

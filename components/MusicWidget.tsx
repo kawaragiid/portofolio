@@ -5,22 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MusicWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
-  // ID Playlist YT Music milikmu
-  const playlistId = "PL-W6TZk0nvH6YD_Fi1LtUxGxGVb7F5sYj"; 
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Cek apakah ini layar HP (lebar di bawah 768px)
-      const isMobile = window.innerWidth < 768;
-      // Bergeser HANYA jika sedang di-scroll DAN di layar HP
-      setIsScrolled(window.scrollY > 50 && isMobile);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // ID Playlist YT Music
+  const playlistId = "PL-W6TZk0nvH6YD_Fi1LtUxGxGVb7F5sYj";
 
   useEffect(() => {
     const handleToggle = () => setIsOpen((prev) => !prev);
@@ -37,7 +24,7 @@ export default function MusicWidget() {
     <>
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -49,16 +36,15 @@ export default function MusicWidget() {
 
       <motion.div
         initial={false}
-        animate={{ 
-          opacity: isOpen ? 1 : 0, 
-          scale: isOpen ? 1 : 0.9, 
-          y: isOpen ? 0 : 20, 
-          x: isOpen ? 0 : -20,
-          pointerEvents: isOpen ? "auto" : "none" 
+        animate={{
+          opacity: isOpen ? 1 : 0,
+          scale: isOpen ? 1 : 0.95,
+          y: isOpen ? 0 : 16,
+          pointerEvents: isOpen ? "auto" : "none"
         }}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        className="fixed z-[9999] flex flex-col overflow-hidden bg-[#0a0a0a]/90 backdrop-blur-3xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.8)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]
-          max-md:bottom-[100px] max-md:left-4 max-md:right-4 max-md:rounded-3xl
+        transition={{ duration: 0.2 }}
+        className="fixed z-[9999] flex flex-col overflow-hidden bg-[#0a0a0a]/95 backdrop-blur-3xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.8)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]
+          max-md:bottom-24 max-md:left-4 max-md:right-4 max-md:rounded-3xl
           md:bottom-6 md:left-6 md:w-[350px] md:rounded-2xl"
       >
         <div className="bg-white/5 border-b border-white/10 p-4 flex items-center justify-between">
@@ -68,7 +54,7 @@ export default function MusicWidget() {
               My Playlist
             </span>
           </div>
-          <button 
+          <button
             onClick={() => setIsOpen(false)}
             className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-colors"
           >
@@ -77,31 +63,28 @@ export default function MusicWidget() {
         </div>
 
         <div className="w-full bg-black flex flex-col relative">
-          {/* Petunjuk UI untuk user baru */}
           <div className="absolute top-1 right-12 pointer-events-none z-10 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white opacity-70">
             Pilih lagu di pojok kanan ↗
           </div>
-          
-          <iframe 
-            width="100%" 
-            // Tinggi diperbesar ke 280px agar menu playlist YT muat dibuka
-            height="280" 
-            src={`https://www.youtube.com/embed/videoseries?list=${playlistId}`} 
-            title="YouTube video player" 
-            frameBorder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+
+          <iframe
+            width="100%"
+            height="280"
+            src={`https://www.youtube.com/embed/videoseries?list=${playlistId}`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="rounded-b-2xl max-md:rounded-b-3xl"
           ></iframe>
         </div>
       </motion.div>
 
-      {/* Tombol Trigger */}
-      <motion.div
-        animate={{ y: isScrolled && !isOpen ? -90 : 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        // Saat isOpen, jadikan tombol menghilang (opacity-0) dan tidak bisa diklik (pointer-events-none)
-        className={`fixed bottom-6 left-6 z-[9997] flex flex-col items-start transition-all duration-300 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'}`}
+      {/* Tombol Trigger: Hanya tampil melayang di Desktop (HP memakai tombol di Navbar) */}
+      <div
+        className={`fixed bottom-6 left-6 z-[9997] hidden md:flex flex-col items-start transition-opacity duration-300 ${
+          isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
+        }`}
       >
         <motion.button
           type="button"
@@ -114,7 +97,7 @@ export default function MusicWidget() {
         >
           <span className="text-white text-xl">🎵</span>
         </motion.button>
-      </motion.div>
+      </div>
     </>
   );
 }

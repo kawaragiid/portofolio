@@ -1,19 +1,24 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "./LanguageProvider"; // <--- Import Hook
+import { useLanguage } from "./LanguageProvider";
+import { usePerformance } from "./PerformanceProvider";
 
 export default function HeroShowreel() {
-  // Panggil lang, setLang, dan dict dari global state
   const { lang, setLang, dict } = useLanguage();
+  const { tier, isClient } = usePerformance();
 
   return (
     <section className="relative w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden">
-      {/* Background Video tetap sama */}
+      {/* Background Video hanya aktif di perangkat spek tinggi agar HP spek menengah/rendah tidak lag */}
       <div className="absolute inset-0 bg-black">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-50">
-          <source src="/videos/showreel.mp4" type="video/mp4" />
-        </video>
+        {isClient && tier === "high" ? (
+          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-50">
+            <source src="/videos/showreel.mp4" type="video/mp4" />
+          </video>
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(6,182,212,0.16),transparent_60%)]" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
       </div>
 
