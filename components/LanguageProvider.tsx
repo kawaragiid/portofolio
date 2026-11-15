@@ -12,6 +12,7 @@ const dictionary = {
       btnWork: "Lihat Karya",
       btnContact: "Kontak Saya",
       btnResume: "Unduh CV (PDF)",
+      cvSelectTitle: "Pilih Bahasa CV",
     },
     expertise: {
       title: "Keahlian Utama.",
@@ -198,6 +199,7 @@ const dictionary = {
       btnWork: "View Work",
       btnContact: "Contact Me",
       btnResume: "Download CV (PDF)",
+      cvSelectTitle: "Choose CV Language",
     },
     expertise: {
       title: "Core Expertise.",
@@ -384,6 +386,7 @@ const dictionary = {
       btnWork: "作品を見る",
       btnContact: "お問い合わせ",
       btnResume: "履歴書 (PDF)",
+      cvSelectTitle: "履歴書の言語を選択",
     },
     expertise: {
       title: "主な専門知識。",
