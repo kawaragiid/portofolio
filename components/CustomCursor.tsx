@@ -29,26 +29,26 @@ export default function CustomCursor() {
   const isDisabled = isMobile || tier === "low";
 
   const [isHovering, setIsHovering] = useState(false);
-  const [hoverLabel, setHoverLabel] = useState<string>("TARGET");
+  const [isMouseDown, setIsMouseDown] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  // Smooth Spring Lerp for Precision Tracking
-  const springConfig = { stiffness: 450, damping: 30, mass: 0.15 };
-  const smoothX = useSpring(mouseX, springConfig);
-  const smoothY = useSpring(mouseY, springConfig);
+  // Exact precision point spring
+  const dotSpring = { stiffness: 800, damping: 40, mass: 0.1 };
+  const smoothDotX = useSpring(mouseX, dotSpring);
+  const smoothDotY = useSpring(mouseY, dotSpring);
 
-  // Outer Reticle with slightly softer spring for dynamic trailing feel
-  const outerSpringConfig = { stiffness: 280, damping: 24, mass: 0.3 };
-  const outerX = useSpring(mouseX, outerSpringConfig);
-  const outerY = useSpring(mouseY, outerSpringConfig);
+  // Smooth luxury trailing ring spring
+  const ringSpring = { stiffness: 320, damping: 28, mass: 0.25 };
+  const smoothRingX = useSpring(mouseX, ringSpring);
+  const smoothRingY = useSpring(mouseY, ringSpring);
 
   useEffect(() => {
     if (isDisabled) return;
 
-    const updateMousePosition = (e: MouseEvent) => {
+    const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
       setIsVisible(true);
@@ -58,35 +58,36 @@ export default function CustomCursor() {
       const target = e.target as HTMLElement | null;
       if (!target) return;
 
-      const clickable =
+      const isInteractive =
         target.tagName?.toLowerCase() === "button" ||
         target.tagName?.toLowerCase() === "a" ||
+        target.tagName?.toLowerCase() === "input" ||
+        target.tagName?.toLowerCase() === "textarea" ||
         target.closest("button") ||
         target.closest("a") ||
         target.closest(".cursor-pointer") ||
         target.getAttribute("role") === "button";
 
-      if (clickable) {
-        setIsHovering(true);
-        const ariaLabel = target.getAttribute("aria-label") || target.innerText?.slice(0, 12);
-        setHoverLabel(ariaLabel && ariaLabel.trim().length > 0 ? "LOCK // " + ariaLabel.trim().toUpperCase() : "LOCK // TARGET");
-      } else {
-        setIsHovering(false);
-        setHoverLabel("SCAN");
-      }
+      setIsHovering(Boolean(isInteractive));
     };
 
+    const handleMouseDown = () => setIsMouseDown(true);
+    const handleMouseUp = () => setIsMouseDown(false);
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    window.addEventListener("mousemove", updateMousePosition, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("mouseover", handleMouseOver, { passive: true });
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
+      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
     };
@@ -95,58 +96,54 @@ export default function CustomCursor() {
   if (isDisabled || !isVisible) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[99999999] overflow-hidden">
+    <div className="pointer-events-none fixed inset-0 z-[99999999] overflow-hidden select-none">
       
-      {/* ── Outer Vision Reticle Brackets ── */}
+      {/* ── Smooth Fluid Trailing Ring (Minimalist Inverting Aura) ── */}
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 pointer-events-none"
+        className="fixed top-0 left-0 rounded-full pointer-events-none"
         style={{
-          x: outerX,
-          y: outerY,
+          x: smoothRingX,
+          y: smoothRingY,
           translateX: "-50%",
           translateY: "-50%",
         }}
         animate={{
-          scale: isHovering ? 1.4 : 1,
-          rotate: isHovering ? 45 : 0,
+          width: isHovering ? 48 : 28,
+          height: isHovering ? 48 : 28,
+          backgroundColor: isHovering ? "rgba(34, 211, 238, 0.12)" : "rgba(255, 255, 255, 0.02)",
+          borderColor: isHovering ? "rgba(34, 211, 238, 0.6)" : "rgba(255, 255, 255, 0.35)",
+          borderWidth: isHovering ? "1.5px" : "1px",
+          scale: isMouseDown ? 0.85 : 1,
         }}
-        transition={{ type: "spring", stiffness: 350, damping: 25 }}
-      >
-        {/* 4 Corner HUD Brackets */}
-        <span className={`absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 transition-colors duration-200 ${isHovering ? "border-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.9)]" : "border-cyan-500/40"}`} />
-        <span className={`absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 transition-colors duration-200 ${isHovering ? "border-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.9)]" : "border-cyan-500/40"}`} />
-        <span className={`absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 transition-colors duration-200 ${isHovering ? "border-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.9)]" : "border-cyan-500/40"}`} />
-        <span className={`absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 transition-colors duration-200 ${isHovering ? "border-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.9)]" : "border-cyan-500/40"}`} />
-      </motion.div>
+        transition={{
+          type: "spring",
+          stiffness: 400,
+          damping: 25,
+        }}
+      />
 
-      {/* ── Precision Center Dot / Cross ── */}
+      {/* ── Precision Center Dot ── */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none flex items-center justify-center"
+        className="fixed top-0 left-0 rounded-full pointer-events-none"
         style={{
-          x: smoothX,
-          y: smoothY,
+          x: smoothDotX,
+          y: smoothDotY,
           translateX: "-50%",
           translateY: "-50%",
         }}
-      >
-        <div className={`rounded-full transition-all duration-150 ${isHovering ? "w-2 h-2 bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,1)]" : "w-1.5 h-1.5 bg-cyan-400 shadow-[0_0_6px_rgba(34,211,238,0.8)]"}`} />
-        
-        {/* Fine crosshair lines */}
-        <div className="absolute w-4 h-[1px] bg-cyan-400/30" />
-        <div className="absolute h-4 w-[1px] bg-cyan-400/30" />
-
-        {/* Tactical Hover Readout Badge */}
-        {isHovering && (
-          <motion.div
-            initial={{ opacity: 0, x: 8, scale: 0.8 }}
-            animate={{ opacity: 1, x: 18, scale: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute left-0 top-0 whitespace-nowrap bg-black/85 backdrop-blur-md border border-cyan-400/40 px-2 py-0.5 rounded text-[8px] font-mono text-cyan-300 tracking-widest shadow-[0_0_10px_rgba(34,211,238,0.3)] pointer-events-none"
-          >
-            {hoverLabel}
-          </motion.div>
-        )}
-      </motion.div>
+        animate={{
+          width: isHovering ? 6 : 5,
+          height: isHovering ? 6 : 5,
+          backgroundColor: isHovering ? "#22d3ee" : "#ffffff",
+          scale: isMouseDown ? 0.6 : 1,
+          boxShadow: isHovering ? "0 0 10px rgba(34, 211, 238, 0.8)" : "0 0 4px rgba(255, 255, 255, 0.5)",
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 500,
+          damping: 30,
+        }}
+      />
 
     </div>
   );
