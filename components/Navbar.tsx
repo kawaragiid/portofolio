@@ -77,12 +77,12 @@ export default function Navbar() {
   };
 
   const stations = [
-    { href: "#origin", id: "origin", label: "00 ORIGIN" },
-    { href: "#academy", id: "academy", label: "01 ACADEMY" },
-    { href: "#projects", id: "projects", label: "02 STUDIO" },
+    { href: "#origin", id: "origin", label: "00 PROFIL" },
+    { href: "#academy", id: "academy", label: "01 EDUKASI" },
+    { href: "#projects", id: "projects", label: "02 KARYA" },
     { href: "#gateway", id: "gateway", label: "03 LAB" },
-    { href: "#experience", id: "experience", label: "04 LOGS" },
-    { href: "#terminus", id: "terminus", label: "05 DISPATCH" },
+    { href: "#experience", id: "experience", label: "04 PENGALAMAN" },
+    { href: "#terminus", id: "terminus", label: "05 KONTAK" },
   ];
 
   return (
@@ -213,8 +213,8 @@ export default function Navbar() {
               exit={{ opacity: 0, height: 0 }}
               className="lg:hidden border-t border-white/10 px-4 py-3 bg-black/95 rounded-b-2xl overflow-hidden font-mono"
             >
-              <div className="text-[10px] uppercase tracking-widest text-gray-500 mb-2">
-                TRANSIT WAYPOINTS:
+              <div className="text-[10px] uppercase tracking-widest text-cyan-400 mb-2 font-bold">
+                NAVIGASI HALAMAN:
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {stations.map((st) => (

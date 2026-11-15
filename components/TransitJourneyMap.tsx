@@ -10,6 +10,7 @@ import { useScreenSize } from "./useScreenSize";
 import HudCorner from "./HudCorner";
 import AnimeShape from "./AnimeShape";
 import AnimeCircuit from "./AnimeCircuit";
+import GlitchAvatar from "./GlitchAvatar";
 
 const cvOptions = [
   { code: "ID", label: "Bahasa Indonesia", flag: "🇮🇩", file: "/CV_Miftakhul_Ilmi_ID.pdf", filename: "CV_Miftakhul_Ilmi_ID.pdf" },
@@ -187,126 +188,162 @@ export default function TransitJourneyMap() {
       <main className="relative z-20 w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-28 py-8 md:py-16 space-y-28 md:space-y-44">
 
         {/* ════════════════════════════════════════════════════════════════════════
-            WAYPOINT 00 // ORIGIN (Operator Identity & Command Hub)
-            Position: Full-Width Centered
+            WAYPOINT 00 // ORIGIN (Profile & Core Identity)
+            Position: Full-Width 2-Column Responsive Layout
         ════════════════════════════════════════════════════════════════════════ */}
-        <section id="origin" className="relative flex flex-col items-center text-center pt-4 md:pt-12">
+        <section id="origin" className="relative pt-2 md:pt-6">
           
-          {/* Station Beacon & Tactical Badges */}
-          <div className="relative mb-6 flex flex-col items-center">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-800/40 text-[10px] sm:text-xs font-mono tracking-widest text-cyan-400 uppercase">
-                {dict.hud.transit.wp00}
-              </span>
-              <span className="hidden sm:inline-block px-2.5 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] font-mono text-gray-400">
-                COORDS: 7.2575° S, 112.7521° E
-              </span>
-            </div>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 max-w-7xl mx-auto">
             
-            {/* Anime.js Radar Beacon Hub */}
-            <div className="relative flex items-center justify-center">
-              <AnimeShape type="radar" size={56} color="#22d3ee" className="mb-1" />
-            </div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="w-full max-w-5xl"
-          >
-            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight text-white mb-4 leading-none">
-              Miftakhul Ilmi<span className="text-cyan-400">.</span>
-            </h1>
-
-            <div className="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 text-xs sm:text-sm md:text-base text-gray-200 font-medium mb-6 backdrop-blur-md">
-              <span className="text-emerald-400 animate-pulse">●</span>
-              <span>Guru Ekstrakurikuler Coding @ SMP Pancasila</span>
-              <span className="text-white/20 hidden sm:inline">•</span>
-              <span className="text-cyan-300">Freelance Subtitler &amp; Video Editor</span>
-            </div>
-
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 font-light leading-relaxed max-w-3xl mx-auto mb-10">
-              {dict.hero.subtitle}
-            </p>
-
-            {/* Tactical Action Triggers */}
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="#academy"
-                className="bg-white text-black hover:bg-cyan-300 px-8 py-3.5 rounded-xl font-bold text-xs sm:text-sm md:text-base tracking-wide transition-all shadow-[0_0_25px_rgba(255,255,255,0.25)] flex items-center gap-2"
-              >
-                <span>{dict.hero.btnWork}</span>
-                <span>↓</span>
-              </a>
-
-              {/* CV Download Selector */}
-              <div ref={cvMenuRef} className="relative">
-                <button
-                  type="button"
-                  onClick={() => setCvMenuOpen((prev) => !prev)}
-                  aria-expanded={cvMenuOpen}
-                  className="bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 px-7 py-3.5 rounded-xl font-semibold text-xs sm:text-sm md:text-base transition-all shadow-[0_0_15px_rgba(34,211,238,0.15)] flex items-center gap-2"
-                >
-                  <span>↓</span>
-                  <span>{dict.hero.btnResume}</span>
-                  <svg
-                    className={`w-4 h-4 transition-transform duration-200 ${cvMenuOpen ? "rotate-180" : ""}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-
-                <AnimatePresence>
-                  {cvMenuOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-72 bg-[#0c0d14] border border-white/15 rounded-xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] z-50 text-left"
-                    >
-                      <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-widest text-cyan-400 border-b border-white/10 mb-1">
-                        {dict.hero.cvSelectTitle}
-                      </div>
-                      {cvOptions.map((opt) => (
-                        <a
-                          key={opt.code}
-                          href={opt.file}
-                          download={opt.filename}
-                          onClick={() => setCvMenuOpen(false)}
-                          className="flex items-center justify-between px-3 py-2.5 rounded-lg text-xs md:text-sm text-gray-200 hover:text-white hover:bg-cyan-500/15 transition-colors"
-                        >
-                          <span className="flex items-center gap-2.5">
-                            <span className="text-base">{opt.flag}</span>
-                            <span className="font-medium">{opt.label}</span>
-                          </span>
-                          <span className="text-[10px] font-mono text-cyan-400">PDF</span>
-                        </a>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+            {/* Left Column: Core Identity & Key Highlights */}
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 text-left w-full"
+            >
+              {/* Station Tag & Active Status */}
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <span className="px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/60 text-xs font-mono font-bold tracking-wider text-cyan-300 uppercase">
+                  {dict.hud.transit.wp00}
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-800/40 text-xs font-mono text-emerald-300 font-semibold">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>Aktif Mengajar &amp; Freelance</span>
+                </span>
               </div>
 
-              <a
-                href="#terminus"
-                className="bg-white/5 hover:bg-white/10 border border-white/15 text-gray-300 hover:text-white px-7 py-3.5 rounded-xl font-medium text-xs sm:text-sm md:text-base transition-colors"
-              >
-                {dict.hero.btnContact}
-              </a>
-            </div>
+              {/* Main Name Heading */}
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white mb-3 leading-none">
+                Miftakhul Ilmi<span className="text-cyan-400">.</span>
+              </h1>
 
-            {/* Scroll Direction Bar */}
-            <div className="mt-16 flex items-center justify-center gap-3 text-[11px] font-mono tracking-widest text-gray-500 uppercase">
-              <span className="w-8 h-[1px] bg-white/20" />
-              <span className="animate-pulse">{dict.hud.transit.scrollPrompt}</span>
-              <span className="w-8 h-[1px] bg-white/20" />
-            </div>
-          </motion.div>
+              {/* Core Role Badges */}
+              <div className="text-base sm:text-lg md:text-xl font-semibold text-cyan-300 mb-6 flex flex-wrap items-center gap-2">
+                <span>Guru Ekstrakurikuler Coding @ SMP Pancasila</span>
+                <span className="text-white/30 hidden sm:inline">•</span>
+                <span className="text-gray-200">Freelance Subtitler &amp; Video Editor</span>
+              </div>
+
+              {/* High-Contrast Key Points Summary (Clean, Bold, Easy to Read) */}
+              <div className="space-y-3.5 mb-8 bg-white/[0.03] border border-white/10 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
+                <div className="flex items-start gap-3">
+                  <span className="text-xl shrink-0 mt-0.5">🏫</span>
+                  <div>
+                    <div className="text-sm sm:text-base font-bold text-white">Edukasi Coding SMP Pancasila</div>
+                    <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                      Membimbing siswa kelas 7–9 memahami Web Dasar (HTML, CSS, JavaScript) &amp; Logika Python melalui modul praktik interaktif.
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <span className="text-xl shrink-0 mt-0.5">🎬</span>
+                  <div>
+                    <div className="text-sm sm:text-base font-bold text-white">Lokalisasi Subtitle &amp; Video Editing</div>
+                    <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                      Penerjemahan kontekstual bahasa Inggris &amp; Jepang ke Indonesia (Subtitle Edit / Aegisub) serta editing video kreatif (CapCut Pro).
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <span className="text-xl shrink-0 mt-0.5">🌐</span>
+                  <div>
+                    <div className="text-sm sm:text-base font-bold text-white">Infrastruktur &amp; Workstation</div>
+                    <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                      Konfigurasi router OpenWrt untuk jaringan stabil dan PC Workstation AMD Ryzen untuk rendering multimedia.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tactical Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3">
+                <a
+                  href="#academy"
+                  className="bg-white text-black hover:bg-cyan-300 px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-[0_0_20px_rgba(255,255,255,0.25)] flex items-center gap-2"
+                >
+                  <span>{dict.hero.btnWork}</span>
+                  <span>↓</span>
+                </a>
+
+                {/* CV Download Selector */}
+                <div ref={cvMenuRef} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setCvMenuOpen((prev) => !prev)}
+                    aria-expanded={cvMenuOpen}
+                    className="bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/50 text-cyan-200 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all shadow-[0_0_15px_rgba(34,211,238,0.15)] flex items-center gap-2"
+                  >
+                    <span>↓</span>
+                    <span>{dict.hero.btnResume}</span>
+                    <svg
+                      className={`w-4 h-4 transition-transform duration-200 ${cvMenuOpen ? "rotate-180" : ""}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  <AnimatePresence>
+                    {cvMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-72 bg-[#0c0d14] border border-white/20 rounded-xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] z-50 text-left"
+                      >
+                        <div className="px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-cyan-400 border-b border-white/10 mb-1 font-bold">
+                          {dict.hero.cvSelectTitle}
+                        </div>
+                        {cvOptions.map((opt) => (
+                          <a
+                            key={opt.code}
+                            href={opt.file}
+                            download={opt.filename}
+                            onClick={() => setCvMenuOpen(false)}
+                            className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-gray-100 hover:text-white hover:bg-cyan-500/20 transition-colors"
+                          >
+                            <span className="flex items-center gap-2.5">
+                              <span className="text-base">{opt.flag}</span>
+                              <span className="font-semibold">{opt.label}</span>
+                            </span>
+                            <span className="text-xs font-mono text-cyan-300 font-bold">PDF</span>
+                          </a>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <a
+                  href="#terminus"
+                  className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-3.5 rounded-xl font-medium text-sm transition-colors"
+                >
+                  {dict.hero.btnContact}
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Right Column: Glitch Photo Avatar Component */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="flex flex-col items-center shrink-0 w-full sm:w-auto"
+            >
+              <GlitchAvatar />
+              <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                <span>Gulir sedikit untuk reveal warna normal</span>
+              </div>
+            </motion.div>
+
+          </div>
         </section>
 
 
@@ -317,16 +354,16 @@ export default function TransitJourneyMap() {
         <section id="academy" className="relative pl-10 sm:pl-14 lg:pl-0">
           <div id="expertise" className="absolute -top-24 pointer-events-none" />
           
-          <div className="w-full lg:w-[72%] xl:w-[65%] lg:mr-auto">
+          <div className="w-full lg:w-[75%] xl:w-[70%] lg:mr-auto">
             
-            {/* Station Header Node with Anime.js Circuit Node */}
+            {/* Station Header Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
               <AnimeShape type="circuit-node" size={28} color="#38bdf8" className="shrink-0 lg:-ml-1" />
-              <span className="text-xs sm:text-sm font-mono tracking-widest text-cyan-400 uppercase font-bold">
+              <span className="text-sm sm:text-base font-mono tracking-widest text-cyan-300 uppercase font-bold">
                 {dict.hud.transit.wp01}
               </span>
               <span className="text-white/20">/</span>
-              <span className="text-xs sm:text-sm font-mono text-emerald-400">AKTIF MENGAJAR (2026 - SEKARANG)</span>
+              <span className="text-xs sm:text-sm font-mono text-emerald-400 font-semibold">SMP PANCASILA SURABAYA</span>
             </div>
 
             {/* Expansive Card Container */}
@@ -335,34 +372,34 @@ export default function TransitJourneyMap() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6 }}
-              className="relative bg-white/[0.02] border border-white/10 hover:border-cyan-500/40 rounded-2xl p-6 sm:p-8 md:p-10 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.6)] transition-all"
+              className="relative bg-white/[0.03] border border-white/15 hover:border-cyan-500/50 rounded-2xl p-6 sm:p-8 md:p-10 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all"
             >
               <HudCorner />
 
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
                 <div>
-                  <div className="text-xs sm:text-sm font-mono text-cyan-400 mb-1">
-                    SMP PANCASILA • SURABAYA
+                  <div className="inline-block px-3 py-1 rounded-md bg-emerald-950/60 border border-emerald-700/60 text-xs font-mono text-emerald-300 font-bold mb-3">
+                    AKTIF MENGAJAR (2026 - SEKARANG)
                   </div>
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white mb-3">
                     Guru Ekstrakurikuler Coding
                   </h2>
-                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-light max-w-2xl">
-                    Membimbing siswa kelas 7–9 mempelajari dasar pemrograman web (HTML, CSS, JavaScript) dan pengenalan logika Python melalui materi interaktif bertema gelap serta praktik live coding.
+                  <p className="text-sm sm:text-base md:text-lg text-gray-100 leading-relaxed font-normal max-w-2xl">
+                    Membimbing siswa kelas 7–9 mempelajari dasar pemrograman web (HTML, CSS, JavaScript) dan pengenalan logika Python melalui modul interaktif dan sesi live coding terarah.
                   </p>
                 </div>
 
                 <div className="flex flex-wrap md:flex-col gap-2 shrink-0">
-                  <span className="px-3 py-1 rounded bg-white/5 border border-white/10 text-xs font-mono text-gray-300">
+                  <span className="px-3.5 py-1.5 rounded-lg bg-white/10 border border-white/20 text-xs sm:text-sm font-mono font-medium text-white">
                     HTML5 &amp; CSS3
                   </span>
-                  <span className="px-3 py-1 rounded bg-white/5 border border-white/10 text-xs font-mono text-gray-300">
+                  <span className="px-3.5 py-1.5 rounded-lg bg-white/10 border border-white/20 text-xs sm:text-sm font-mono font-medium text-white">
                     JavaScript Dasar
                   </span>
-                  <span className="px-3 py-1 rounded bg-white/5 border border-white/10 text-xs font-mono text-gray-300">
-                    Python Logic
+                  <span className="px-3.5 py-1.5 rounded-lg bg-white/10 border border-white/20 text-xs sm:text-sm font-mono font-medium text-white">
+                    Logika Python
                   </span>
-                  <span className="px-3 py-1 rounded bg-cyan-500/10 border border-cyan-400/30 text-xs font-mono text-cyan-300">
+                  <span className="px-3.5 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-400/40 text-xs sm:text-sm font-mono font-semibold text-cyan-200">
                     Modul Web Interaktif
                   </span>
                 </div>
@@ -371,26 +408,26 @@ export default function TransitJourneyMap() {
               {/* Real Teaching Module Screenshot */}
               <div
                 onClick={() => setActiveProjectModal(3)}
-                className="group/mod relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-black/60 border border-white/10 hover:border-cyan-400/50 cursor-pointer transition-all"
+                className="group/mod relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-black/60 border border-white/15 hover:border-cyan-400/60 cursor-pointer transition-all"
               >
                 <Image
                   src="/images/project-4.png"
                   alt="Modul Materi Ekskul Coding SMP Pancasila"
                   fill
-                  className="object-cover opacity-75 group-hover/mod:opacity-95 group-hover/mod:scale-[1.02] transition-all duration-500"
+                  className="object-cover opacity-85 group-hover/mod:opacity-100 group-hover/mod:scale-[1.02] transition-all duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-end p-4 sm:p-6">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent flex items-end p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-2">
                     <div>
-                      <div className="text-[10px] sm:text-xs font-mono text-cyan-300 uppercase">
-                        DOKUMENTASI MODUL AJAR RESMI
+                      <div className="text-xs font-mono text-cyan-300 uppercase font-semibold">
+                        DOKUMENTASI MODUL AJAR
                       </div>
-                      <div className="text-sm sm:text-base md:text-lg font-bold text-white">
+                      <div className="text-base sm:text-lg md:text-xl font-bold text-white">
                         Materi Pekan 2 — Modul Web Dark Mode SMP Pancasila
                       </div>
                     </div>
-                    <span className="text-xs sm:text-sm font-mono text-cyan-400 group-hover/mod:translate-x-1 transition-transform">
-                      Buka Resolusi Penuh →
+                    <span className="text-xs sm:text-sm font-mono text-cyan-300 font-semibold group-hover/mod:translate-x-1 transition-transform">
+                      Buka Gambar Penuh →
                     </span>
                   </div>
                 </div>
@@ -408,94 +445,92 @@ export default function TransitJourneyMap() {
         <section id="projects" className="relative pl-10 sm:pl-14 lg:pl-0">
           <div className="w-full lg:w-[85%] xl:w-[80%] lg:ml-auto">
             
-            {/* Station Header Node with Anime.js Target Reticle */}
+            {/* Station Header Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
               <AnimeShape type="target" size={28} color="#22d3ee" className="shrink-0 lg:-ml-1" />
-              <span className="text-xs sm:text-sm font-mono tracking-widest text-cyan-400 uppercase font-bold">
+              <span className="text-sm sm:text-base font-mono tracking-widest text-cyan-300 uppercase font-bold">
                 {dict.hud.transit.wp02}
               </span>
               <span className="text-white/20">/</span>
-              <span className="text-xs sm:text-sm font-mono text-gray-400">SUBTITLER &amp; VIDEO EDITOR</span>
+              <span className="text-xs sm:text-sm font-mono text-gray-300 font-semibold">SUBTITLING &amp; VIDEO PRODUCTION</span>
             </div>
 
             {/* Asymmetric Dual Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
               
-              {/* Work A: Subtitling (Higher Stagger) */}
+              {/* Work A: Subtitling */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6 }}
                 onClick={() => setActiveProjectModal(0)}
-                className="group relative bg-white/[0.02] border border-white/10 hover:border-cyan-500/40 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.6)] cursor-pointer transition-all flex flex-col justify-between"
+                className="group relative bg-white/[0.03] border border-white/15 hover:border-cyan-500/50 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] cursor-pointer transition-all flex flex-col justify-between"
               >
                 <HudCorner />
 
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-mono text-cyan-400 uppercase mb-2">
-                    <span>LOKALISASI SUBTITLE</span>
-                    <span className="text-gray-400">PRJ // 01</span>
+                  <div className="text-xs font-mono text-cyan-300 uppercase font-bold mb-2">
+                    LOKALISASI SUBTITLE (EN / JP → ID)
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors mb-2">
                     Inggris &amp; Jepang ke Indonesia
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-300 font-light leading-relaxed mb-6">
+                  <p className="text-sm sm:text-base text-gray-100 font-normal leading-relaxed mb-6">
                     Penerjemahan kontekstual, penyelarasan timing dialog, dan hardcoding video (contoh serial Piece of Safe) dengan Subtitle Edit &amp; Aegisub.
                   </p>
                 </div>
 
-                <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black mb-4">
+                <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black mb-4 border border-white/10">
                   <Image
                     src="/images/project-1.png"
                     alt="Subtitle Edit Project Piece of Safe"
                     fill
-                    className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
+                    className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-xs font-mono text-gray-400 pt-3 border-t border-white/10">
-                  <span>Subtitle Edit • Aegisub</span>
-                  <span className="text-cyan-400 group-hover:translate-x-1 transition-transform">Lihat Detail →</span>
+                <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-gray-300 pt-3 border-t border-white/10">
+                  <span className="font-medium text-gray-200">Subtitle Edit • Aegisub</span>
+                  <span className="text-cyan-300 font-bold group-hover:translate-x-1 transition-transform">Lihat Detail →</span>
                 </div>
               </motion.div>
 
-              {/* Work B: Video Editing (Offset Lower) */}
+              {/* Work B: Video Editing */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
                 onClick={() => setActiveProjectModal(1)}
-                className="group relative bg-white/[0.02] border border-white/10 hover:border-cyan-500/40 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.6)] cursor-pointer transition-all flex flex-col justify-between lg:translate-y-8"
+                className="group relative bg-white/[0.03] border border-white/15 hover:border-cyan-500/50 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] cursor-pointer transition-all flex flex-col justify-between lg:translate-y-8"
               >
                 <HudCorner />
 
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-mono text-cyan-400 uppercase mb-2">
-                    <span>VIDEO PRODUCTION</span>
-                    <span className="text-gray-400">PRJ // 02</span>
+                  <div className="text-xs font-mono text-cyan-300 uppercase font-bold mb-2">
+                    VIDEO PRODUCTION &amp; DOKUMENTASI
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors mb-2">
-                    Editing Video &amp; Dokumentasi
+                    Editing Video &amp; Dokumentasi Acara
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-300 font-light leading-relaxed mb-6">
+                  <p className="text-sm sm:text-base text-gray-100 font-normal leading-relaxed mb-6">
                     Penyuntingan video dokumentasi acara dan konten pendek ritmis dengan CapCut Pro dual-screen workstation, Canva, dan OBS Studio.
                   </p>
                 </div>
 
-                <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black mb-4">
+                <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black mb-4 border border-white/10">
                   <Image
                     src="/images/project-2.png"
                     alt="CapCut Pro Dual Screen Setup"
                     fill
-                    className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
+                    className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-xs font-mono text-gray-400 pt-3 border-t border-white/10">
-                  <span>CapCut Pro • OBS Studio</span>
-                  <span className="text-cyan-400 group-hover:translate-x-1 transition-transform">Lihat Detail →</span>
+                <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-gray-300 pt-3 border-t border-white/10">
+                  <span className="font-medium text-gray-200">CapCut Pro • OBS Studio</span>
+                  <span className="text-cyan-300 font-bold group-hover:translate-x-1 transition-transform">Lihat Detail →</span>
                 </div>
               </motion.div>
 
@@ -510,16 +545,16 @@ export default function TransitJourneyMap() {
             Position: Center-Left Diagonal (Asymmetric Node 3)
         ════════════════════════════════════════════════════════════════════════ */}
         <section id="gateway" className="relative pl-10 sm:pl-14 lg:pl-0">
-          <div className="w-full lg:w-[76%] xl:w-[70%] lg:ml-[6%]">
+          <div className="w-full lg:w-[78%] xl:w-[72%] lg:ml-[6%]">
             
-            {/* Station Header Node with Anime.js Circuit Node */}
+            {/* Station Header Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
               <AnimeShape type="circuit-node" size={28} color="#34d399" className="shrink-0 lg:-ml-1" />
-              <span className="text-xs sm:text-sm font-mono tracking-widest text-cyan-400 uppercase font-bold">
+              <span className="text-sm sm:text-base font-mono tracking-widest text-cyan-300 uppercase font-bold">
                 {dict.hud.transit.wp03}
               </span>
               <span className="text-white/20">/</span>
-              <span className="text-xs sm:text-sm font-mono text-gray-400">OPENWRT &amp; WORKSTATION</span>
+              <span className="text-xs sm:text-sm font-mono text-gray-300 font-semibold">JARINGAN &amp; HARDWARE</span>
             </div>
 
             <motion.div
@@ -527,7 +562,7 @@ export default function TransitJourneyMap() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6 }}
-              className="relative bg-white/[0.02] border border-white/10 hover:border-cyan-500/40 rounded-2xl p-6 sm:p-8 md:p-10 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.6)] transition-all"
+              className="relative bg-white/[0.03] border border-white/15 hover:border-cyan-500/50 rounded-2xl p-6 sm:p-8 md:p-10 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all"
             >
               <HudCorner />
 
@@ -536,50 +571,50 @@ export default function TransitJourneyMap() {
                 {/* Left: Router Status Screenshot */}
                 <div
                   onClick={() => setActiveProjectModal(2)}
-                  className="lg:col-span-7 group/net relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-white/10 hover:border-cyan-400/50 cursor-pointer"
+                  className="lg:col-span-7 group/net relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-white/15 hover:border-cyan-400/60 cursor-pointer"
                 >
                   <Image
                     src="/images/project-3.png"
                     alt="OpenWrt LuCI Router Status"
                     fill
-                    className="object-cover opacity-70 group-hover/net:opacity-90 group-hover/net:scale-105 transition-all duration-500"
+                    className="object-cover opacity-85 group-hover/net:opacity-100 group-hover/net:scale-105 transition-all duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent flex items-end p-4">
-                    <span className="text-xs font-mono text-cyan-300">
-                      OpenWrt LuCI Gateway Status (Kawaragi) ↗
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex items-end p-4">
+                    <span className="text-xs sm:text-sm font-mono text-cyan-300 font-semibold">
+                      OpenWrt LuCI Gateway Status ↗
                     </span>
                   </div>
                 </div>
 
                 {/* Right: Technical Specs & Rig Details */}
                 <div className="lg:col-span-5">
-                  <div className="text-xs sm:text-sm font-mono text-cyan-400 mb-1">
+                  <div className="text-xs font-mono text-cyan-300 mb-1 font-bold">
                     INFRASTRUKTUR JARINGAN &amp; RIG
                   </div>
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3">
                     Jaringan OpenWrt &amp; PC Workstation
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-300 font-light leading-relaxed mb-6">
+                  <p className="text-sm sm:text-base text-gray-100 font-normal leading-relaxed mb-6">
                     Konfigurasi firmware custom OpenWrt untuk manajemen port LAN/WAN dan transfer data multimedia stabil, didukung PC Workstation AMD Ryzen untuk editing video dan edukasi coding.
                   </p>
 
-                  <div className="space-y-2 text-xs font-mono mb-6">
-                    <div className="flex justify-between p-2.5 rounded-lg bg-black/50 border border-white/5">
-                      <span className="text-gray-400">GATEWAY:</span>
-                      <span className="text-cyan-300 font-semibold">OpenWrt Gigabit Router</span>
+                  <div className="space-y-2.5 text-xs sm:text-sm font-mono mb-6">
+                    <div className="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-white/10">
+                      <span className="text-gray-300 font-medium">ROUTER GATEWAY:</span>
+                      <span className="text-cyan-300 font-bold">OpenWrt Gigabit</span>
                     </div>
-                    <div className="flex justify-between p-2.5 rounded-lg bg-black/50 border border-white/5">
-                      <span className="text-gray-400">WORKSTATION:</span>
-                      <span className="text-gray-200">AMD Ryzen Dual-Screen</span>
+                    <div className="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-white/10">
+                      <span className="text-gray-300 font-medium">WORKSTATION:</span>
+                      <span className="text-white font-bold">AMD Ryzen Dual-Screen</span>
                     </div>
                   </div>
 
                   {/* Quick Launcher Triggers */}
-                  <div className="flex gap-2.5">
+                  <div className="flex gap-3">
                     <button
                       type="button"
                       onClick={triggerMusic}
-                      className="px-4 py-2 rounded-xl bg-white/5 hover:bg-cyan-500/20 border border-white/10 text-xs font-mono text-gray-300 hover:text-white transition-colors flex items-center gap-2"
+                      className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-cyan-500/25 border border-white/20 text-xs sm:text-sm font-mono font-semibold text-gray-100 hover:text-white transition-colors flex items-center gap-2"
                     >
                       <span>🎵</span>
                       <span>Audio Player</span>
@@ -587,7 +622,7 @@ export default function TransitJourneyMap() {
                     <button
                       type="button"
                       onClick={triggerTerminal}
-                      className="px-4 py-2 rounded-xl bg-white/5 hover:bg-cyan-500/20 border border-white/10 text-xs font-mono text-cyan-300 hover:text-cyan-200 transition-colors flex items-center gap-2"
+                      className="px-4 py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/30 border border-cyan-400/40 text-xs sm:text-sm font-mono font-semibold text-cyan-300 hover:text-cyan-200 transition-colors flex items-center gap-2"
                     >
                       <span>&gt;_</span>
                       <span>Terminal AI</span>
@@ -609,14 +644,14 @@ export default function TransitJourneyMap() {
         <section id="experience" className="relative pl-10 sm:pl-14 lg:pl-0">
           <div className="w-full lg:w-[88%] xl:w-[84%] lg:mx-auto">
             
-            {/* Station Header Node with Anime.js Radar Shape */}
+            {/* Station Header Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
               <AnimeShape type="radar" size={28} color="#22d3ee" className="shrink-0 lg:-ml-1" />
-              <span className="text-xs sm:text-sm font-mono tracking-widest text-cyan-400 uppercase font-bold">
+              <span className="text-sm sm:text-base font-mono tracking-widest text-cyan-300 uppercase font-bold">
                 {dict.hud.transit.wp04}
               </span>
               <span className="text-white/20">/</span>
-              <span className="text-xs sm:text-sm font-mono text-gray-400">{dict.experience.title}</span>
+              <span className="text-xs sm:text-sm font-mono text-gray-300 font-semibold">{dict.experience.title}</span>
             </div>
 
             <motion.div
@@ -624,7 +659,7 @@ export default function TransitJourneyMap() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6 }}
-              className="relative bg-white/[0.02] border border-white/10 hover:border-cyan-500/40 rounded-2xl p-6 sm:p-8 md:p-10 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.6)] transition-all"
+              className="relative bg-white/[0.03] border border-white/15 hover:border-cyan-500/50 rounded-2xl p-6 sm:p-8 md:p-10 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all"
             >
               <HudCorner />
 
@@ -636,35 +671,30 @@ export default function TransitJourneyMap() {
                   return (
                     <div
                       key={index}
-                      className="relative p-5 sm:p-6 rounded-xl bg-white/[0.02] border border-white/5 hover:border-cyan-500/30 transition-all flex flex-col justify-between group"
+                      className="relative p-5 sm:p-6 rounded-xl bg-white/[0.02] border border-white/10 hover:border-cyan-500/40 transition-all flex flex-col justify-between group"
                     >
                       <div>
-                        <div className="flex flex-wrap items-baseline justify-between gap-2 mb-1.5">
-                          <h4 className="text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">
+                        <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+                          <h4 className="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">
                             {job.title}
                           </h4>
-                          <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300">
+                          <span className="text-xs font-mono px-2.5 py-1 rounded bg-white/10 border border-white/20 text-gray-100 font-semibold">
                             {job.date}
                           </span>
                         </div>
 
-                        <div className="text-xs sm:text-sm font-mono text-cyan-400 mb-3 flex items-center gap-2">
+                        <div className="text-xs sm:text-sm font-mono text-cyan-300 font-semibold mb-3 flex items-center gap-2">
                           <span>{job.company}</span>
                           {isCurrent && (
-                            <span className="text-[9px] bg-emerald-950/60 text-emerald-300 border border-emerald-800/50 px-2 py-0.5 rounded font-mono font-bold">
-                              AKTIF
+                            <span className="text-[10px] bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 px-2 py-0.5 rounded font-mono font-bold">
+                              AKTIF SEKARANG
                             </span>
                           )}
                         </div>
 
-                        <p className="text-xs sm:text-sm text-gray-300 leading-relaxed font-light">
+                        <p className="text-sm sm:text-base text-gray-100 leading-relaxed font-normal">
                           {job.desc}
                         </p>
-                      </div>
-
-                      <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] font-mono text-gray-500">
-                        <span>STAGE // 0{index + 1}</span>
-                        <span className="text-cyan-400/80">VERIFIED LOG</span>
                       </div>
                     </div>
                   );
@@ -677,7 +707,7 @@ export default function TransitJourneyMap() {
 
 
         {/* ════════════════════════════════════════════════════════════════════════
-            WAYPOINT 05 // TERMINUS (Mission Dispatch & Docking Station)
+            WAYPOINT 05 // TERMINUS (Contact & Quick Connect)
             Position: Full-Width Centered
         ════════════════════════════════════════════════════════════════════════ */}
         <section id="terminus" className="relative flex flex-col items-center pt-8">
@@ -685,10 +715,9 @@ export default function TransitJourneyMap() {
 
           {/* Station Beacon Node */}
           <div className="relative mb-6 flex flex-col items-center">
-            <span className="px-3.5 py-1 rounded-full bg-emerald-950/40 border border-emerald-800/40 text-[10px] sm:text-xs font-mono tracking-widest text-emerald-400 uppercase mb-3 font-bold">
+            <span className="px-3.5 py-1 rounded-full bg-emerald-950/50 border border-emerald-700/50 text-xs font-mono tracking-widest text-emerald-300 uppercase mb-3 font-bold">
               {dict.hud.transit.wp05}
             </span>
-            {/* Anime.js Beacon Shape */}
             <div className="relative flex items-center justify-center">
               <AnimeShape type="beacon" size={48} color="#34d399" className="mb-1" />
             </div>
@@ -705,7 +734,7 @@ export default function TransitJourneyMap() {
               <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white mb-3">
                 {dict.contact.title}
               </h2>
-              <p className="text-sm sm:text-base text-gray-400 font-light max-w-xl mx-auto">
+              <p className="text-base sm:text-lg text-gray-200 font-normal max-w-xl mx-auto">
                 {dict.contact.desc}
               </p>
             </div>
@@ -713,20 +742,20 @@ export default function TransitJourneyMap() {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8">
               
               {/* Direct Mail Dispatch (7 cols) */}
-              <div className="md:col-span-7 relative bg-white/[0.02] border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.6)]">
+              <div className="md:col-span-7 relative bg-white/[0.03] border border-white/15 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)]">
                 <HudCorner />
 
-                <div className="flex items-center justify-between mb-4 pb-2 border-b border-white/10">
-                  <span className="text-[11px] font-mono text-cyan-400 uppercase tracking-widest">
-                    DISPATCH FORM // {dict.contact.quickMessage}
+                <div className="flex items-center justify-between mb-5 pb-2 border-b border-white/10">
+                  <span className="text-xs font-mono text-cyan-300 uppercase tracking-wider font-bold">
+                    {dict.contact.quickMessage}
                   </span>
-                  <span className="text-[10px] font-mono text-gray-400">DIRECT MAIL</span>
+                  <span className="text-xs font-mono text-gray-300">EMAIL FORM</span>
                 </div>
 
                 <form onSubmit={handleSendMessage} className="space-y-4">
                   <div>
-                    <label className="block text-[10px] sm:text-xs font-mono text-gray-400 uppercase mb-1">
-                      EMAIL_PENGIRIM:
+                    <label className="block text-xs sm:text-sm font-mono text-gray-200 uppercase font-semibold mb-1.5">
+                      EMAIL PENGIRIM:
                     </label>
                     <input
                       type="email"
@@ -734,12 +763,12 @@ export default function TransitJourneyMap() {
                       placeholder={dict.contact.emailPlaceholder}
                       value={senderEmail}
                       onChange={(e) => setSenderEmail(e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 focus:border-cyan-400/60 rounded-xl px-4 py-3 text-xs sm:text-sm text-white outline-none font-mono transition-colors"
+                      className="w-full bg-black/70 border border-white/15 focus:border-cyan-400 rounded-xl px-4 py-3 text-sm sm:text-base text-white placeholder-gray-400 outline-none font-mono transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] sm:text-xs font-mono text-gray-400 uppercase mb-1">
+                    <label className="block text-xs sm:text-sm font-mono text-gray-200 uppercase font-semibold mb-1.5">
                       PESAN:
                     </label>
                     <textarea
@@ -748,7 +777,7 @@ export default function TransitJourneyMap() {
                       placeholder={dict.contact.msgPlaceholder}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="w-full bg-black/60 border border-white/10 focus:border-cyan-400/60 rounded-xl px-4 py-3 text-xs sm:text-sm text-white outline-none font-sans font-light transition-colors resize-none"
+                      className="w-full bg-black/70 border border-white/15 focus:border-cyan-400 rounded-xl px-4 py-3 text-sm sm:text-base text-white placeholder-gray-400 outline-none font-sans transition-colors resize-none"
                     />
                   </div>
 
@@ -756,7 +785,7 @@ export default function TransitJourneyMap() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.96 }}
                     type="submit"
-                    className="w-full py-3 rounded-xl bg-white text-black hover:bg-cyan-300 font-bold text-xs sm:text-sm tracking-wider uppercase transition-colors shadow-[0_0_20px_rgba(255,255,255,0.25)]"
+                    className="w-full py-3.5 rounded-xl bg-white text-black hover:bg-cyan-300 font-bold text-sm tracking-wider uppercase transition-colors shadow-[0_0_20px_rgba(255,255,255,0.25)]"
                   >
                     {dict.contact.btnSend}
                   </motion.button>
@@ -769,20 +798,20 @@ export default function TransitJourneyMap() {
                 {/* 1-Click Copy Email */}
                 <div
                   onClick={copyToClipboard}
-                  className="relative cursor-pointer bg-white/[0.02] hover:bg-white/[0.04] border border-white/10 hover:border-cyan-400/40 rounded-2xl p-6 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.6)] transition-all group"
+                  className="relative cursor-pointer bg-white/[0.03] hover:bg-white/[0.06] border border-white/15 hover:border-cyan-400/50 rounded-2xl p-6 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all group"
                 >
                   <HudCorner />
 
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">
+                    <span className="text-xs font-mono text-gray-300 uppercase tracking-wider font-semibold">
                       {dict.contact.copyTitle}
                     </span>
-                    <span className="text-[11px] font-mono text-cyan-400 group-hover:translate-x-1 transition-transform">
+                    <span className="text-xs font-mono text-cyan-300 font-bold group-hover:translate-x-1 transition-transform">
                       📋 SALIN
                     </span>
                   </div>
 
-                  <div className="text-lg font-mono font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
+                  <div className="text-lg sm:text-xl font-mono font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
                     {myEmail}
                   </div>
 
@@ -792,7 +821,7 @@ export default function TransitJourneyMap() {
                         {dict.contact.copiedText}
                       </span>
                     ) : (
-                      <span className="text-gray-400 font-mono text-xs">
+                      <span className="text-gray-300 font-mono text-xs">
                         {dict.contact.copyText}
                       </span>
                     )}
@@ -805,35 +834,28 @@ export default function TransitJourneyMap() {
                     href={upworkLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative p-5 rounded-2xl bg-white/[0.02] hover:bg-[#14a800]/10 border border-white/10 hover:border-[#14a800]/50 transition-colors text-center group flex flex-col justify-center"
+                    className="relative p-5 rounded-2xl bg-white/[0.03] hover:bg-[#14a800]/15 border border-white/15 hover:border-[#14a800]/60 transition-colors text-center group flex flex-col justify-center"
                   >
-                    <div className="text-[10px] font-mono text-gray-400 uppercase mb-1">
+                    <div className="text-xs font-mono text-gray-300 uppercase mb-1 font-semibold">
                       {dict.contact.freelance}
                     </div>
-                    <div className="text-base font-bold text-white group-hover:text-[#14a800] transition-colors flex items-center justify-center gap-1">
+                    <div className="text-lg font-bold text-white group-hover:text-[#14a800] transition-colors flex items-center justify-center gap-1">
                       <span>Upwork</span>
                       <span className="text-xs">↗</span>
                     </div>
                   </a>
 
-                  <div className="relative p-5 rounded-2xl bg-white/[0.02] border border-white/10 text-center flex flex-col justify-center">
-                    <div className="text-[10px] font-mono text-gray-400 uppercase mb-1">
+                  <div className="relative p-5 rounded-2xl bg-white/[0.03] border border-white/15 text-center flex flex-col justify-center">
+                    <div className="text-xs font-mono text-gray-300 uppercase mb-1 font-semibold">
                       {dict.contact.location}
                     </div>
-                    <div className="text-base font-bold text-white">
+                    <div className="text-lg font-bold text-white">
                       Surabaya, ID
                     </div>
-                    <div className="text-[11px] text-emerald-400 font-mono mt-0.5">
+                    <div className="text-xs text-emerald-400 font-mono font-semibold mt-0.5">
                       ● Remote Ready
                     </div>
                   </div>
-                </div>
-
-                {/* Footer Dock Bay Notice */}
-                <div className="p-3 rounded-xl bg-black/60 border border-cyan-500/20 text-center">
-                  <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest">
-                    MISSION CONTROL DOCKED // READY FOR DISPATCH
-                  </span>
                 </div>
 
               </div>
