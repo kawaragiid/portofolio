@@ -93,8 +93,8 @@ export default function HeroShowreel() {
           </motion.a>
 
           <motion.a 
-            href="/cv.pdf"
-            download="Miftakhul_Ilmi_CV.pdf"
+            href="/CV_Miftakhul_Ilmi.pdf"
+            download="CV_Miftakhul_Ilmi.pdf"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
