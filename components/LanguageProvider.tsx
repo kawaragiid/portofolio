@@ -35,6 +35,15 @@ const dictionary = {
       layer2Projects: "MODUL 02 // DOKUMENTASI KARYA NYATA",
       layer2Timeline: "MODUL 03 // RIWAYAT KERJA & MENGAJAR",
       layer2Contact: "MODUL 04 // DISPATCH & HUBUNGI SAYA",
+      transit: {
+        wp00: "WP-00 // TITIK AWAL",
+        wp01: "WP-01 // EDUKASI CODING",
+        wp02: "WP-02 // LOKALISASI & VIDEO",
+        wp03: "WP-03 // JARINGAN & LAB",
+        wp04: "WP-04 // RIWAYAT PERJALANAN",
+        wp05: "WP-05 // DISPATCH & TERMINUS",
+        scrollPrompt: "GULIR MOUSE MENELUSURI RUTE PETA ↓",
+      },
     },
     expertise: {
       title: "Keahlian Utama.",
@@ -244,6 +253,15 @@ const dictionary = {
       layer2Projects: "MODULE 02 // VERIFIED WORKS ARCHIVE",
       layer2Timeline: "MODULE 03 // WORK & TEACHING HISTORY",
       layer2Contact: "MODULE 04 // MISSION DISPATCH & CONTACT",
+      transit: {
+        wp00: "WP-00 // ORIGIN",
+        wp01: "WP-01 // CODING EDUCATION",
+        wp02: "WP-02 // LOCALIZATION & VIDEO",
+        wp03: "WP-03 // NETWORK & LAB",
+        wp04: "WP-04 // CHRONOLOGY LOGS",
+        wp05: "WP-05 // DISPATCH & TERMINUS",
+        scrollPrompt: "SCROLL MOUSE TO TRAVERSE MAP ROUTE ↓",
+      },
     },
     expertise: {
       title: "Core Expertise.",
@@ -453,6 +471,15 @@ const dictionary = {
       layer2Projects: "モジュール 02 // 制作・実績アーカイブ",
       layer2Timeline: "モジュール 03 // 職歴 & 指導実績",
       layer2Contact: "モジュール 04 // お問い合わせ & 連絡先",
+      transit: {
+        wp00: "WP-00 // 出発点",
+        wp01: "WP-01 // プログラミング教育",
+        wp02: "WP-02 // 字幕翻訳 & 映像制作",
+        wp03: "WP-03 // ネットワーク & 機材",
+        wp04: "WP-04 // 経歴タイムライン",
+        wp05: "WP-05 // 連絡先 & 終着点",
+        scrollPrompt: "スクロールしてルートを移動 ↓",
+      },
     },
     expertise: {
       title: "主な専門知識。",
