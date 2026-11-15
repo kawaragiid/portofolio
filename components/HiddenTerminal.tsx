@@ -39,7 +39,19 @@ export default function HiddenTerminal() {
   }, [history, isOpen, isTyping]);
 
   useEffect(() => {
-    if (isOpen && !hasBooted) {
+    const handleToggle = () => setIsOpen((prev) => !prev);
+    const handleClose = () => setIsOpen(false);
+    window.addEventListener("toggle-terminal", handleToggle);
+    window.addEventListener("close-all-modals", handleClose);
+    return () => {
+      window.removeEventListener("toggle-terminal", handleToggle);
+      window.removeEventListener("close-all-modals", handleClose);
+    };
+  }, []);
+
+  const handleOpenTerminal = () => {
+    setIsOpen(true);
+    if (!hasBooted) {
       setHasBooted(true);
       setIsTyping(true);
       
@@ -53,7 +65,7 @@ export default function HiddenTerminal() {
         }
       }, 600); 
     }
-  }, [isOpen, hasBooted, t.boot]);
+  };
 
   const handleCommand = (cmd: string) => {
     if (isTyping || !cmd.trim()) return;
@@ -230,7 +242,7 @@ export default function HiddenTerminal() {
       >
         <motion.button
           type="button"
-          onClick={() => setIsOpen(true)}
+          onClick={handleOpenTerminal}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.85 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}

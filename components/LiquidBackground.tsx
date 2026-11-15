@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+interface NavigatorWithMemory extends Navigator {
+  deviceMemory?: number;
+}
+
 export default function LiquidBackground() {
   // null = sedang mengecek, "low" = HP/Spek rendah, "high" = PC/Spek dewa
   const [performanceTier, setPerformanceTier] = useState<"high" | "low" | null>(null);
@@ -12,8 +16,7 @@ export default function LiquidBackground() {
       // Deteksi jumlah core CPU (Minimal 8 core untuk efek penuh)
       const cores = navigator.hardwareConcurrency || 4;
       // Deteksi jumlah RAM (hanya jalan di browser berbasis Chromium/Android)
-      // Gunakan tipe 'any' untuk menghindari error TypeScript karena deviceMemory belum standar
-      const ram = (navigator as any).deviceMemory || 4; 
+      const ram = (navigator as NavigatorWithMemory).deviceMemory ?? 4; 
       
       // Deteksi layar HP. Semua layar di bawah 768px (termasuk S21+) otomatis masuk "low" 
       // agar baterai pengunjung tidak terkuras dan FPS tetap 60.

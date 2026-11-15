@@ -7,6 +7,7 @@ import CustomCursor from "@/components/CustomCursor";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://keigo.kawaragi.id"),
   title: "Ilmi | Video Editor & Multilingual Translator",
   description: "Portofolio profesional Ilmi. Spesialis pelokalan bahasa (Inggris & Jepang ke Indonesia), Video Editor, dan teknisi jaringan/hardware.",
   icons: {
@@ -39,6 +40,31 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Miftakhul Ilmi",
+  alternateName: "Ilmi Kawaragi",
+  url: "https://keigo.kawaragi.id",
+  jobTitle: "Video Editor & Multilingual Translator",
+  image: "https://keigo.kawaragi.id/og-banner-main.png",
+  sameAs: [
+    "https://www.upwork.com/freelancers/~01705729bdc457ff0f",
+    "https://github.com/kawaragiid",
+  ],
+  knowsAbout: [
+    "Video Editing",
+    "CapCut Pro",
+    "Aegisub",
+    "Subtitle Edit",
+    "Japanese to Indonesian Localization",
+    "English to Indonesian Translation",
+    "OpenWrt",
+    "PC Building",
+  ],
+  description: "Multilingual Translator (EN/JP to ID), Video Editor, and Network/PC Specialist.",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -46,6 +72,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className="scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${inter.className} bg-[#050505] text-white min-h-screen selection:bg-cyan-500/30`}>
         <LanguageProvider>
           <CustomCursor />

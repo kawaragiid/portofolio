@@ -36,6 +36,7 @@ export default function Navbar() {
     { href: "#expertise", label: dict.nav.expertise },
     { href: "#projects", label: dict.nav.projects },
     { href: "#experience", label: dict.nav.experience },
+    { href: "#testimonials", label: dict.nav.testimonials },
   ];
 
   return (

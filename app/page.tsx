@@ -7,51 +7,58 @@ import HeroShowreel from "../components/HeroShowreel";
 import HiddenTerminal from "../components/HiddenTerminal";
 import MusicWidget from "../components/MusicWidget";
 import LiquidBackground from "../components/LiquidBackground";
-import CustomCursor from "../components/CustomCursor";
 import InfiniteMarquee from "../components/InfiniteMarquee";
 import Contact from "../components/Contact";
-import { LanguageProvider } from "../components/LanguageProvider";
+import StatsCounter from "../components/StatsCounter";
+import InteractiveShowcase from "../components/InteractiveShowcase";
+import Testimonials from "../components/Testimonials";
+import KeyboardShortcuts from "../components/KeyboardShortcuts";
 
 export default function Home() {
   return (
-    <LanguageProvider>
-      <div className="min-h-screen bg-black text-gray-50 font-sans selection:bg-gray-700 selection:text-white relative">
-        {/* Efek Global */}
-        <CustomCursor />
-        <LiquidBackground />
-        
-        {/* Navigasi */}
-        <Navbar />
-        
-        {/* Bagian Atas */}
-        <HeroShowreel />
-        <InfiniteMarquee />
+    <div className="min-h-screen bg-black text-gray-50 font-sans selection:bg-cyan-500/30 selection:text-white relative">
+      {/* Efek Global */}
+      <LiquidBackground />
+      
+      {/* Navigasi */}
+      <Navbar />
+      
+      {/* Bagian Atas */}
+      <HeroShowreel />
+      <StatsCounter />
+      <InfiniteMarquee />
 
-        {/* Konten Utama (dibungkus relative z-10 agar di atas background animasi) */}
-        <div className="relative z-10 pb-24">
-          <FadeUp delay={0.2}>
-            <Expertise />
-          </FadeUp>
-          
-          <FadeUp delay={0.2}>
-            <Projects />
-          </FadeUp>
-          
-          <FadeUp delay={0.2}>
-            <Experience />
-          </FadeUp>
-          
-          {/* Bagian Contact Baru (menggantikan footer lama) */}
-          <FadeUp delay={0.2}>
-            <Contact />
-          </FadeUp>
-        </div>
+      {/* Konten Utama (dibungkus relative z-10 agar di atas background animasi) */}
+      <div className="relative z-10 pb-24">
+        <FadeUp delay={0.2}>
+          <Expertise />
+        </FadeUp>
+
+        <FadeUp delay={0.2}>
+          <InteractiveShowcase />
+        </FadeUp>
         
-        {/* Widget Melayang (selalu di atas/fixed) */}
-        <HiddenTerminal />
-        <MusicWidget />
+        <FadeUp delay={0.2}>
+          <Projects />
+        </FadeUp>
         
+        <FadeUp delay={0.2}>
+          <Experience />
+        </FadeUp>
+
+        <FadeUp delay={0.2}>
+          <Testimonials />
+        </FadeUp>
+        
+        <FadeUp delay={0.2}>
+          <Contact />
+        </FadeUp>
       </div>
-    </LanguageProvider>
+      
+      {/* Widget Melayang & Keyboard Shortcuts */}
+      <HiddenTerminal />
+      <MusicWidget />
+      <KeyboardShortcuts />
+    </div>
   );
 }

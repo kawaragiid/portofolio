@@ -1,33 +1,58 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+
+function subscribePointer(callback: () => void) {
+  const media = window.matchMedia("(pointer: coarse)");
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+
+function getPointerSnapshot() {
+  return window.matchMedia("(pointer: coarse)").matches;
+}
+
+function getServerPointerSnapshot() {
+  return true;
+}
 
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const isMobile = useSyncExternalStore(
+    subscribePointer,
+    getPointerSnapshot,
+    getServerPointerSnapshot
+  );
+
   const [isHovering, setIsHovering] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+
+  const springConfig = { stiffness: 200, damping: 20, mass: 0.2 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    // Matikan custom cursor jika diakses dari layar sentuh (HP)
-    if (window.matchMedia("(pointer: coarse)").matches) {
-      setIsMobile(true);
-      return;
-    }
+    if (isMobile) return;
 
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+      setIsVisible(true);
     };
 
-    // Deteksi apakah kursor sedang menyentuh elemen yang bisa diklik (tombol/link/kartu)
     const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+
       if (
-        target.tagName.toLowerCase() === 'button' || 
-        target.tagName.toLowerCase() === 'a' || 
-        target.closest('button') || 
-        target.closest('a') ||
-        target.closest('.cursor-pointer') // Mendeteksi kartu keahlianmu
+        target.tagName?.toLowerCase() === "button" ||
+        target.tagName?.toLowerCase() === "a" ||
+        target.closest("button") ||
+        target.closest("a") ||
+        target.closest(".cursor-pointer")
       ) {
         setIsHovering(true);
       } else {
@@ -35,39 +60,50 @@ export default function CustomCursor() {
       }
     };
 
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
+
     window.addEventListener("mousemove", updateMousePosition);
     window.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
       window.removeEventListener("mousemove", updateMousePosition);
       window.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, []);
+  }, [isMobile, mouseX, mouseY]);
 
-  if (isMobile) return null;
+  if (isMobile || !isVisible) return null;
 
   return (
     <>
-      {/* Lingkaran Luar (Liquid Glass yang mengikuti dengan gaya pegas) */}
-      {/* Kunci ada di z-[9999999] agar selalu berada di atas Portal Modal */}
+      {/* Outer Spring Follower */}
       <motion.div
         className="fixed top-0 left-0 w-8 h-8 rounded-full border border-cyan-400/50 bg-cyan-400/10 backdrop-blur-sm pointer-events-none z-[9999999]"
-        animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isHovering ? 1.5 : 1, // Membesar saat menyentuh tombol
+        style={{
+          x: smoothX,
+          y: smoothY,
+          translateX: "-50%",
+          translateY: "-50%",
         }}
-        transition={{ type: "spring", stiffness: 200, damping: 20, mass: 0.2 }}
+        animate={{
+          scale: isHovering ? 1.5 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
       />
-      
-      {/* Titik Inti (Mengikuti pergerakan mouse secara instan/presisi) */}
-      <div 
+
+      {/* Inner Dot */}
+      <motion.div
         className="fixed top-0 left-0 w-2 h-2 rounded-full bg-cyan-400 pointer-events-none z-[9999999]"
         style={{
-          transform: `translate(${mousePosition.x - 4}px, ${mousePosition.y - 4}px)`,
-          // Efek menyala saat klik
+          x: mouseX,
+          y: mouseY,
+          translateX: "-50%",
+          translateY: "-50%",
           boxShadow: isHovering ? "0 0 10px 2px rgba(34, 211, 238, 0.8)" : "none",
-          transition: "box-shadow 0.2s ease"
         }}
       />
     </>

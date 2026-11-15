@@ -22,6 +22,17 @@ export default function MusicWidget() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleToggle = () => setIsOpen((prev) => !prev);
+    const handleClose = () => setIsOpen(false);
+    window.addEventListener("toggle-music", handleToggle);
+    window.addEventListener("close-all-modals", handleClose);
+    return () => {
+      window.removeEventListener("toggle-music", handleToggle);
+      window.removeEventListener("close-all-modals", handleClose);
+    };
+  }, []);
+
   return (
     <>
       <AnimatePresence>

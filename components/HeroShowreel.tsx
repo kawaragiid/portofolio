@@ -84,8 +84,21 @@ export default function HeroShowreel() {
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             className="bg-white/90 backdrop-blur-md border border-white text-black px-8 py-3 rounded-full font-semibold shadow-[0_4px_15px_rgba(255,255,255,0.2)]"
           >
-            {dict.hero.btnWork} {/* <--- Gunakan dictionary */}
+            {dict.hero.btnWork}
           </motion.a>
+
+          <motion.a 
+            href="/cv.pdf"
+            download="Miftakhul_Ilmi_CV.pdf"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="bg-cyan-500/10 hover:bg-cyan-500/20 backdrop-blur-xl border border-cyan-400/40 text-cyan-300 px-8 py-3 rounded-full font-semibold shadow-[0_0_20px_rgba(34,211,238,0.2)] flex items-center justify-center gap-2"
+          >
+            <span>↓</span>
+            <span>{dict.hero.btnResume}</span>
+          </motion.a>
+
           <motion.a 
             href="#contact" 
             whileHover={{ scale: 1.05 }}
@@ -93,7 +106,7 @@ export default function HeroShowreel() {
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             className="bg-white/[0.05] backdrop-blur-xl border border-white/20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] text-white px-8 py-3 rounded-full font-semibold"
           >
-            {dict.hero.btnContact} {/* <--- Gunakan dictionary */}
+            {dict.hero.btnContact}
           </motion.a>
         </motion.div>
 

@@ -37,8 +37,10 @@ body {
   100% { transform: translate(0px, 0px) scale(1); }
 }
 
-/* JURUS SAPU JAGAT: Matikan semua kursor bawaan */
-html, body, *, *::before, *::after, a, button, input, [role="button"], .cursor-pointer {
-  cursor: none !important;
+/* Matikan cursor bawaan hanya pada desktop yang memiliki mouse/fine pointer */
+@media (hover: hover) and (pointer: fine) {
+  html, body, *, *::before, *::after, a, button, input, [role="button"], .cursor-pointer {
+    cursor: none !important;
+  }
 }
 

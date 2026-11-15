@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "./LanguageProvider";
@@ -10,11 +10,11 @@ export default function Expertise() {
   const t = dict.expertise;
   
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   const selectedItem = t.items.find(item => item.id === selectedId);
 
@@ -69,7 +69,7 @@ export default function Expertise() {
       </div>
 
       {/* PORTAL AJAIB UNTUK FULL-SCREEN MODAL */}
-      {mounted && createPortal(
+      {isClient && createPortal(
         <AnimatePresence>
           {selectedId && selectedItem && (
             <div className="fixed inset-0 z-[999999] flex items-center justify-center px-4 md:px-10 py-6 md:py-10 pointer-events-auto">

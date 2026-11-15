@@ -1,17 +1,32 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+
+function subscribePointer(callback: () => void) {
+  const media = window.matchMedia("(pointer: coarse)");
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+
+function getPointerSnapshot() {
+  return window.matchMedia("(pointer: coarse)").matches;
+}
+
+function getServerPointerSnapshot() {
+  return true;
+}
 
 export default function TiltCard({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(true); // Default anggap mobile dulu biar aman
 
-  // Cek secara presisi apakah pakai layar sentuh (HP) atau Mouse (Desktop)
-  useEffect(() => {
-    setIsMobile(window.matchMedia("(pointer: coarse)").matches);
-  }, []);
+  // Cek secara presisi apakah layar sentuh (HP) atau Mouse (Desktop)
+  const isMobile = useSyncExternalStore(
+    subscribePointer,
+    getPointerSnapshot,
+    getServerPointerSnapshot
+  );
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);

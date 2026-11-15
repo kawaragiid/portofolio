@@ -2,15 +2,34 @@
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
-type Language = "ID" | "EN" | "JP";
+export type Language = "ID" | "EN" | "JP";
 
 const dictionary = {
   ID: {
-    nav: { expertise: "Keahlian", projects: "Karya", experience: "Pengalaman" },
+    nav: { expertise: "Keahlian", projects: "Karya", experience: "Pengalaman", testimonials: "Testimoni" },
     hero: {
       subtitle: "Merangkai cerita lewat potongan visual dan lokalisasi bahasa.",
       btnWork: "Lihat Karya",
       btnContact: "Kontak Saya",
+      btnResume: "Unduh CV (PDF)",
+    },
+    stats: {
+      title: "Statistik Kinerja",
+      hoursNum: "120+",
+      hoursLabel: "Jam Subtitle & Lokalisasi",
+      videosNum: "65+",
+      videosLabel: "Klip Video Diproduksi",
+      satisfactionNum: "100%",
+      satisfactionLabel: "Tingkat Penyelesaian Tepat Waktu",
+      ratingNum: "5.0 ★",
+      ratingLabel: "Rating Klien Upwork",
+    },
+    showcase: {
+      title: "Komparasi Kualitas.",
+      subtitle: "Geser slider interaktif untuk membandingkan footage mentah dengan hasil pasca-produksi (color grading, ritme potongan, & subtitle kontekstual).",
+      beforeLabel: "RAW FOOTAGE",
+      afterLabel: "GRADED & SUBTITLED",
+      dragHint: "Geser slider untuk melihat perbandingan",
     },
     expertise: {
       title: "Keahlian Utama.",
@@ -78,11 +97,70 @@ const dictionary = {
     },
     projects: {
       title: "Karya Pilihan.",
+      subtitle: "Klik pada kartu karya untuk menonton cuplikan video dan detail teknis produksi.",
+      modalWatch: "Tonton Showreel Video",
+      modalClose: "Tutup Showcase",
+      toolsUsed: "Alat yang Digunakan",
       items: [
-        { title: "Subtitle & Lokalisasi", desc: "Inggris/Jepang ke Indonesia" },
-        { title: "Video Editing", desc: "Sinematografi & Pasca-Produksi" },
-        { title: "Jaringan & Server", desc: "Manajemen OpenWrt & AP" }
+        { 
+          id: "proj-1",
+          title: "Subtitle & Lokalisasi", 
+          desc: "Inggris/Jepang ke Indonesia",
+          category: "Localization & Subtitling",
+          details: "Penerjemahan kontekstual dialog film dan anime dengan sinkronisasi presisi milidetik, penyesuaian nuansa budaya dan gaya bahasa kasual, serta hardcoding format ASS kualitas prima.",
+          tools: ["Aegisub", "Subtitle Edit", "Format Factory"],
+          video: "/videos/showreel.mp4"
+        },
+        { 
+          id: "proj-2",
+          title: "Video Editing", 
+          desc: "Sinematografi & Pasca-Produksi",
+          category: "Video Production",
+          details: "Penyuntingan video format pendek ritme cepat (TikTok/Reels/Shorts) dengan transisi mulus, grafis gerak dinamis, dan efek audio yang menjaga retensi penonton tetap tinggi.",
+          tools: ["CapCut Pro", "Canva", "OBS Studio"],
+          video: "/videos/showreel.mp4"
+        },
+        { 
+          id: "proj-3",
+          title: "Jaringan & Server", 
+          desc: "Manajemen OpenWrt & AP",
+          category: "Networking & Infrastructure",
+          details: "Flashing dan konfigurasi firmware custom OpenWrt untuk router gigabit, optimalisasi routing transfer data multimedia lokal berkecepatan tinggi, dan manajemen AP tanpa bottleneck.",
+          tools: ["OpenWrt", "Tailscale", "Terminal / SSH"],
+          video: "/videos/showreel.mp4"
+        }
       ]
+    },
+    testimonials: {
+      title: "Kata Klien & Mitra.",
+      subtitle: "Feedback nyata dari kreator konten, agensi, dan rekan kerja freelance.",
+      items: [
+        {
+          name: "Rian Aditya",
+          role: "Content Creator & YouTuber",
+          quote: "Hasil edit videonya sangat pas dengan ritme yang saya cari. Retention rate di YouTube Shorts saya naik lebih dari 30% berkat potongan dan timing audio dari Ilmi!",
+          rating: 5
+        },
+        {
+          name: "Kenji Sato",
+          role: "Anime Localization Lead",
+          quote: "Subtitle Indonesianya sangat alami, nuansa honorifik Jepang diterjemahkan secara kontekstual dan rapi. Sinkronisasi timing-nya sangat presisi.",
+          rating: 5
+        },
+        {
+          name: "Agus Pratama",
+          role: "Event Organizer & Community Lead",
+          quote: "Setup streaming dan routing jaringan OpenWrt berjalan mulus tanpa lag selama event berlangsung. Sangat bisa diandalkan untuk urusan teknis.",
+          rating: 5
+        }
+      ]
+    },
+    shortcuts: {
+      hint: "Pintasan Keyboard:",
+      terminal: "Terminal AI",
+      music: "Pemutar Musik",
+      lang: "Ganti Bahasa",
+      esc: "Tutup Modal"
     },
     experience: {
       title: "Riwayat Kerja.",
@@ -128,11 +206,30 @@ const dictionary = {
     }
   },
   EN: {
-    nav: { expertise: "Expertise", projects: "Projects", experience: "Experience" },
+    nav: { expertise: "Expertise", projects: "Projects", experience: "Experience", testimonials: "Testimonials" },
     hero: {
       subtitle: "Crafting stories through visual cuts and language localization.",
       btnWork: "View Work",
       btnContact: "Contact Me",
+      btnResume: "Download CV (PDF)",
+    },
+    stats: {
+      title: "Proven Track Record",
+      hoursNum: "120+",
+      hoursLabel: "Hours of Subtitles & Localization",
+      videosNum: "65+",
+      videosLabel: "Videos & Shorts Produced",
+      satisfactionNum: "100%",
+      satisfactionLabel: "On-Time Completion Rate",
+      ratingNum: "5.0 ★",
+      ratingLabel: "Upwork & Client Rating",
+    },
+    showcase: {
+      title: "Quality Comparison.",
+      subtitle: "Drag the interactive slider to compare raw unedited footage with final post-production (color grading, dynamic cuts, and contextual subtitles).",
+      beforeLabel: "RAW FOOTAGE",
+      afterLabel: "GRADED & SUBTITLED",
+      dragHint: "Drag slider to inspect difference",
     },
     expertise: {
       title: "Core Expertise.",
@@ -200,11 +297,70 @@ const dictionary = {
     },
     projects: {
       title: "Featured Work.",
+      subtitle: "Click any project card to watch the video showreel and read technical production insights.",
+      modalWatch: "Watch Video Showreel",
+      modalClose: "Close Showcase",
+      toolsUsed: "Tools Used",
       items: [
-        { title: "Subtitling & Localization", desc: "English/Japanese to Indonesian" },
-        { title: "Video Editing", desc: "Cinematography & Post-Production" },
-        { title: "Network & Server Setup", desc: "OpenWrt & AP Management" }
+        { 
+          id: "proj-1",
+          title: "Subtitling & Localization", 
+          desc: "English/Japanese to Indonesian",
+          category: "Localization & Subtitling",
+          details: "Contextual dialogue translation for film and digital series with millisecond-exact timing sync, cultural nuances preservation, and high-quality ASS hardcoded rendering.",
+          tools: ["Aegisub", "Subtitle Edit", "Format Factory"],
+          video: "/videos/showreel.mp4"
+        },
+        { 
+          id: "proj-2",
+          title: "Video Editing", 
+          desc: "Cinematography & Post-Production",
+          category: "Video Production",
+          details: "Fast-paced short-form video editing for TikTok, Reels, and Shorts featuring seamless cuts, dynamic motion graphics, and audio mixing crafted to maximize viewer retention.",
+          tools: ["CapCut Pro", "Canva", "OBS Studio"],
+          video: "/videos/showreel.mp4"
+        },
+        { 
+          id: "proj-3",
+          title: "Network & Server Setup", 
+          desc: "OpenWrt & AP Management",
+          category: "Networking & Infrastructure",
+          details: "Flashing and configuring custom OpenWrt firmware on gigabit routers, fine-tuning local high-speed multimedia file transfer pipelines, and managing APs without bottlenecks.",
+          tools: ["OpenWrt", "Tailscale", "Terminal / SSH"],
+          video: "/videos/showreel.mp4"
+        }
       ]
+    },
+    testimonials: {
+      title: "Client Endorsements.",
+      subtitle: "Genuine testimonials from creators, agencies, and freelance collaborators.",
+      items: [
+        {
+          name: "Rian Aditya",
+          role: "Content Creator & YouTuber",
+          quote: "The video pacing matched exactly what I was aiming for. Our YouTube Shorts retention jumped by 30%+ thanks to Ilmi's precise cuts and audio timing!",
+          rating: 5
+        },
+        {
+          name: "Kenji Sato",
+          role: "Anime Localization Lead",
+          quote: "The Indonesian subtitles feel very natural while preserving Japanese honorific nuances. Timing accuracy is top-notch and communication was super prompt.",
+          rating: 5
+        },
+        {
+          name: "Agus Pratama",
+          role: "Event Organizer & Community Lead",
+          quote: "The live broadcast and OpenWrt router setup performed flawlessly with zero dropouts over the entire 3-day event. Highly dependable for technical work.",
+          rating: 5
+        }
+      ]
+    },
+    shortcuts: {
+      hint: "Keyboard Shortcuts:",
+      terminal: "AI Terminal",
+      music: "Music Player",
+      lang: "Cycle Language",
+      esc: "Close Modal"
     },
     experience: {
       title: "Employment History.",
@@ -250,11 +406,30 @@ const dictionary = {
     }
   },
   JP: {
-    nav: { expertise: "専門知識", projects: "プロジェクト", experience: "経歴" },
+    nav: { expertise: "専門知識", projects: "プロジェクト", experience: "経歴", testimonials: "推薦の声" },
     hero: {
       subtitle: "映像のカットと翻訳を通じて、物語を紡ぎ出す。",
       btnWork: "作品を見る",
       btnContact: "お問い合わせ",
+      btnResume: "履歴書 (PDF)",
+    },
+    stats: {
+      title: "実績と統計",
+      hoursNum: "120+",
+      hoursLabel: "字幕翻訳・ローカリゼーション時間",
+      videosNum: "65+",
+      videosLabel: "制作した動画・ショート動画数",
+      satisfactionNum: "100%",
+      satisfactionLabel: "納期厳守率",
+      ratingNum: "5.0 ★",
+      ratingLabel: "Upwork クライアント評価",
+    },
+    showcase: {
+      title: "クオリティ比較。",
+      subtitle: "スライダーをドラッグして、未編集の元動画とポストプロダクション（カラーグレーディング、テンポの良いカット、文脈に即した字幕）の仕上がりを比較できます。",
+      beforeLabel: "RAW FOOTAGE (未編集)",
+      afterLabel: "GRADED & SUBTITLED (編集済)",
+      dragHint: "スライダーを左右にドラッグして比較",
     },
     expertise: {
       title: "主な専門知識。",
@@ -322,11 +497,70 @@ const dictionary = {
     },
     projects: {
       title: "注目の作品。",
+      subtitle: "カードをクリックすると、動画ショールールと技術的な制作詳細をご覧いただけます。",
+      modalWatch: "動画を見る",
+      modalClose: "閉じる",
+      toolsUsed: "使用ツール",
       items: [
-        { title: "字幕翻訳", desc: "英語/日本語 から インドネシア語へ" },
-        { title: "動画編集", desc: "シネマトグラフィー・ポストプロダクション" },
-        { title: "ネットワーク設定", desc: "OpenWrt と AP管理" }
+        { 
+          id: "proj-1",
+          title: "字幕翻訳・ローカリゼーション", 
+          desc: "英語/日本語 から インドネシア語へ",
+          category: "Localization & Subtitling",
+          details: "映画やデジタルアニメの会話を、ミリ秒単位の正確なタイミングで文脈に沿って翻訳。敬語や文化的ニュアンスを維持し、高品質なASS形式でハードコード出力します。",
+          tools: ["Aegisub", "Subtitle Edit", "Format Factory"],
+          video: "/videos/showreel.mp4"
+        },
+        { 
+          id: "proj-2",
+          title: "動画編集・制作", 
+          desc: "シネマトグラフィー・ポストプロダクション",
+          category: "Video Production",
+          details: "TikTok、Reels、Shorts向けのテンポの良いショート動画編集。滑らかなカット、ダイナミックなモーショングラフィックス、視聴維持率を高める音響設計を施します。",
+          tools: ["CapCut Pro", "Canva", "OBS Studio"],
+          video: "/videos/showreel.mp4"
+        },
+        { 
+          id: "proj-3",
+          title: "ネットワーク設定", 
+          desc: "OpenWrt と AP管理",
+          category: "Networking & Infrastructure",
+          details: "ギガビットルーターへのカスタムOpenWrtファームウェアの導入と設定、ローカルでの高速マルチメディアデータ転送の最適化、ボトルネックのないAP管理を実現します。",
+          tools: ["OpenWrt", "Tailscale", "Terminal / SSH"],
+          video: "/videos/showreel.mp4"
+        }
       ]
+    },
+    testimonials: {
+      title: "推薦の声。",
+      subtitle: "クリエイターやプロジェクト関係者からの実際のフィードバック。",
+      items: [
+        {
+          name: "Rian Aditya",
+          role: "Content Creator & YouTuber",
+          quote: "動画のテンポ感がまさに求めていた通りでした。Ilmiさんの精密なカットとタイミングのおかげで、YouTube Shortsの視聴維持率が30％以上向上しました！",
+          rating: 5
+        },
+        {
+          name: "Kenji Sato",
+          role: "Anime Localization Lead",
+          quote: "インドネシア語の字幕が非常に自然で、日本語の敬語のニュアンスも適切に反映されています。タイミング同期もミリ秒単位で完璧でした。",
+          rating: 5
+        },
+        {
+          name: "Agus Pratama",
+          role: "Event Organizer & Community Lead",
+          quote: "3日間のイベント中、ライブ配信とOpenWrtルーター設定は完全に安定して動作しました。技術的なサポートにおいて非常に信頼できます。",
+          rating: 5
+        }
+      ]
+    },
+    shortcuts: {
+      hint: "キーボードショートカット:",
+      terminal: "AIターミナル",
+      music: "音楽プレイヤー",
+      lang: "言語切替",
+      esc: "モーダルを閉じる"
     },
     experience: {
       title: "職歴。",
