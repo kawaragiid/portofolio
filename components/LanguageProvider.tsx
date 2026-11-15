@@ -116,7 +116,7 @@ const dictionary = {
           details: "Penyuntingan video dokumentasi acara dan konten pendek menggunakan CapCut Pro. Mencakup pemotongan klip sesuai ritme musik, penyesuaian warna dasar, serta penggabungan aset grafis.",
           tools: ["CapCut Pro", "Canva", "OBS Studio"],
           image: "/images/project-2.png",
-          video: "/videos/showreel.mp4"
+          video: ""
         },
         { 
           id: "proj-3",
@@ -302,7 +302,7 @@ const dictionary = {
           details: "Editing event documentation and short-form clips using CapCut Pro. Includes music-synced cuts, basic color correction, and clean graphic overlays.",
           tools: ["CapCut Pro", "Canva", "OBS Studio"],
           image: "/images/project-2.png",
-          video: "/videos/showreel.mp4"
+          video: ""
         },
         { 
           id: "proj-3",
@@ -488,7 +488,7 @@ const dictionary = {
           details: "CapCut Proを用いたイベント記録映像およびショート動画の編集。音楽のリズムに合わせたカット割り、基本的な色補正、グラフィック素材の合成を担当しました。",
           tools: ["CapCut Pro", "Canva", "OBS Studio"],
           image: "/images/project-2.png",
-          video: "/videos/showreel.mp4"
+          video: ""
         },
         { 
           id: "proj-3",

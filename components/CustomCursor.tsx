@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { usePerformance } from "./PerformanceProvider";
 
 function subscribePointer(callback: () => void) {
   const media = window.matchMedia("(pointer: coarse)");
@@ -18,11 +19,14 @@ function getServerPointerSnapshot() {
 }
 
 export default function CustomCursor() {
+  const { tier } = usePerformance();
   const isMobile = useSyncExternalStore(
     subscribePointer,
     getPointerSnapshot,
     getServerPointerSnapshot
   );
+
+  const isDisabled = isMobile || tier === "low";
 
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -35,7 +39,7 @@ export default function CustomCursor() {
   const smoothY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isDisabled) return;
 
     const updateMousePosition = (e: MouseEvent) => {
       mouseX.set(e.clientX);
@@ -74,9 +78,9 @@ export default function CustomCursor() {
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, [isMobile, mouseX, mouseY]);
+  }, [isDisabled, mouseX, mouseY]);
 
-  if (isMobile || !isVisible) return null;
+  if (isDisabled || !isVisible) return null;
 
   return (
     <>

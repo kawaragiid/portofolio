@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google"; // Atau font bawaanmu
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageProvider";
+import { PerformanceProvider } from "@/components/PerformanceProvider";
 import CustomCursor from "@/components/CustomCursor";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -81,10 +82,12 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} bg-[#050505] text-white min-h-screen selection:bg-cyan-500/30`}>
-        <LanguageProvider>
-          <CustomCursor />
-          {children}
-        </LanguageProvider>
+        <PerformanceProvider>
+          <LanguageProvider>
+            <CustomCursor />
+            {children}
+          </LanguageProvider>
+        </PerformanceProvider>
       </body>
     </html>
   );

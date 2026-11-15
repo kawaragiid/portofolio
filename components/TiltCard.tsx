@@ -2,6 +2,7 @@
 
 import { useRef, useState, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { usePerformance } from "./PerformanceProvider";
 
 function subscribePointer(callback: () => void) {
   const media = window.matchMedia("(pointer: coarse)");
@@ -20,13 +21,15 @@ function getServerPointerSnapshot() {
 export default function TiltCard({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const { tier } = usePerformance();
 
-  // Cek secara presisi apakah layar sentuh (HP) atau Mouse (Desktop)
-  const isMobile = useSyncExternalStore(
+  // Cek secara presisi apakah layar sentuh (HP) atau spek rendah
+  const isTouch = useSyncExternalStore(
     subscribePointer,
     getPointerSnapshot,
     getServerPointerSnapshot
   );
+  const isMobile = isTouch || tier === "low";
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
