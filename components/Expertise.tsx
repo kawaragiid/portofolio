@@ -28,6 +28,12 @@ export default function Expertise() {
     return () => { document.body.style.overflow = "auto"; };
   }, [selectedId]);
 
+  useEffect(() => {
+    const handleClose = () => setSelectedId(null);
+    window.addEventListener("close-all-modals", handleClose);
+    return () => window.removeEventListener("close-all-modals", handleClose);
+  }, []);
+
   return (
     <section id="expertise" className="py-24 relative z-10">
       <div className="max-w-5xl mx-auto px-6">
@@ -37,7 +43,7 @@ export default function Expertise() {
         
         {/* GRID KARTU KEAHLIAN */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {t.items.map((item) => (
+          {t.items.map((item, idx) => (
             <motion.div
               layoutId={`card-${item.id}`}
               key={item.id}
@@ -46,7 +52,9 @@ export default function Expertise() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="group bg-white/[0.02] hover:bg-white/[0.05] backdrop-blur-md border border-white/10 hover:border-white/20 p-8 rounded-3xl cursor-pointer shadow-lg relative overflow-hidden"
+              className={`group bg-white/[0.02] hover:bg-white/[0.05] backdrop-blur-md border border-white/10 hover:border-white/20 p-8 rounded-3xl cursor-pointer shadow-lg relative overflow-hidden ${
+                idx === t.items.length - 1 && t.items.length % 2 !== 0 ? "md:col-span-2" : ""
+              }`}
             >
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               

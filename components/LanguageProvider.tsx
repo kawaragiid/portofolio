@@ -6,30 +6,12 @@ export type Language = "ID" | "EN" | "JP";
 
 const dictionary = {
   ID: {
-    nav: { expertise: "Keahlian", projects: "Karya", experience: "Pengalaman", testimonials: "Testimoni" },
+    nav: { expertise: "Keahlian", projects: "Karya", experience: "Pengalaman" },
     hero: {
-      subtitle: "Merangkai cerita lewat potongan visual dan lokalisasi bahasa.",
+      subtitle: "Merangkai cerita lewat potongan visual, lokalisasi bahasa, dan edukasi coding.",
       btnWork: "Lihat Karya",
       btnContact: "Kontak Saya",
       btnResume: "Unduh CV (PDF)",
-    },
-    stats: {
-      title: "Statistik Kinerja",
-      hoursNum: "120+",
-      hoursLabel: "Jam Subtitle & Lokalisasi",
-      videosNum: "65+",
-      videosLabel: "Klip Video Diproduksi",
-      satisfactionNum: "100%",
-      satisfactionLabel: "Tingkat Penyelesaian Tepat Waktu",
-      ratingNum: "5.0 ★",
-      ratingLabel: "Rating Klien Upwork",
-    },
-    showcase: {
-      title: "Komparasi Kualitas.",
-      subtitle: "Geser slider interaktif untuk membandingkan footage mentah dengan hasil pasca-produksi (color grading, ritme potongan, & subtitle kontekstual).",
-      beforeLabel: "RAW FOOTAGE",
-      afterLabel: "GRADED & SUBTITLED",
-      dragHint: "Geser slider untuk melihat perbandingan",
     },
     expertise: {
       title: "Keahlian Utama.",
@@ -46,9 +28,9 @@ const dictionary = {
           tools: ["Subtitle Edit", "Aegisub", "VS Code", "Format Factory", "Notepad++"],
           capabilities: [
             "Terjemahan Kontekstual (EN/JP ke ID)",
-            "Sinkronisasi Waktu (Timing & Tying) presisi milidetik",
+            "Sinkronisasi Waktu (Timing) presisi",
             "Quality Control tata bahasa dan ejaan",
-            "Hardcoding, Encoding, & Rendering Subtitle ke Video"
+            "Hardcoding & Rendering Subtitle ke Video"
           ]
         },
         { 
@@ -56,7 +38,7 @@ const dictionary = {
           icon: "🎬", 
           title: "Produksi & Editing Video", 
           desc: "Produksi konten video pendek dan pengaturan dasar siaran langsung.",
-          fullDesc: "Terbiasa meracik visual untuk platform modern (YouTube Shorts, Instagram Reels, TikTok). Sebagai video editor yang masih terus belajar, saya fokus memahami ritme retensi penonton. Selain pasca-produksi, saya juga familier dengan pengaturan teknis siaran langsung (live streaming) skala komunitas.",
+          fullDesc: "Terbiasa meracik visual untuk platform modern (YouTube Shorts, Instagram Reels, TikTok) maupun dokumentasi acara. Selain pasca-produksi, saya juga familier dengan pengaturan teknis siaran langsung (live streaming) skala komunitas.",
           tools: ["CapCut Pro", "Canva", "OBS Studio", "TikTok Live Studio"],
           capabilities: [
             "Video Editing Ritme Cepat (Short-form Content)",
@@ -66,16 +48,30 @@ const dictionary = {
           ]
         },
         { 
+          id: "coding-instructor",
+          icon: "💻", 
+          title: "Pengajar Ekskul Coding", 
+          desc: "Mengajar dasar pemrograman web dan logika coding untuk siswa SMP.",
+          fullDesc: "Membimbing siswa SMP Pancasila dalam memahami logika pemrograman dari nol secara praktis dan menyenangkan. Saya menyusun modul ajar interaktif berbasis HTML, CSS, JavaScript dasar, serta pengenalan logika Python melalui mini-proyek seperti halaman web profil, chatbot sederhana, dan simulasi kontrol robot.",
+          tools: ["HTML & CSS", "JavaScript Dasar", "Python", "VS Code", "Modul Web Interaktif"],
+          capabilities: [
+            "Penyusunan Kurikulum & Program Kerja Ekstrakurikuler",
+            "Pembuatan Lembar Materi & Cheat Sheet Siswa",
+            "Pendampingan Praktik Live Pemrograman Web & Python",
+            "Evaluasi & Gelar Karya Proyek Mini Siswa"
+          ]
+        },
+        { 
           id: "networking",
           icon: "🌐", 
           title: "Teknik Jaringan", 
           desc: "Konfigurasi router, flashing OpenWrt, dan manajemen Access Point.",
-          fullDesc: "Mampu mengonfigurasi jaringan lokal untuk kebutuhan transfer data multimedia. Berspesialisasi dalam pemanfaatan firmware custom (OpenWrt) pada router untuk mengoptimalkan bandwidth dan stabilitas koneksi antar perangkat dalam skala rumahan atau komunitas.",
+          fullDesc: "Mampu mengonfigurasi jaringan lokal untuk kebutuhan transfer data multimedia maupun penggunaan harian. Terbiasa memanfaatkan firmware custom (OpenWrt) pada router untuk menjaga kestabilan koneksi antar perangkat.",
           tools: ["OpenWrt", "Tailscale", "Putty/SSH", "WinSCP", "Terminal"],
           capabilities: [
             "Flashing & Konfigurasi Custom Firmware (OpenWrt)",
             "Manajemen Access Point (AP) & Local Area Network",
-            "Setup P2P File Transfer untuk pengiriman data lokal",
+            "Setup File Transfer untuk pengiriman data lokal",
             "Troubleshooting Jaringan Sederhana"
           ]
         },
@@ -83,8 +79,8 @@ const dictionary = {
           id: "hardware",
           icon: "⚙️", 
           title: "Perakitan PC & Hardware", 
-          desc: "Merakit, mengoptimalkan, dan memelihara PC untuk kebutuhan rendering.",
-          fullDesc: "Memiliki pemahaman praktis mengenai perangkat keras PC. Saya bisa merakit sistem dari nol (terutama ekosistem AMD Ryzen), serta memastikan setiap komponen berjalan efisien. Saya juga terus belajar dalam menjaga suhu perangkat dan stabilitas untuk kebutuhan harian maupun editing video.",
+          desc: "Merakit, mengoptimalkan, dan memelihara PC untuk kebutuhan kerja & editing.",
+          fullDesc: "Memiliki pemahaman praktis mengenai perangkat keras PC. Saya bisa merakit sistem dari nol (terutama ekosistem AMD Ryzen), melakukan instalasi sistem, serta memelihara kestabilan dan suhu perangkat untuk kebutuhan harian maupun editing video.",
           tools: ["BIOS/UEFI", "HWMonitor", "CPU-Z", "Windows OS", "Thermal Tools"],
           capabilities: [
             "Pemilihan & Perakitan Komponen PC/Workstation",
@@ -97,61 +93,50 @@ const dictionary = {
     },
     projects: {
       title: "Karya Pilihan.",
-      subtitle: "Klik pada kartu karya untuk menonton cuplikan video dan detail teknis produksi.",
-      modalWatch: "Tonton Showreel Video",
-      modalClose: "Tutup Showcase",
+      subtitle: "Klik pada kartu untuk melihat detail pekerjaan dan dokumentasi nyatanya.",
+      modalClose: "Tutup Detail",
       toolsUsed: "Alat yang Digunakan",
+      summaryTitle: "Ringkasan Pengerjaan",
       items: [
         { 
           id: "proj-1",
           title: "Subtitle & Lokalisasi", 
           desc: "Inggris/Jepang ke Indonesia",
           category: "Localization & Subtitling",
-          details: "Penerjemahan kontekstual dialog film dan anime dengan sinkronisasi presisi milidetik, penyesuaian nuansa budaya dan gaya bahasa kasual, serta hardcoding format ASS kualitas prima.",
-          tools: ["Aegisub", "Subtitle Edit", "Format Factory"],
-          video: "/videos/showreel.mp4"
+          details: "Penerjemahan dialog serial/film (contoh: Piece of Safe JP → ID) menggunakan Subtitle Edit. Fokus pada ketepatan timing dialog, penyesuaian kalimat agar alami di telinga penonton Indonesia, dan keterbacaan teks.",
+          tools: ["Subtitle Edit", "Aegisub", "Format Factory"],
+          image: "/images/project-1.png",
+          video: ""
         },
         { 
           id: "proj-2",
           title: "Video Editing", 
-          desc: "Sinematografi & Pasca-Produksi",
+          desc: "Dokumentasi & Pasca-Produksi",
           category: "Video Production",
-          details: "Penyuntingan video format pendek ritme cepat (TikTok/Reels/Shorts) dengan transisi mulus, grafis gerak dinamis, dan efek audio yang menjaga retensi penonton tetap tinggi.",
+          details: "Penyuntingan video dokumentasi acara dan konten pendek menggunakan CapCut Pro. Mencakup pemotongan klip sesuai ritme musik, penyesuaian warna dasar, serta penggabungan aset grafis.",
           tools: ["CapCut Pro", "Canva", "OBS Studio"],
+          image: "/images/project-2.png",
           video: "/videos/showreel.mp4"
         },
         { 
           id: "proj-3",
-          title: "Jaringan & Server", 
-          desc: "Manajemen OpenWrt & AP",
-          category: "Networking & Infrastructure",
-          details: "Flashing dan konfigurasi firmware custom OpenWrt untuk router gigabit, optimalisasi routing transfer data multimedia lokal berkecepatan tinggi, dan manajemen AP tanpa bottleneck.",
-          tools: ["OpenWrt", "Tailscale", "Terminal / SSH"],
-          video: "/videos/showreel.mp4"
-        }
-      ]
-    },
-    testimonials: {
-      title: "Kata Klien & Mitra.",
-      subtitle: "Feedback nyata dari kreator konten, agensi, dan rekan kerja freelance.",
-      items: [
-        {
-          name: "Rian Aditya",
-          role: "Content Creator & YouTuber",
-          quote: "Hasil edit videonya sangat pas dengan ritme yang saya cari. Retention rate di YouTube Shorts saya naik lebih dari 30% berkat potongan dan timing audio dari Ilmi!",
-          rating: 5
+          title: "Jaringan & OpenWrt", 
+          desc: "Manajemen Router & AP Lokal",
+          category: "Networking",
+          details: "Konfigurasi firmware OpenWrt pada router lokal untuk memantau beban jaringan, mengatur port LAN/WAN, dan memastikan koneksi stabil untuk transfer file multimedia maupun aktivitas harian.",
+          tools: ["OpenWrt", "LuCI", "SSH / Terminal"],
+          image: "/images/project-3.png",
+          video: ""
         },
-        {
-          name: "Kenji Sato",
-          role: "Anime Localization Lead",
-          quote: "Subtitle Indonesianya sangat alami, nuansa honorifik Jepang diterjemahkan secara kontekstual dan rapi. Sinkronisasi timing-nya sangat presisi.",
-          rating: 5
-        },
-        {
-          name: "Agus Pratama",
-          role: "Event Organizer & Community Lead",
-          quote: "Setup streaming dan routing jaringan OpenWrt berjalan mulus tanpa lag selama event berlangsung. Sangat bisa diandalkan untuk urusan teknis.",
-          rating: 5
+        { 
+          id: "proj-4",
+          title: "Materi Ekskul Coding", 
+          desc: "SMP Pancasila — Web & Logika Dasar",
+          category: "Coding Education",
+          details: "Pembuatan modul web interaktif bertema monokrom lengkap dengan fitur mode gelap untuk pegangan siswa Ekstrakurikuler Coding SMP Pancasila, membantu siswa memahami tag HTML dan tombol kontrol interaktif secara langsung.",
+          tools: ["HTML5", "CSS3", "JavaScript", "Python"],
+          image: "/images/project-4.png",
+          video: ""
         }
       ]
     },
@@ -163,11 +148,12 @@ const dictionary = {
       esc: "Tutup Modal"
     },
     experience: {
-      title: "Riwayat Kerja.",
+      title: "Riwayat Kerja & Mengajar.",
       jobs: [
-        { title: "Freelance Subtitler & Video Editor", company: "Wiraswasta", date: "Mei 2025 - Sekarang", desc: "Menerjemahkan dan menyematkan subtitle untuk berbagai proyek video, memastikan sinkronisasi dan akurasi linguistik untuk penonton Indonesia." },
-        { title: "Multimedia Specialist & Broadcast Lead", company: "Mitra Berkah Pratama", date: "Apr 2025 - Feb 2026", desc: "Mengelola operasi multimedia skala penuh, termasuk siaran langsung dan produksi video. Bertanggung jawab atas pengaturan teknis dan editing pasca-produksi." },
-        { title: "Content Creator & Videographer", company: "Muhajirin Center", date: "Jan 2023 - Des 2024", desc: "Memimpin proses kreatif untuk konten digital. Menangani produksi end-to-end termasuk penulisan naskah, sinematografi, dan editing video." }
+        { title: "Guru Ekstrakurikuler Coding", company: "SMP Pancasila", date: "2026 - Sekarang", desc: "Membimbing siswa kelas 7–9 mempelajari dasar pemrograman web (HTML, CSS, JS) serta logika Python melalui praktik langsung dan proyek mini." },
+        { title: "Freelance Subtitler & Video Editor", company: "Wiraswasta", date: "Mei 2025 - Sekarang", desc: "Menerjemahkan dan menyelaraskan subtitle (EN/JP ke ID) serta mengedit berbagai proyek video pendek maupun dokumentasi." },
+        { title: "Multimedia Specialist & Broadcast Lead", company: "Mitra Berkah Pratama", date: "Apr 2025 - Feb 2026", desc: "Mengelola kebutuhan multimedia, termasuk pengaturan teknis siaran langsung (live streaming) dan editing pasca-produksi." },
+        { title: "Content Creator & Videographer", company: "Muhajirin Center", date: "Jan 2023 - Des 2024", desc: "Menangani produksi konten digital dari penulisan naskah sederhana, pengambilan gambar, hingga editing video." }
       ]
     },
     contact: {
@@ -196,40 +182,22 @@ const dictionary = {
       ],
       quickCommands: ["help", "siapa kamu?", "apa skillmu?", "pengalaman kerja", "lokasi", "clear"],
       resSudo: "Nice try. Akses root ditolak. Tindakan ini telah dicatat ke server.",
-      resHelp: "Perintah tersedia: clear, sudo.\nAtau tanyakan hal seperti:\n- \"siapa kamu?\"\n- \"apa kemampuanmu?\"\n- \"pernah kerja dimana?\"\n- \"kamu tinggal dimana?\"",
-      resAbout: "Ilmi adalah seorang Penerjemah Multibahasa (EN/JP ke ID) dan Video Editor yang berfokus pada pelokalan dan produksi konten digital kreatif.",
-      resSkill: "Keahlian utamanya meliputi:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut Pro)\n- Networking (OpenWrt)\n- PC Hardware & Perakitan.",
-      resExperience: "Ilmi pernah bekerja sebagai Multimedia Specialist di Mitra Berkah Pratama, Content Creator di Muhajirin Center, dan saat ini aktif sebagai Freelance Subtitler.",
-      resLocation: "Ilmi berdomisili di Surabaya, Indonesia 🇮🇩, namun sangat terbuka untuk pekerjaan remote dari seluruh penjuru dunia.",
-      resContact: "Pilihan yang tepat! Kamu bisa langsung mengirimkan pesan atau penawaran kerja ke: ilmi@kawaragi.id",
-      resFallback: "Maaf, saya belum memiliki data untuk menjawab perintah tersebut.\nJika Anda memiliki pertanyaan spesifik atau tawaran kolaborasi, silakan hubungi langsung via email di: ilmi@kawaragi.id 🚀"
+      resHelp: "Perintah tersedia: clear, sudo, specs, neofetch.\nAtau tanyakan hal seperti:\n- \"siapa kamu?\"\n- \"apa kemampuanmu?\"\n- \"pernah kerja dimana?\"\n- \"kamu tinggal dimana?\"",
+      resAbout: "Ilmi adalah seorang Penerjemah Multibahasa (EN/JP ke ID), Video Editor, sekaligus Guru Ekskul Coding di SMP Pancasila.",
+      resSkill: "Keahlian utamanya meliputi:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut Pro, OBS)\n- Mengajar Coding Dasar (HTML, CSS, Python)\n- Networking (OpenWrt) & PC Hardware.",
+      resExperience: "Saat ini Ilmi aktif mengajar sebagai Guru Ekskul Coding di SMP Pancasila serta mengerjakan proyek Freelance Subtitler & Video Editor. Sebelumnya pernah bertugas di Mitra Berkah Pratama dan Muhajirin Center.",
+      resLocation: "Ilmi berdomisili di area Surabaya / Gresik, Indonesia 🇮🇩, dan terbuka untuk pekerjaan remote.",
+      resContact: "Silakan kirimkan pesan atau penawaran kerja ke: ilmi@kawaragi.id",
+      resFallback: "Maaf, saya belum memiliki data untuk menjawab perintah tersebut.\nJika Anda memiliki pertanyaan spesifik, silakan hubungi langsung via email di: ilmi@kawaragi.id 🚀"
     }
   },
   EN: {
-    nav: { expertise: "Expertise", projects: "Projects", experience: "Experience", testimonials: "Testimonials" },
+    nav: { expertise: "Expertise", projects: "Projects", experience: "Experience" },
     hero: {
-      subtitle: "Crafting stories through visual cuts and language localization.",
+      subtitle: "Crafting stories through visual cuts, language localization, and coding education.",
       btnWork: "View Work",
       btnContact: "Contact Me",
       btnResume: "Download CV (PDF)",
-    },
-    stats: {
-      title: "Proven Track Record",
-      hoursNum: "120+",
-      hoursLabel: "Hours of Subtitles & Localization",
-      videosNum: "65+",
-      videosLabel: "Videos & Shorts Produced",
-      satisfactionNum: "100%",
-      satisfactionLabel: "On-Time Completion Rate",
-      ratingNum: "5.0 ★",
-      ratingLabel: "Upwork & Client Rating",
-    },
-    showcase: {
-      title: "Quality Comparison.",
-      subtitle: "Drag the interactive slider to compare raw unedited footage with final post-production (color grading, dynamic cuts, and contextual subtitles).",
-      beforeLabel: "RAW FOOTAGE",
-      afterLabel: "GRADED & SUBTITLED",
-      dragHint: "Drag slider to inspect difference",
     },
     expertise: {
       title: "Core Expertise.",
@@ -241,41 +209,55 @@ const dictionary = {
           id: "localization",
           icon: "📝", 
           title: "Multilingual Localization", 
-          desc: "Translating and hardcoding subtitles for movies and digital content.",
-          fullDesc: "As a translator, I focus on transferring meaning and emotion from the source language (English/Japanese) to the target language (Indonesian). I am accustomed to handling precise time synchronization, preserving cultural nuances (honorifics), and performing the video hardcoding process.",
+          desc: "Translating and timing subtitles for films and digital content.",
+          fullDesc: "As a translator, I focus on transferring meaning and tone from source languages (English/Japanese) into natural Indonesian. I handle precise timing synchronization, cultural nuances (honorifics), and video hardcoding workflows.",
           tools: ["Subtitle Edit", "Aegisub", "VS Code", "Format Factory", "Notepad++"],
           capabilities: [
             "Contextual Translation (EN/JP to ID)",
-            "Millisecond-precision Time Synchronization",
-            "Grammar and Spelling Quality Control",
-            "Hardcoding, Encoding, & Rendering Subtitles"
+            "Accurate Time Synchronization",
+            "Grammar and Readability Quality Control",
+            "Subtitle Hardcoding & Video Rendering"
           ]
         },
         { 
           id: "video-editing",
           icon: "🎬", 
           title: "Video Editing & Production", 
-          desc: "Short-form video content production and basic live broadcast setups.",
-          fullDesc: "Accustomed to crafting visuals for modern platforms (YouTube Shorts, Instagram Reels, TikTok). As a continuously learning video editor, I focus on understanding viewer retention rhythms. Beyond post-production, I am also familiar with technical setups for community-scale live broadcasting.",
+          desc: "Short-form video editing, event highlights, and basic live stream setups.",
+          fullDesc: "Experienced in editing visuals for social platforms (Shorts, Reels, TikTok) as well as event documentation. Beyond post-production, I also handle technical setups for community-scale live broadcasts.",
           tools: ["CapCut Pro", "Canva", "OBS Studio", "TikTok Live Studio"],
           capabilities: [
-            "Fast-paced Video Editing (Short-form Content)",
+            "Short-form & Event Highlight Editing",
             "Basic Color Grading & Audio Mixing",
-            "Asset Management & Post-Production Workflow",
+            "Post-Production Asset Organization",
             "Basic Live Streaming Setup & Management"
+          ]
+        },
+        { 
+          id: "coding-instructor",
+          icon: "💻", 
+          title: "Coding Instructor", 
+          desc: "Teaching web programming basics and coding logic to middle school students.",
+          fullDesc: "Teaching extracurricular coding classes at SMP Pancasila, guiding students from zero experience through hands-on practice. I design interactive web-based learning modules covering HTML, CSS, basic JavaScript, and introductory Python logic.",
+          tools: ["HTML & CSS", "Basic JavaScript", "Python", "VS Code", "Interactive Web Modules"],
+          capabilities: [
+            "Curriculum & Extracurricular Lesson Planning",
+            "Creating Interactive Student Cheat Sheets & Guides",
+            "Live Coding Guidance (Web & Python Basics)",
+            "Mentoring Student Mini-Projects"
           ]
         },
         { 
           id: "networking",
           icon: "🌐", 
           title: "Network Engineering", 
-          desc: "Router configuration, OpenWrt flashing, and AP management.",
-          fullDesc: "Capable of configuring local networks for multimedia data transfer needs. I specialize in utilizing custom firmware (OpenWrt) on routers to optimize bandwidth and connection stability between devices for home or community scale.",
+          desc: "Router configuration, OpenWrt flashing, and local AP management.",
+          fullDesc: "Able to set up and manage local networks for multimedia file transfers and daily reliability. Experienced with custom OpenWrt router firmware to monitor traffic and maintain stable LAN/WAN connections.",
           tools: ["OpenWrt", "Tailscale", "Putty/SSH", "WinSCP", "Terminal"],
           capabilities: [
             "Flashing & Configuring Custom Firmware (OpenWrt)",
             "Access Point (AP) & LAN Management",
-            "P2P File Transfer Setup for Local Data",
+            "Local File Transfer Setup",
             "Basic Network Troubleshooting"
           ]
         },
@@ -283,75 +265,64 @@ const dictionary = {
           id: "hardware",
           icon: "⚙️", 
           title: "PC Building & Hardware", 
-          desc: "Building, optimizing, and maintaining PCs for rendering needs.",
-          fullDesc: "Possess a practical understanding of PC hardware. I can assemble systems from scratch (especially the AMD Ryzen ecosystem) and ensure components run efficiently. I am also continuously learning to manage device thermals and stability for daily use and video editing.",
+          desc: "Building, optimizing, and maintaining PCs for work and editing.",
+          fullDesc: "Practical hands-on experience with PC hardware. I assemble systems from scratch (especially AMD Ryzen platforms), handle OS/driver installations, and maintain thermals and system stability for daily work and video editing.",
           tools: ["BIOS/UEFI", "HWMonitor", "CPU-Z", "Windows OS", "Thermal Tools"],
           capabilities: [
             "PC/Workstation Component Selection & Assembly",
             "BIOS Updates & Driver Management",
-            "Basic Performance & Power Efficiency Optimization",
-            "Hardware Maintenance & Thermal Management"
+            "Basic Performance & Power Optimization",
+            "Hardware Maintenance & Thermal Care"
           ]
         }
       ]
     },
     projects: {
       title: "Featured Work.",
-      subtitle: "Click any project card to watch the video showreel and read technical production insights.",
-      modalWatch: "Watch Video Showreel",
-      modalClose: "Close Showcase",
+      subtitle: "Click any card to view project details and real work documentation.",
+      modalClose: "Close Details",
       toolsUsed: "Tools Used",
+      summaryTitle: "Work Summary",
       items: [
         { 
           id: "proj-1",
           title: "Subtitling & Localization", 
           desc: "English/Japanese to Indonesian",
           category: "Localization & Subtitling",
-          details: "Contextual dialogue translation for film and digital series with millisecond-exact timing sync, cultural nuances preservation, and high-quality ASS hardcoded rendering.",
-          tools: ["Aegisub", "Subtitle Edit", "Format Factory"],
-          video: "/videos/showreel.mp4"
+          details: "Dialogue translation (e.g., Piece of Safe JP → ID) using Subtitle Edit. Focused on accurate timing synchronization, natural Indonesian phrasing, and clean viewer readability.",
+          tools: ["Subtitle Edit", "Aegisub", "Format Factory"],
+          image: "/images/project-1.png",
+          video: ""
         },
         { 
           id: "proj-2",
           title: "Video Editing", 
-          desc: "Cinematography & Post-Production",
+          desc: "Event Documentation & Post-Production",
           category: "Video Production",
-          details: "Fast-paced short-form video editing for TikTok, Reels, and Shorts featuring seamless cuts, dynamic motion graphics, and audio mixing crafted to maximize viewer retention.",
+          details: "Editing event documentation and short-form clips using CapCut Pro. Includes music-synced cuts, basic color correction, and clean graphic overlays.",
           tools: ["CapCut Pro", "Canva", "OBS Studio"],
+          image: "/images/project-2.png",
           video: "/videos/showreel.mp4"
         },
         { 
           id: "proj-3",
-          title: "Network & Server Setup", 
-          desc: "OpenWrt & AP Management",
-          category: "Networking & Infrastructure",
-          details: "Flashing and configuring custom OpenWrt firmware on gigabit routers, fine-tuning local high-speed multimedia file transfer pipelines, and managing APs without bottlenecks.",
-          tools: ["OpenWrt", "Tailscale", "Terminal / SSH"],
-          video: "/videos/showreel.mp4"
-        }
-      ]
-    },
-    testimonials: {
-      title: "Client Endorsements.",
-      subtitle: "Genuine testimonials from creators, agencies, and freelance collaborators.",
-      items: [
-        {
-          name: "Rian Aditya",
-          role: "Content Creator & YouTuber",
-          quote: "The video pacing matched exactly what I was aiming for. Our YouTube Shorts retention jumped by 30%+ thanks to Ilmi's precise cuts and audio timing!",
-          rating: 5
+          title: "Network & OpenWrt", 
+          desc: "Local Router & AP Management",
+          category: "Networking",
+          details: "Configuring OpenWrt firmware on local routers to monitor network load, manage LAN/WAN ports, and maintain stable connections for multimedia file transfers and daily operations.",
+          tools: ["OpenWrt", "LuCI", "SSH / Terminal"],
+          image: "/images/project-3.png",
+          video: ""
         },
-        {
-          name: "Kenji Sato",
-          role: "Anime Localization Lead",
-          quote: "The Indonesian subtitles feel very natural while preserving Japanese honorific nuances. Timing accuracy is top-notch and communication was super prompt.",
-          rating: 5
-        },
-        {
-          name: "Agus Pratama",
-          role: "Event Organizer & Community Lead",
-          quote: "The live broadcast and OpenWrt router setup performed flawlessly with zero dropouts over the entire 3-day event. Highly dependable for technical work.",
-          rating: 5
+        { 
+          id: "proj-4",
+          title: "Coding Class Modules", 
+          desc: "SMP Pancasila — Web & Logic Basics",
+          category: "Coding Education",
+          details: "Built clean, interactive monochrome web learning modules with dark-mode support for SMP Pancasila coding club students to learn HTML tags and interactive button controls hands-on.",
+          tools: ["HTML5", "CSS3", "JavaScript", "Python"],
+          image: "/images/project-4.png",
+          video: ""
         }
       ]
     },
@@ -363,11 +334,12 @@ const dictionary = {
       esc: "Close Modal"
     },
     experience: {
-      title: "Employment History.",
+      title: "Work & Teaching History.",
       jobs: [
-        { title: "Freelance Subtitler & Video Editor", company: "Self-Employed", date: "May 2025 - Present", desc: "Translating and hardcoding subtitles for various video projects, ensuring synchronization and linguistic accuracy for Indonesian audiences." },
-        { title: "Multimedia Specialist & Broadcast Lead", company: "Mitra Berkah Pratama", date: "Apr 2025 - Feb 2026", desc: "Managed full-scale multimedia operations, including live broadcasting and video production. Responsible for technical setups and post-production editing." },
-        { title: "Content Creator & Videographer", company: "Muhajirin Center", date: "Jan 2023 - Dec 2024", desc: "Led the creative process for digital content. Handled end-to-end production including scriptwriting, filming (cinematography), and creative video editing." }
+        { title: "Coding Extracurricular Instructor", company: "SMP Pancasila", date: "2026 - Present", desc: "Guiding grades 7–9 students in learning web programming fundamentals (HTML, CSS, JS) and Python logic through hands-on practice and mini-projects." },
+        { title: "Freelance Subtitler & Video Editor", company: "Self-Employed", date: "May 2025 - Present", desc: "Translating and timing subtitles (EN/JP to ID) and editing short-form videos and event documentation." },
+        { title: "Multimedia Specialist & Broadcast Lead", company: "Mitra Berkah Pratama", date: "Apr 2025 - Feb 2026", desc: "Managed multimedia operations including live streaming technical setups and post-production video editing." },
+        { title: "Content Creator & Videographer", company: "Muhajirin Center", date: "Jan 2023 - Dec 2024", desc: "Handled digital content production from basic scripting and filming to video editing." }
       ]
     },
     contact: {
@@ -396,40 +368,22 @@ const dictionary = {
       ],
       quickCommands: ["help", "who are you?", "your skills?", "work experience", "location", "clear"],
       resSudo: "Nice try. Root access denied. This incident will be reported.",
-      resHelp: "Available commands: clear, sudo.\nOr ask things like:\n- \"who are you?\"\n- \"what are your skills?\"\n- \"where have you worked?\"\n- \"where do you live?\"",
-      resAbout: "Ilmi is a Multilingual Translator (EN/JP to ID) and Video Editor focusing on localization and creative digital content production.",
-      resSkill: "Core expertise includes:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut Pro)\n- Networking (OpenWrt)\n- PC Hardware & Assembly.",
-      resExperience: "Ilmi has worked as a Multimedia Specialist at Mitra Berkah Pratama, Content Creator at Muhajirin Center, and is currently active as a Freelance Subtitler.",
-      resLocation: "Ilmi is based in Surabaya, Indonesia 🇮🇩, but is highly open to remote work from around the globe.",
-      resContact: "Great choice! You can directly send a message or job offer to: ilmi@kawaragi.id",
-      resFallback: "Sorry, I don't have the data to answer that command yet.\nIf you have specific questions or collaboration offers, please contact directly via email at: ilmi@kawaragi.id 🚀"
+      resHelp: "Available commands: clear, sudo, specs, neofetch.\nOr ask things like:\n- \"who are you?\"\n- \"what are your skills?\"\n- \"where have you worked?\"\n- \"where do you live?\"",
+      resAbout: "Ilmi is a Multilingual Translator (EN/JP to ID), Video Editor, and Extracurricular Coding Instructor at SMP Pancasila.",
+      resSkill: "Core expertise includes:\n- Subtitling (Aegisub, Subtitle Edit)\n- Video Editing (CapCut Pro, OBS)\n- Coding Instruction (HTML, CSS, Python)\n- Networking (OpenWrt) & PC Hardware.",
+      resExperience: "Currently teaching coding at SMP Pancasila while taking Freelance Subtitling & Video Editing projects. Previously worked at Mitra Berkah Pratama and Muhajirin Center.",
+      resLocation: "Ilmi is based in Surabaya / Gresik, Indonesia 🇮🇩, and is open to remote work.",
+      resContact: "You can send a message or inquiry directly to: ilmi@kawaragi.id",
+      resFallback: "Sorry, I don't have the data to answer that command yet.\nIf you have specific questions, please reach out via email at: ilmi@kawaragi.id 🚀"
     }
   },
   JP: {
-    nav: { expertise: "専門知識", projects: "プロジェクト", experience: "経歴", testimonials: "推薦の声" },
+    nav: { expertise: "専門知識", projects: "プロジェクト", experience: "経歴" },
     hero: {
-      subtitle: "映像のカットと翻訳を通じて、物語を紡ぎ出す。",
+      subtitle: "映像編集、多言語字幕翻訳、そしてプログラミング教育を通じて価値を届ける。",
       btnWork: "作品を見る",
       btnContact: "お問い合わせ",
       btnResume: "履歴書 (PDF)",
-    },
-    stats: {
-      title: "実績と統計",
-      hoursNum: "120+",
-      hoursLabel: "字幕翻訳・ローカリゼーション時間",
-      videosNum: "65+",
-      videosLabel: "制作した動画・ショート動画数",
-      satisfactionNum: "100%",
-      satisfactionLabel: "納期厳守率",
-      ratingNum: "5.0 ★",
-      ratingLabel: "Upwork クライアント評価",
-    },
-    showcase: {
-      title: "クオリティ比較。",
-      subtitle: "スライダーをドラッグして、未編集の元動画とポストプロダクション（カラーグレーディング、テンポの良いカット、文脈に即した字幕）の仕上がりを比較できます。",
-      beforeLabel: "RAW FOOTAGE (未編集)",
-      afterLabel: "GRADED & SUBTITLED (編集済)",
-      dragHint: "スライダーを左右にドラッグして比較",
     },
     expertise: {
       title: "主な専門知識。",
@@ -441,41 +395,55 @@ const dictionary = {
           id: "localization",
           icon: "📝", 
           title: "多言語ローカリゼーション", 
-          desc: "映画やデジタルコンテンツの字幕翻訳とハードコーディング。",
-          fullDesc: "翻訳者として、原文（英語/日本語）の意味と感情を対象言語（インドネシア語）に伝えることに焦点を当てています。正確なタイミング同期、文化的ニュアンス（敬語）の維持、ビデオのハードコーディングプロセスに慣れています。",
+          desc: "映画やデジタルコンテンツの字幕翻訳とタイミング同期。",
+          fullDesc: "翻訳者として、英語や日本語のニュアンスや感情を自然なインドネシア語へ伝えることを重視しています。正確なタイミング調整、敬語などの文化的表現の維持、ハードコーディングまで対応します。",
           tools: ["Subtitle Edit", "Aegisub", "VS Code", "Format Factory", "Notepad++"],
           capabilities: [
-            "文脈翻訳 (英語/日本語 から インドネシア語)",
-            "ミリ秒単位のタイミング同期",
-            "文法とスペルの品質管理",
-            "字幕のハードコーディング、エンコード、レンダリング"
+            "文脈に沿った翻訳 (英語/日本語 → インドネシア語)",
+            "正確なタイミング同期",
+            "文法と読みやすさの品質管理",
+            "字幕のハードコーディングと書き出し"
           ]
         },
         { 
           id: "video-editing",
           icon: "🎬", 
           title: "動画編集・制作", 
-          desc: "ショートビデオのコンテンツ制作と基本的なライブ配信設定。",
-          fullDesc: "最新プラットフォーム（YouTube Shorts、Instagram Reels、TikTok）向けの映像制作に慣れています。現在も学習中の動画編集者として、視聴者維持のリズムを理解することに焦点を当てています。ポストプロダクションに加え、コミュニティ規模のライブ配信の技術的な設定にも精通しています。",
+          desc: "ショート動画編集、イベント記録、基本的なライブ配信設定。",
+          fullDesc: "SNS向けのショート動画やイベント記録映像の編集を行っています。ポストプロダクションに加え、コミュニティ規模のライブ配信の技術設定も担当します。",
           tools: ["CapCut Pro", "Canva", "OBS Studio", "TikTok Live Studio"],
           capabilities: [
-            "テンポの速い動画編集 (ショートコンテンツ)",
-            "基本的なカラーグレーディングとオーディオミキシング",
-            "アセット管理とポストプロダクションのワークフロー",
-            "基本的なライブ配信の設定と管理"
+            "ショート動画・イベント記録の編集",
+            "基本的なカラー調整とオーディオミキシング",
+            "アセット管理と編集ワークフロー",
+            "基本的なライブ配信設定"
+          ]
+        },
+        { 
+          id: "coding-instructor",
+          icon: "💻", 
+          title: "プログラミング講師", 
+          desc: "中学校でのWebプログラミング基礎・Python論理指導。",
+          fullDesc: "SMP Pancasilaの課外プログラミング教室（エクスクル）の講師として、中学生にゼロからコードを書く楽しさを教えています。HTML/CSS/JavaScript基礎やPythonの論理を学ぶためのインタラクティブ教材も自作しています。",
+          tools: ["HTML & CSS", "JavaScript基礎", "Python", "VS Code", "自作Web教材"],
+          capabilities: [
+            "課外授業カリキュラム・指導案の作成",
+            "生徒向けWeb教材・チートシートの作成",
+            "Web制作およびPython基礎のライブ指導",
+            "生徒のミニプロジェクト制作サポート"
           ]
         },
         { 
           id: "networking",
           icon: "🌐", 
           title: "ネットワーク構築", 
-          desc: "ルーター設定、OpenWrt導入、AP管理。",
-          fullDesc: "マルチメディアデータ転送のニーズに合わせてローカルネットワークを設定できます。家庭やコミュニティ規模でのデバイス間の帯域幅と接続の安定性を最適化するためのルーターカスタムファームウェア（OpenWrt）の活用を専門としています。",
+          desc: "ルーター設定、OpenWrt導入、ローカルAP管理。",
+          fullDesc: "大容量データの転送や日常利用のためのローカルネットワーク構築に対応します。OpenWrtカスタムファームウェアを活用し、安定したLAN/WAN接続環境を整えます。",
           tools: ["OpenWrt", "Tailscale", "Putty/SSH", "WinSCP", "Terminal"],
           capabilities: [
             "カスタムファームウェアの導入と設定 (OpenWrt)",
-            "アクセスポイント(AP)とLANの管理",
-            "ローカルデータ用のP2Pファイル転送設定",
+            "アクセスポイント(AP)とLAN管理",
+            "ローカルファイル転送環境の設定",
             "基本的なネットワークのトラブルシューティング"
           ]
         },
@@ -483,75 +451,64 @@ const dictionary = {
           id: "hardware",
           icon: "⚙️", 
           title: "PC自作・ハードウェア", 
-          desc: "レンダリングニーズに合わせたPCの構築、最適化、保守。",
-          fullDesc: "PCハードウェアに関する実践的な理解を持っています。システムを一から組み立て（特にAMD Ryzenエコシステム）、コンポーネントを効率的に動作させることができます。また、日常使用や動画編集におけるデバイスの温度管理と安定性についても継続的に学んでいます。",
+          desc: "編集や作業用途に合わせたPCの構築・保守。",
+          fullDesc: "PCハードウェアの実践的な知識を持ち、AMD Ryzen環境を中心としたPCの組み立て、OS・ドライバー設定、日常や動画編集に向けた温度管理・安定性維持を行います。",
           tools: ["BIOS/UEFI", "HWMonitor", "CPU-Z", "Windows OS", "Thermal Tools"],
           capabilities: [
-            "PC/ワークステーションコンポーネントの選択と組み立て",
+            "PCパーツ選定と組み立て",
             "BIOSアップデートとドライバー管理",
-            "基本的なパフォーマンスと電力効率の最適化",
-            "ハードウェアの保守と温度管理"
+            "基本的なパフォーマンス・省電力最適化",
+            "ハードウェア保守と温度管理"
           ]
         }
       ]
     },
     projects: {
       title: "注目の作品。",
-      subtitle: "カードをクリックすると、動画ショールールと技術的な制作詳細をご覧いただけます。",
-      modalWatch: "動画を見る",
+      subtitle: "カードをクリックすると、制作の詳細と実際のドキュメントをご覧いただけます。",
       modalClose: "閉じる",
       toolsUsed: "使用ツール",
+      summaryTitle: "制作概要",
       items: [
         { 
           id: "proj-1",
           title: "字幕翻訳・ローカリゼーション", 
-          desc: "英語/日本語 から インドネシア語へ",
+          desc: "英語/日本語 → インドネシア語",
           category: "Localization & Subtitling",
-          details: "映画やデジタルアニメの会話を、ミリ秒単位の正確なタイミングで文脈に沿って翻訳。敬語や文化的ニュアンスを維持し、高品質なASS形式でハードコード出力します。",
-          tools: ["Aegisub", "Subtitle Edit", "Format Factory"],
-          video: "/videos/showreel.mp4"
+          details: "Subtitle Editを使用した映像作品の字幕翻訳（例：Piece of Safe 日本語→インドネシア語）。正確なタイミング調整と、インドネシアの視聴者に自然に伝わる表現を心がけています。",
+          tools: ["Subtitle Edit", "Aegisub", "Format Factory"],
+          image: "/images/project-1.png",
+          video: ""
         },
         { 
           id: "proj-2",
-          title: "動画編集・制作", 
-          desc: "シネマトグラフィー・ポストプロダクション",
+          title: "動画編集", 
+          desc: "イベント記録・ポストプロダクション",
           category: "Video Production",
-          details: "TikTok、Reels、Shorts向けのテンポの良いショート動画編集。滑らかなカット、ダイナミックなモーショングラフィックス、視聴維持率を高める音響設計を施します。",
+          details: "CapCut Proを用いたイベント記録映像およびショート動画の編集。音楽のリズムに合わせたカット割り、基本的な色補正、グラフィック素材の合成を担当しました。",
           tools: ["CapCut Pro", "Canva", "OBS Studio"],
+          image: "/images/project-2.png",
           video: "/videos/showreel.mp4"
         },
         { 
           id: "proj-3",
-          title: "ネットワーク設定", 
-          desc: "OpenWrt と AP管理",
-          category: "Networking & Infrastructure",
-          details: "ギガビットルーターへのカスタムOpenWrtファームウェアの導入と設定、ローカルでの高速マルチメディアデータ転送の最適化、ボトルネックのないAP管理を実現します。",
-          tools: ["OpenWrt", "Tailscale", "Terminal / SSH"],
-          video: "/videos/showreel.mp4"
-        }
-      ]
-    },
-    testimonials: {
-      title: "推薦の声。",
-      subtitle: "クリエイターやプロジェクト関係者からの実際のフィードバック。",
-      items: [
-        {
-          name: "Rian Aditya",
-          role: "Content Creator & YouTuber",
-          quote: "動画のテンポ感がまさに求めていた通りでした。Ilmiさんの精密なカットとタイミングのおかげで、YouTube Shortsの視聴維持率が30％以上向上しました！",
-          rating: 5
+          title: "ネットワーク & OpenWrt", 
+          desc: "ローカルルーター・AP管理",
+          category: "Networking",
+          details: "OpenWrtファームウェアを導入したローカルルーターの設定。トラフィック監視、LAN/WANポート管理、大容量データ転送のための安定した通信環境を構築しています。",
+          tools: ["OpenWrt", "LuCI", "SSH / Terminal"],
+          image: "/images/project-3.png",
+          video: ""
         },
-        {
-          name: "Kenji Sato",
-          role: "Anime Localization Lead",
-          quote: "インドネシア語の字幕が非常に自然で、日本語の敬語のニュアンスも適切に反映されています。タイミング同期もミリ秒単位で完璧でした。",
-          rating: 5
-        },
-        {
-          name: "Agus Pratama",
-          role: "Event Organizer & Community Lead",
-          quote: "3日間のイベント中、ライブ配信とOpenWrtルーター設定は完全に安定して動作しました。技術的なサポートにおいて非常に信頼できます。",
-          rating: 5
+        { 
+          id: "proj-4",
+          title: "プログラミング授業教材", 
+          desc: "SMP Pancasila — Web基礎と論理",
+          category: "Coding Education",
+          details: "SMP Pancasilaのプログラミング部生徒向けに自作した、ダークモード対応のWeb教材。HTMLタグやインタラクティブなボタン制御の仕組みを実践的に学べるよう設計しています。",
+          tools: ["HTML5", "CSS3", "JavaScript", "Python"],
+          image: "/images/project-4.png",
+          video: ""
         }
       ]
     },
@@ -563,11 +520,12 @@ const dictionary = {
       esc: "モーダルを閉じる"
     },
     experience: {
-      title: "職歴。",
+      title: "職歴・指導歴。",
       jobs: [
-        { title: "フリーランス 字幕翻訳 & 動画編集", company: "自営業", date: "2025年5月 - 現在", desc: "インドネシアの視聴者向けに、映像プロジェクトの字幕を正確に翻訳し、映像と同期させます。" },
-        { title: "マルチメディアスペシャリスト", company: "Mitra Berkah Pratama", date: "2025年4月 - 2026年2月", desc: "ライブ配信や映像制作を含むマルチメディア業務全般を管理。技術設定や編集を担当。" },
-        { title: "コンテンツクリエイター & ビデオグラファー", company: "Muhajirin Center", date: "2023年1月 - 2024年12月", desc: "デジタルコンテンツの制作を主導。脚本作成、撮影、クリエイティブな動画編集を担当。" }
+        { title: "課外プログラミング講師", company: "SMP Pancasila", date: "2026年 - 現在", desc: "中学1〜3年生を対象に、Webプログラミングの基礎（HTML, CSS, JS）とPythonの論理思考をハンズオン形式で指導。" },
+        { title: "フリーランス 字幕翻訳 & 動画編集", company: "自営業", date: "2025年5月 - 現在", desc: "英語/日本語からインドネシア語への字幕翻訳・タイミング調整、およびショート動画やイベント映像の編集。" },
+        { title: "マルチメディアスペシャリスト", company: "Mitra Berkah Pratama", date: "2025年4月 - 2026年2月", desc: "ライブ配信の技術設定や映像のポストプロダクションを含むマルチメディア業務を担当。" },
+        { title: "コンテンツクリエイター & ビデオグラファー", company: "Muhajirin Center", date: "2023年1月 - 2024年12月", desc: "デジタルコンテンツの企画、撮影、動画編集まで一貫して担当。" }
       ]
     },
     contact: {
@@ -596,13 +554,13 @@ const dictionary = {
       ],
       quickCommands: ["help", "あなたは誰？", "スキルは何？", "職歴", "所在地", "clear"],
       resSudo: "惜しいですね。ルートアクセスが拒否されました。このインシデントは報告されます。",
-      resHelp: "利用可能なコマンド: clear, sudo.\nまたは次のように質問してください：\n- \"あなたは誰？\"\n- \"スキルは何？\"\n- \"職歴は？\"\n- \"どこに住んでいるの？\"",
-      resAbout: "Ilmi は、ローカリゼーションとクリエイティブなデジタルコンテンツ制作に焦点を当てた多言語翻訳者（英語/日本語からインドネシア語）および動画編集者です。",
-      resSkill: "主な専門知識は以下の通りです：\n- 字幕翻訳 (Aegisub, Subtitle Edit)\n- 動画編集 (CapCut Pro)\n- ネットワーク (OpenWrt)\n- PCハードウェアと組み立て",
-      resExperience: "Ilmi は Mitra Berkah Pratama でマルチメディアスペシャリスト、Muhajirin Center でコンテンツクリエイターとして勤務し、現在はフリーランスの字幕翻訳者として活動しています。",
-      resLocation: "Ilmi はインドネシアのスラバヤ 🇮🇩 を拠点としていますが、世界中からのリモートワークにも積極的に対応しています。",
-      resContact: "素晴らしい選択です！ メッセージや仕事の依頼は、直接こちらへお送りください: ilmi@kawaragi.id",
-      resFallback: "申し訳ありませんが、そのコマンドに答えるデータがまだありません。\n具体的な質問やコラボレーションの提案がある場合は、直接メールでお問い合わせください: ilmi@kawaragi.id 🚀"
+      resHelp: "利用可能なコマンド: clear, sudo, specs, neofetch.\nまたは次のように質問してください：\n- \"あなたは誰？\"\n- \"スキルは何？\"\n- \"職歴は？\"\n- \"どこに住んでいるの？\"",
+      resAbout: "Ilmi は多言語翻訳者（英語/日本語 → インドネシア語）、動画編集者、そして SMP Pancasila の課外プログラミング講師です。",
+      resSkill: "主なスキルは以下の通りです：\n- 字幕翻訳 (Aegisub, Subtitle Edit)\n- 動画編集 (CapCut Pro, OBS)\n- プログラミング指導 (HTML, CSS, Python)\n- ネットワーク (OpenWrt) & PCハードウェア",
+      resExperience: "現在は SMP Pancasila でプログラミングを教えながら、フリーランスの字幕翻訳・動画編集者として活動しています。以前は Mitra Berkah Pratama や Muhajirin Center で勤務していました。",
+      resLocation: "インドネシアのスラバヤ / グレシク 🇮🇩 を拠点としており、リモートワークにも対応しています。",
+      resContact: "メッセージやご依頼はこちらへお送りください: ilmi@kawaragi.id",
+      resFallback: "申し訳ありませんが、そのコマンドに答えるデータがまだありません。\n具体的なご質問がある場合は、直接メールでお問い合わせください: ilmi@kawaragi.id 🚀"
     }
   }
 };

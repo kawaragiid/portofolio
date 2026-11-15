@@ -46,7 +46,7 @@ const jsonLd = {
   name: "Miftakhul Ilmi",
   alternateName: "Ilmi Kawaragi",
   url: "https://keigo.kawaragi.id",
-  jobTitle: "Video Editor & Multilingual Translator",
+  jobTitle: "Video Editor, Multilingual Translator & Coding Instructor",
   image: "https://keigo.kawaragi.id/og-banner-main.png",
   sameAs: [
     "https://www.upwork.com/freelancers/~01705729bdc457ff0f",
@@ -59,10 +59,12 @@ const jsonLd = {
     "Subtitle Edit",
     "Japanese to Indonesian Localization",
     "English to Indonesian Translation",
+    "HTML & CSS",
+    "Python Basics",
     "OpenWrt",
     "PC Building",
   ],
-  description: "Multilingual Translator (EN/JP to ID), Video Editor, and Network/PC Specialist.",
+  description: "Multilingual Translator (EN/JP to ID), Video Editor, Network/PC Technician, and Extracurricular Coding Instructor at SMP Pancasila.",
 };
 
 export default function RootLayout({

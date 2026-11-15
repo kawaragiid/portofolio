@@ -18,13 +18,6 @@ export default function Projects() {
     () => false
   );
 
-  const images = [
-    "/images/project-1.png",
-    "/images/project-2.png",
-    "/images/project-3.png"
-  ];
-
-  // Kunci scroll body saat modal video terbuka
   useEffect(() => {
     if (activeProjectIndex !== null) {
       document.body.style.overflow = "hidden";
@@ -36,10 +29,16 @@ export default function Projects() {
     };
   }, [activeProjectIndex]);
 
+  useEffect(() => {
+    const handleClose = () => setActiveProjectIndex(null);
+    window.addEventListener("close-all-modals", handleClose);
+    return () => window.removeEventListener("close-all-modals", handleClose);
+  }, []);
+
   const activeProject = activeProjectIndex !== null ? t.items[activeProjectIndex] : null;
 
   return (
-    <section id="projects" className="max-w-7xl mx-auto px-6 py-24 border-t border-white/5 perspective-1000">
+    <section id="projects" className="max-w-6xl mx-auto px-6 py-24 border-t border-white/5 perspective-1000">
       <div className="text-center max-w-2xl mx-auto mb-16">
         <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white drop-shadow-md mb-3">
           {t.title}
@@ -49,7 +48,7 @@ export default function Projects() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {t.items.map((item, index) => (
           <div key={item.id} onClick={() => setActiveProjectIndex(index)}>
             <TiltCard>
@@ -59,16 +58,18 @@ export default function Projects() {
                   {item.category}
                 </div>
 
-                {/* Play Button Indicator */}
-                <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none scale-75 group-hover:scale-100">
-                  <div className="w-14 h-14 rounded-full bg-cyan-400/90 text-black flex items-center justify-center shadow-[0_0_30px_rgba(34,211,238,0.8)]">
-                    <svg className="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
+                {/* Play Button Indicator for Video Projects */}
+                {item.video && (
+                  <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none scale-75 group-hover:scale-100">
+                    <div className="w-14 h-14 rounded-full bg-cyan-400/90 text-black flex items-center justify-center shadow-[0_0_30px_rgba(34,211,238,0.8)]">
+                      <svg className="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent z-10 flex flex-col justify-end p-6 pointer-events-none">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent z-10 flex flex-col justify-end p-6 pointer-events-none">
                   <h3 className="text-xl font-bold text-white mb-1 group-hover:text-cyan-300 transition-colors duration-300">
                     {item.title}
                   </h3>
@@ -76,10 +77,10 @@ export default function Projects() {
                 </div>
 
                 <Image
-                  src={images[index]}
+                  src={item.image}
                   alt={item.title}
                   fill
-                  className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none"
+                  className="object-cover opacity-65 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none"
                 />
               </div>
             </TiltCard>
@@ -87,7 +88,7 @@ export default function Projects() {
         ))}
       </div>
 
-      {/* VIDEO PLAYER & CASE STUDY LIGHTBOX MODAL */}
+      {/* PROJECT LIGHTBOX MODAL */}
       {isClient && createPortal(
         <AnimatePresence>
           {activeProject !== null && (
@@ -132,22 +133,30 @@ export default function Projects() {
 
                 {/* Content with Scroll */}
                 <div className="p-4 md:p-8 space-y-6 overflow-y-auto overscroll-contain">
-                  {/* Embedded Video Showcase Player */}
                   <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-white/10 shadow-2xl">
-                    <video
-                      controls
-                      autoPlay
-                      playsInline
-                      className="w-full h-full object-cover"
-                    >
-                      <source src={activeProject.video} type="video/mp4" />
-                      Browser Anda tidak mendukung tag video.
-                    </video>
+                    {activeProject.video ? (
+                      <video
+                        controls
+                        autoPlay
+                        playsInline
+                        className="w-full h-full object-cover"
+                      >
+                        <source src={activeProject.video} type="video/mp4" />
+                        Browser Anda tidak mendukung tag video.
+                      </video>
+                    ) : (
+                      <Image
+                        src={activeProject.image}
+                        alt={activeProject.title}
+                        fill
+                        className="object-contain bg-black"
+                      />
+                    )}
                   </div>
 
                   <div>
                     <h4 className="text-white font-bold text-sm md:text-base mb-2">
-                      Ringkasan Produksi & Eksekusi:
+                      {t.summaryTitle}:
                     </h4>
                     <p className="text-gray-300 text-sm md:text-base leading-relaxed font-light">
                       {activeProject.details}

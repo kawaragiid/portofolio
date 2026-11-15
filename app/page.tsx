@@ -9,9 +9,6 @@ import MusicWidget from "../components/MusicWidget";
 import LiquidBackground from "../components/LiquidBackground";
 import InfiniteMarquee from "../components/InfiniteMarquee";
 import Contact from "../components/Contact";
-import StatsCounter from "../components/StatsCounter";
-import InteractiveShowcase from "../components/InteractiveShowcase";
-import Testimonials from "../components/Testimonials";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
 
 export default function Home() {
@@ -25,17 +22,12 @@ export default function Home() {
       
       {/* Bagian Atas */}
       <HeroShowreel />
-      <StatsCounter />
       <InfiniteMarquee />
 
       {/* Konten Utama (dibungkus relative z-10 agar di atas background animasi) */}
       <div className="relative z-10 pb-24">
         <FadeUp delay={0.2}>
           <Expertise />
-        </FadeUp>
-
-        <FadeUp delay={0.2}>
-          <InteractiveShowcase />
         </FadeUp>
         
         <FadeUp delay={0.2}>
@@ -44,10 +36,6 @@ export default function Home() {
         
         <FadeUp delay={0.2}>
           <Experience />
-        </FadeUp>
-
-        <FadeUp delay={0.2}>
-          <Testimonials />
         </FadeUp>
         
         <FadeUp delay={0.2}>
