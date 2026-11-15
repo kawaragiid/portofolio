@@ -1,14 +1,12 @@
 import Navbar from "../components/Navbar";
-import Expertise from "../components/Expertise";
-import Projects from "../components/Projects";
-import Experience from "../components/Experience";
-import FadeUp from "../components/FadeUp";
 import HeroShowreel from "../components/HeroShowreel";
+import InfiniteMarquee from "../components/InfiniteMarquee";
+import Projects from "../components/Projects";
+import BentoOperations from "../components/BentoOperations";
+import FadeUp from "../components/FadeUp";
 import HiddenTerminal from "../components/HiddenTerminal";
 import MusicWidget from "../components/MusicWidget";
 import LiquidBackground from "../components/LiquidBackground";
-import InfiniteMarquee from "../components/InfiniteMarquee";
-import Contact from "../components/Contact";
 import KeyboardShortcuts from "../components/KeyboardShortcuts";
 
 export default function Home() {
@@ -20,26 +18,20 @@ export default function Home() {
       {/* Navigasi */}
       <Navbar />
       
-      {/* Bagian Atas */}
+      {/* Layer 1: Compact Hero + Bento Overview & HUD Dashboard */}
       <HeroShowreel />
+      
+      {/* Hairline Marquee Divider */}
       <InfiniteMarquee />
 
-      {/* Konten Utama (dibungkus relative z-10 agar di atas background animasi) */}
-      <div className="relative z-10 pb-24">
-        <FadeUp delay={0.2}>
-          <Expertise />
-        </FadeUp>
-        
-        <FadeUp delay={0.2}>
+      {/* Layer 2: Works Archive & Operations Bento Console */}
+      <div className="relative z-10 pb-16">
+        <FadeUp delay={0.1}>
           <Projects />
         </FadeUp>
         
-        <FadeUp delay={0.2}>
-          <Experience />
-        </FadeUp>
-        
-        <FadeUp delay={0.2}>
-          <Contact />
+        <FadeUp delay={0.1}>
+          <BentoOperations />
         </FadeUp>
       </div>
       

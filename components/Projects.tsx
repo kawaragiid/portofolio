@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "./LanguageProvider";
 import TiltCard from "./TiltCard";
+import HudCorner from "./HudCorner";
 
 export default function Projects() {
   const { dict } = useLanguage();
@@ -38,54 +39,80 @@ export default function Projects() {
   const activeProject = activeProjectIndex !== null ? t.items[activeProjectIndex] : null;
 
   return (
-    <section id="projects" className="max-w-6xl mx-auto px-6 py-24 border-t border-white/5 perspective-1000">
-      <div className="text-center max-w-2xl mx-auto mb-16">
-        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white drop-shadow-md mb-3">
-          {t.title}
-        </h2>
-        <p className="text-gray-400 text-sm md:text-base">
+    <section id="projects" className="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-20 relative z-10">
+      
+      {/* Section Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-4 border-b border-white/10">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] font-mono tracking-widest text-cyan-400 uppercase mb-1">
+            <span>MODULE 02</span>
+            <span>{"//"}</span>
+            <span>SELECTED WORKS & ARTIFACTS</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight text-white">
+            {t.title}
+          </h2>
+        </div>
+        <p className="text-gray-400 text-xs sm:text-sm font-mono max-w-md">
           {t.subtitle}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {t.items.map((item, index) => (
-          <div key={item.id} onClick={() => setActiveProjectIndex(index)}>
-            <TiltCard>
-              <div className="group relative aspect-video bg-[#0a0a0a] rounded-3xl overflow-hidden border border-white/10 hover:border-cyan-500/40 shadow-[0_15px_30px_rgba(0,0,0,0.6)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all duration-300">
-                {/* Category Badge */}
-                <div className="absolute top-4 left-4 z-20 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider text-cyan-300">
-                  {item.category}
-                </div>
+      {/* Bento Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+        {t.items.map((item, index) => {
+          // Asymmetric Bento spans for 12 columns
+          const spanClass = index === 0 ? "lg:col-span-7" : index === 1 ? "lg:col-span-5" : index === 2 ? "lg:col-span-5" : "lg:col-span-7";
 
-                {/* Play Button Indicator for Video Projects */}
-                {item.video && (
-                  <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none scale-75 group-hover:scale-100">
-                    <div className="w-14 h-14 rounded-full bg-cyan-400/90 text-black flex items-center justify-center shadow-[0_0_30px_rgba(34,211,238,0.8)]">
-                      <svg className="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
+          return (
+            <div key={item.id} className={`${spanClass} cursor-pointer`} onClick={() => setActiveProjectIndex(index)}>
+              <TiltCard>
+                <div className="group relative aspect-[16/10] sm:aspect-video lg:aspect-[16/10] bg-[#0c0d12] rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-400/50 shadow-[0_15px_35px_rgba(0,0,0,0.6)] transition-all duration-300">
+                  <HudCorner color="text-cyan-400/60" />
+
+                  {/* Top Bar with Badges */}
+                  <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
+                    <span className="bg-black/80 backdrop-blur-md border border-cyan-500/30 px-2.5 py-1 rounded text-[10px] font-mono uppercase tracking-wider text-cyan-300">
+                      {item.category}
+                    </span>
+                    <span className="bg-black/80 backdrop-blur-md border border-white/10 px-2 py-0.5 rounded text-[10px] font-mono text-gray-400">
+                      PRJ // 0{index + 1}
+                    </span>
+                  </div>
+
+                  {/* Image Preview */}
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover opacity-60 group-hover:opacity-85 group-hover:scale-105 transition-all duration-500 ease-out pointer-events-none"
+                  />
+
+                  {/* Bottom Gradient & Text */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-10 flex flex-col justify-end p-5 md:p-6 pointer-events-none">
+                    <h3 className="text-lg md:text-xl font-bold text-white mb-1 group-hover:text-cyan-300 transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-gray-300 line-clamp-2 font-light mb-3">
+                      {item.desc}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5">
+                      {item.tools.map((tool, i) => (
+                        <span
+                          key={i}
+                          className="px-2 py-0.5 rounded bg-black/60 border border-white/10 text-[10px] font-mono text-gray-300"
+                        >
+                          {tool}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                )}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent z-10 flex flex-col justify-end p-6 pointer-events-none">
-                  <h3 className="text-xl font-bold text-white mb-1 group-hover:text-cyan-300 transition-colors duration-300">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-gray-300">{item.desc}</p>
                 </div>
-
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover opacity-65 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700 ease-out pointer-events-none"
-                />
-              </div>
-            </TiltCard>
-          </div>
-        ))}
+              </TiltCard>
+            </div>
+          );
+        })}
       </div>
 
       {/* PROJECT LIGHTBOX MODAL */}
@@ -104,12 +131,14 @@ export default function Projects() {
 
               {/* Modal Box */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                initial={{ opacity: 0, scale: 0.95, y: 15 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                exit={{ opacity: 0, scale: 0.95, y: 15 }}
                 transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                className="relative bg-[#0d0d0d]/95 backdrop-blur-3xl border border-white/20 w-full max-w-4xl max-h-[90vh] flex flex-col rounded-[2rem] shadow-[0_25px_70px_rgba(0,0,0,0.9)] z-10 overflow-hidden"
+                className="relative bg-[#0d0d14] border border-white/20 w-full max-w-4xl max-h-[90vh] flex flex-col rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.9)] z-10 overflow-hidden"
               >
+                <HudCorner color="text-cyan-400/80" />
+
                 {/* Header */}
                 <div className="p-4 md:p-6 bg-white/[0.03] border-b border-white/10 flex items-center justify-between shrink-0">
                   <div>
@@ -122,7 +151,7 @@ export default function Projects() {
                   </div>
                   <button
                     onClick={() => setActiveProjectIndex(null)}
-                    className="p-2 md:p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-gray-400 hover:text-white transition-colors"
+                    className="p-2 md:p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white transition-colors"
                     aria-label="Close modal"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,25 +162,13 @@ export default function Projects() {
 
                 {/* Content with Scroll */}
                 <div className="p-4 md:p-8 space-y-6 overflow-y-auto overscroll-contain">
-                  <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-black border border-white/10 shadow-2xl">
-                    {activeProject.video ? (
-                      <video
-                        controls
-                        autoPlay
-                        playsInline
-                        className="w-full h-full object-cover"
-                      >
-                        <source src={activeProject.video} type="video/mp4" />
-                        Browser Anda tidak mendukung tag video.
-                      </video>
-                    ) : (
-                      <Image
-                        src={activeProject.image}
-                        alt={activeProject.title}
-                        fill
-                        className="object-contain bg-black"
-                      />
-                    )}
+                  <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-white/10 shadow-2xl">
+                    <Image
+                      src={activeProject.image}
+                      alt={activeProject.title}
+                      fill
+                      className="object-contain bg-black"
+                    />
                   </div>
 
                   <div>
@@ -171,23 +188,13 @@ export default function Projects() {
                       {activeProject.tools.map((tool, i) => (
                         <span
                           key={i}
-                          className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-mono text-gray-300"
+                          className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-xs font-mono text-gray-300"
                         >
                           {tool}
                         </span>
                       ))}
                     </div>
                   </div>
-                </div>
-
-                {/* Footer */}
-                <div className="p-4 bg-white/[0.02] border-t border-white/10 flex justify-end shrink-0">
-                  <button
-                    onClick={() => setActiveProjectIndex(null)}
-                    className="px-6 py-2 rounded-full bg-white text-black font-bold text-xs hover:bg-gray-200 transition-colors"
-                  >
-                    {t.modalClose}
-                  </button>
                 </div>
               </motion.div>
             </div>
