@@ -8,6 +8,8 @@ import { useLanguage } from "./LanguageProvider";
 import { usePerformance } from "./PerformanceProvider";
 import { useScreenSize } from "./useScreenSize";
 import HudCorner from "./HudCorner";
+import AnimeShape from "./AnimeShape";
+import AnimeCircuit from "./AnimeCircuit";
 
 const cvOptions = [
   { code: "ID", label: "Bahasa Indonesia", flag: "🇮🇩", file: "/CV_Miftakhul_Ilmi_ID.pdf", filename: "CV_Miftakhul_Ilmi_ID.pdf" },
@@ -123,6 +125,9 @@ export default function TransitJourneyMap() {
       <div className="fixed inset-0 bg-black pointer-events-none z-0" />
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_90%_50%_at_50%_-5%,rgba(6,182,212,0.1),transparent_70%)] pointer-events-none z-0" />
 
+      {/* ── ANIME.JS DYNAMIC TOPOLOGY CIRCUIT ── */}
+      <AnimeCircuit className="hidden lg:block" />
+
       {/* ── ORGANIC ASYMMETRIC TRANSIT NETWORK (Desktop) ── */}
       <div className="absolute inset-0 pointer-events-none z-10 hidden lg:block overflow-hidden">
         <svg
@@ -198,10 +203,9 @@ export default function TransitJourneyMap() {
               </span>
             </div>
             
-            {/* Pulsing Station Hub */}
+            {/* Anime.js Radar Beacon Hub */}
             <div className="relative flex items-center justify-center">
-              <span className="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-cyan-400 opacity-40" />
-              <div className="w-5 h-5 rounded-full bg-cyan-400 border-4 border-black shadow-[0_0_25px_rgba(34,211,238,1)]" />
+              <AnimeShape type="radar" size={56} color="#22d3ee" className="mb-1" />
             </div>
           </div>
 
@@ -315,9 +319,9 @@ export default function TransitJourneyMap() {
           
           <div className="w-full lg:w-[72%] xl:w-[65%] lg:mr-auto">
             
-            {/* Station Header Node */}
+            {/* Station Header Node with Anime.js Circuit Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
-              <div className="w-4 h-4 rounded-full bg-cyan-400 border-2 border-black shadow-[0_0_15px_rgba(34,211,238,0.9)] shrink-0 lg:-ml-2" />
+              <AnimeShape type="circuit-node" size={28} color="#38bdf8" className="shrink-0 lg:-ml-1" />
               <span className="text-xs sm:text-sm font-mono tracking-widest text-cyan-400 uppercase font-bold">
                 {dict.hud.transit.wp01}
               </span>
@@ -404,9 +408,9 @@ export default function TransitJourneyMap() {
         <section id="projects" className="relative pl-10 sm:pl-14 lg:pl-0">
           <div className="w-full lg:w-[85%] xl:w-[80%] lg:ml-auto">
             
-            {/* Station Header Node */}
+            {/* Station Header Node with Anime.js Target Reticle */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
-              <div className="w-4 h-4 rounded-full bg-cyan-400 border-2 border-black shadow-[0_0_15px_rgba(34,211,238,0.9)] shrink-0 lg:-ml-2" />
+              <AnimeShape type="target" size={28} color="#22d3ee" className="shrink-0 lg:-ml-1" />
               <span className="text-xs sm:text-sm font-mono tracking-widest text-cyan-400 uppercase font-bold">
                 {dict.hud.transit.wp02}
               </span>
@@ -508,9 +512,9 @@ export default function TransitJourneyMap() {
         <section id="gateway" className="relative pl-10 sm:pl-14 lg:pl-0">
           <div className="w-full lg:w-[76%] xl:w-[70%] lg:ml-[6%]">
             
-            {/* Station Header Node */}
+            {/* Station Header Node with Anime.js Circuit Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
-              <div className="w-4 h-4 rounded-full bg-cyan-400 border-2 border-black shadow-[0_0_15px_rgba(34,211,238,0.9)] shrink-0 lg:-ml-2" />
+              <AnimeShape type="circuit-node" size={28} color="#34d399" className="shrink-0 lg:-ml-1" />
               <span className="text-xs sm:text-sm font-mono tracking-widest text-cyan-400 uppercase font-bold">
                 {dict.hud.transit.wp03}
               </span>
@@ -605,9 +609,9 @@ export default function TransitJourneyMap() {
         <section id="experience" className="relative pl-10 sm:pl-14 lg:pl-0">
           <div className="w-full lg:w-[88%] xl:w-[84%] lg:mx-auto">
             
-            {/* Station Header Node */}
+            {/* Station Header Node with Anime.js Radar Shape */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
-              <div className="w-4 h-4 rounded-full bg-cyan-400 border-2 border-black shadow-[0_0_15px_rgba(34,211,238,0.9)] shrink-0 lg:-ml-2" />
+              <AnimeShape type="radar" size={28} color="#22d3ee" className="shrink-0 lg:-ml-1" />
               <span className="text-xs sm:text-sm font-mono tracking-widest text-cyan-400 uppercase font-bold">
                 {dict.hud.transit.wp04}
               </span>
@@ -684,9 +688,9 @@ export default function TransitJourneyMap() {
             <span className="px-3.5 py-1 rounded-full bg-emerald-950/40 border border-emerald-800/40 text-[10px] sm:text-xs font-mono tracking-widest text-emerald-400 uppercase mb-3 font-bold">
               {dict.hud.transit.wp05}
             </span>
+            {/* Anime.js Beacon Shape */}
             <div className="relative flex items-center justify-center">
-              <span className="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-emerald-400 opacity-40" />
-              <div className="w-5 h-5 rounded-full bg-emerald-400 border-4 border-black shadow-[0_0_25px_rgba(52,211,153,1)]" />
+              <AnimeShape type="beacon" size={48} color="#34d399" className="mb-1" />
             </div>
           </div>
 
