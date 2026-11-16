@@ -13,6 +13,7 @@ import AnimeCircuit from "./AnimeCircuit";
 import GlitchAvatar from "./GlitchAvatar";
 import GlitchReveal from "./GlitchReveal";
 import FloatingDock from "./FloatingDock";
+import { MobileFooterNavbarSlot } from "./Navbar";
 
 const cvOptions = [
   { code: "ID", label: "Bahasa Indonesia", flag: "🇮🇩", file: "/CV_Miftakhul_Ilmi_ID.pdf", filename: "CV_Miftakhul_Ilmi_ID.pdf" },
@@ -938,8 +939,9 @@ export default function TransitJourneyMap() {
           </GlitchReveal>
         </section>
 
-        {/* ── UNIFIED FLOATING DOCK (Floats bottom-right while scrolling, locks right above footer) ── */}
+        {/* ── UNIFIED FLOATING DOCK (Desktop/Tablet) & MOBILE FOOTER NAVBAR SLOT ── */}
         <FloatingDock />
+        <MobileFooterNavbarSlot />
 
       </main>
 
