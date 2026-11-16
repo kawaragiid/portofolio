@@ -46,26 +46,19 @@ export default function KeyboardShortcuts() {
       }
     };
 
+    const handleToggleShortcuts = () => setIsOpen((prev) => !prev);
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("toggle-shortcuts", handleToggleShortcuts);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("toggle-shortcuts", handleToggleShortcuts);
+    };
   }, [lang, setLang]);
 
   if (!isClient) return null;
 
   return (
     <>
-      {/* Tombol Bantuan Shortcut Kecil di Pojok Bawah */}
-      <div className="fixed bottom-6 right-24 z-[9996] hidden lg:block">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 text-gray-400 hover:text-white px-3 py-1.5 rounded-full text-[10px] font-mono tracking-wider flex items-center gap-1.5 transition-colors shadow-lg"
-          aria-label="Pintasan Keyboard"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-          <span>[?] Shortcuts</span>
-        </button>
-      </div>
-
       {/* Modal Panduan Keyboard Shortcuts */}
       <AnimatePresence>
         {isOpen && (

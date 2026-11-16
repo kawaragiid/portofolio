@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MusicWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDocked, setIsDocked] = useState(false);
 
   // ID Playlist YT Music
   const playlistId = "PL-W6TZk0nvH6YD_Fi1LtUxGxGVb7F5sYj";
@@ -16,21 +15,9 @@ export default function MusicWidget() {
     window.addEventListener("toggle-music", handleToggle);
     window.addEventListener("close-all-modals", handleClose);
 
-    const handleScroll = () => {
-      const terminus = document.getElementById("terminus");
-      if (!terminus) return;
-      const rect = terminus.getBoundingClientRect();
-      const docked = rect.top < window.innerHeight - 80;
-      setIsDocked((prev) => (prev !== docked ? docked : prev));
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-
     return () => {
       window.removeEventListener("toggle-music", handleToggle);
       window.removeEventListener("close-all-modals", handleClose);
-      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -92,40 +79,6 @@ export default function MusicWidget() {
             className="rounded-b-2xl max-md:rounded-b-3xl"
           ></iframe>
         </div>
-      </motion.div>
-
-      {/* Tombol Trigger: Melayang di Desktop dan Mengunci (Dock) saat Mendekati Footer */}
-      <motion.div
-        animate={{
-          x: isDocked ? 24 : 0,
-          y: isDocked ? -12 : 0,
-          scale: isDocked ? 1.05 : 1,
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className={`fixed bottom-6 left-6 z-[9997] hidden md:flex flex-col items-start transition-opacity duration-300 ${
-          isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
-        }`}
-      >
-        <motion.button
-          type="button"
-          onClick={() => setIsOpen(true)}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className={`w-14 h-14 rounded-2xl flex flex-col items-center justify-center transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.7)] backdrop-blur-3xl ${
-            isDocked
-              ? "bg-cyan-950/80 border-2 border-cyan-400 text-cyan-300 shadow-[0_0_25px_rgba(34,211,238,0.6)]"
-              : "bg-black/70 border border-white/20 text-white hover:border-cyan-400/50"
-          }`}
-          aria-label="Buka Music Player"
-        >
-          <span className="text-lg">🎵</span>
-          {isDocked && (
-            <span className="text-[7px] font-mono tracking-widest text-cyan-300 font-bold -mt-0.5">
-              DOCKED
-            </span>
-          )}
-        </motion.button>
       </motion.div>
     </>
   );

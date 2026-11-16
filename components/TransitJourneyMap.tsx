@@ -11,6 +11,7 @@ import HudCorner from "./HudCorner";
 import AnimeShape from "./AnimeShape";
 import AnimeCircuit from "./AnimeCircuit";
 import GlitchAvatar from "./GlitchAvatar";
+import FloatingDock from "./FloatingDock";
 
 const cvOptions = [
   { code: "ID", label: "Bahasa Indonesia", flag: "🇮🇩", file: "/CV_Miftakhul_Ilmi_ID.pdf", filename: "CV_Miftakhul_Ilmi_ID.pdf" },
@@ -120,7 +121,7 @@ export default function TransitJourneyMap() {
   return (
     <div
       ref={mapContainerRef}
-      className="relative w-full min-h-screen bg-black text-gray-100 selection:bg-cyan-500/30 selection:text-white overflow-x-hidden font-sans pt-20 md:pt-24"
+      className="relative w-full min-h-screen bg-black text-gray-100 selection:bg-cyan-500/30 selection:text-white overflow-x-clip font-sans pt-20 md:pt-24"
     >
       {/* ── PURE OBSIDIAN BACKGROUND ── */}
       <div className="fixed inset-0 bg-black pointer-events-none z-0" />
@@ -174,8 +175,8 @@ export default function TransitJourneyMap() {
         </svg>
       </div>
 
-      {/* ── MOBILE METRO TRANSIT LINE (Smartphone) ── */}
-      <div className="absolute top-20 bottom-0 left-5 sm:left-8 w-[1px] bg-white/10 pointer-events-none z-10 lg:hidden">
+      {/* ── MOBILE METRO TRANSIT LINE (Smartphone & Tablet Portrait) ── */}
+      <div className="absolute top-20 bottom-0 left-3 sm:left-5 w-[1px] bg-white/10 pointer-events-none z-10 lg:hidden">
         {tier === "high" && (
           <motion.div
             className="w-full bg-cyan-400 origin-top shadow-[0_0_12px_rgba(34,211,238,0.9)]"
@@ -185,7 +186,7 @@ export default function TransitJourneyMap() {
       </div>
 
       {/* ── EXPANSIVE FULL-WIDTH JOURNEY CANVAS ── */}
-      <main className="relative z-20 w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-28 py-8 md:py-16 space-y-28 md:space-y-44">
+      <main className="relative z-20 w-full px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 2xl:px-28 pt-4 pb-6 md:pt-10 md:pb-8 space-y-16 sm:space-y-24 lg:space-y-36">
 
         {/* ════════════════════════════════════════════════════════════════════════
             WAYPOINT 00 // ORIGIN (Profile & Core Identity)
@@ -707,55 +708,123 @@ export default function TransitJourneyMap() {
 
 
         {/* ════════════════════════════════════════════════════════════════════════
-            WAYPOINT 05 // TERMINUS (Contact & Quick Connect)
-            Position: Full-Width Centered
+            WAYPOINT 05 // TERMINUS (Hubungi Saya — Clean & Balanced Layout)
         ════════════════════════════════════════════════════════════════════════ */}
-        <section id="terminus" className="relative flex flex-col items-center pt-8">
+        <section id="terminus" className="relative pt-4 sm:pt-8">
           <div id="contact" className="absolute -top-24 pointer-events-none" />
 
-          {/* Station Beacon Node */}
-          <div className="relative mb-6 flex flex-col items-center">
-            <span className="px-3.5 py-1 rounded-full bg-emerald-950/50 border border-emerald-700/50 text-xs font-mono tracking-widest text-emerald-300 uppercase mb-3 font-bold">
-              {dict.hud.transit.wp05}
-            </span>
-            <div className="relative flex items-center justify-center">
-              <AnimeShape type="beacon" size={48} color="#34d399" className="mb-1" />
-            </div>
-          </div>
-
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.6 }}
-            className="w-full max-w-5xl"
+            transition={{ duration: 0.55 }}
+            className="w-full max-w-6xl mx-auto"
           >
-            <div className="text-center mb-10">
+            {/* Clean Section Header */}
+            <div className="flex flex-col items-center text-center mb-8 sm:mb-12">
+              <div className="flex items-center gap-2.5 mb-3">
+                <span className="px-3.5 py-1 rounded-full bg-emerald-950/50 border border-emerald-700/50 text-xs font-mono tracking-widest text-emerald-300 uppercase font-bold">
+                  {dict.hud.transit.wp05}
+                </span>
+                <AnimeShape type="beacon" size={32} color="#34d399" />
+              </div>
+
               <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white mb-3">
                 {dict.contact.title}
               </h2>
-              <p className="text-base sm:text-lg text-gray-200 font-normal max-w-xl mx-auto">
+              <p className="text-sm sm:text-base md:text-lg text-gray-200 font-normal max-w-xl mx-auto">
                 {dict.contact.desc}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8">
+            {/* Balanced 12-Column Contact Hub */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
               
-              {/* Direct Mail Dispatch (7 cols) */}
-              <div className="md:col-span-7 relative bg-white/[0.03] border border-white/15 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)]">
+              {/* Left Column (5 cols): Direct Contact Channels */}
+              <div className="lg:col-span-5 flex flex-col justify-between gap-4">
+                
+                {/* 1-Click Copy Email Card */}
+                <div
+                  onClick={copyToClipboard}
+                  className="touch-interactive relative cursor-pointer bg-white/[0.03] hover:bg-white/[0.06] border border-white/15 hover:border-cyan-400/50 rounded-2xl p-6 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all group"
+                >
+                  <HudCorner />
+
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-mono text-cyan-300 uppercase tracking-wider font-bold">
+                      {dict.contact.copyTitle}
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-cyan-500/15 border border-cyan-400/30 text-xs font-mono text-cyan-200 font-semibold group-hover:bg-cyan-500/25 transition-colors">
+                      {copied ? "✓ TERSALIN" : "📋 SALIN"}
+                    </span>
+                  </div>
+
+                  <div className="text-lg sm:text-xl font-mono font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
+                    {myEmail}
+                  </div>
+
+                  <p className="mt-2 text-xs sm:text-sm text-gray-300">
+                    {copied ? (
+                      <span className="text-emerald-400 font-semibold">{dict.contact.copiedText}</span>
+                    ) : (
+                      <span>{dict.contact.copyText}</span>
+                    )}
+                  </p>
+                </div>
+
+                {/* Upwork & Location Split */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 flex-1">
+                  <a
+                    href={upworkLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="touch-interactive relative p-5 sm:p-6 rounded-2xl bg-white/[0.03] hover:bg-[#14a800]/15 border border-white/15 hover:border-[#14a800]/60 transition-all group flex flex-col justify-center"
+                  >
+                    <div className="text-xs font-mono text-gray-300 uppercase mb-1.5 font-semibold">
+                      {dict.contact.freelance}
+                    </div>
+                    <div className="text-xl font-bold text-white group-hover:text-[#14a800] transition-colors flex items-center justify-between">
+                      <span>Upwork</span>
+                      <span className="text-sm opacity-75 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      Profil Freelancer Resmi
+                    </div>
+                  </a>
+
+                  <div className="relative p-5 sm:p-6 rounded-2xl bg-white/[0.03] border border-white/15 flex flex-col justify-center">
+                    <div className="text-xs font-mono text-gray-300 uppercase mb-1.5 font-semibold">
+                      {dict.contact.location}
+                    </div>
+                    <div className="text-xl font-bold text-white">
+                      Surabaya, ID
+                    </div>
+                    <div className="text-xs text-emerald-400 font-mono font-semibold mt-1 flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Remote Ready</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Column (7 cols): Direct Mail Form */}
+              <div className="lg:col-span-7 relative bg-white/[0.03] border border-white/15 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)]">
                 <HudCorner />
 
-                <div className="flex items-center justify-between mb-5 pb-2 border-b border-white/10">
-                  <span className="text-xs font-mono text-cyan-300 uppercase tracking-wider font-bold">
+                <div className="flex items-center justify-between mb-5 pb-3 border-b border-white/10">
+                  <span className="text-sm font-bold text-white tracking-wide">
                     {dict.contact.quickMessage}
                   </span>
-                  <span className="text-xs font-mono text-gray-300">EMAIL FORM</span>
+                  <span className="text-xs font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-2.5 py-0.5 rounded-md">
+                    DIRECT EMAIL
+                  </span>
                 </div>
 
                 <form onSubmit={handleSendMessage} className="space-y-4">
                   <div>
                     <label className="block text-xs sm:text-sm font-mono text-gray-200 uppercase font-semibold mb-1.5">
-                      EMAIL PENGIRIM:
+                      Email Pengirim
                     </label>
                     <input
                       type="email"
@@ -769,10 +838,10 @@ export default function TransitJourneyMap() {
 
                   <div>
                     <label className="block text-xs sm:text-sm font-mono text-gray-200 uppercase font-semibold mb-1.5">
-                      PESAN:
+                      Pesan
                     </label>
                     <textarea
-                      rows={3}
+                      rows={4}
                       required
                       placeholder={dict.contact.msgPlaceholder}
                       value={message}
@@ -782,88 +851,22 @@ export default function TransitJourneyMap() {
                   </div>
 
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.96 }}
+                    whileHover={tier === "high" ? { scale: 1.01 } : undefined}
+                    whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="w-full py-3.5 rounded-xl bg-white text-black hover:bg-cyan-300 font-bold text-sm tracking-wider uppercase transition-colors shadow-[0_0_20px_rgba(255,255,255,0.25)]"
+                    className="w-full py-3.5 rounded-xl bg-white text-black hover:bg-cyan-300 font-bold text-sm tracking-wider uppercase transition-colors shadow-[0_0_20px_rgba(255,255,255,0.2)]"
                   >
                     {dict.contact.btnSend}
                   </motion.button>
                 </form>
               </div>
 
-              {/* Quick Connect & Upwork (5 cols) */}
-              <div className="md:col-span-5 flex flex-col gap-4">
-                
-                {/* 1-Click Copy Email */}
-                <div
-                  onClick={copyToClipboard}
-                  className="relative cursor-pointer bg-white/[0.03] hover:bg-white/[0.06] border border-white/15 hover:border-cyan-400/50 rounded-2xl p-6 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all group"
-                >
-                  <HudCorner />
-
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-mono text-gray-300 uppercase tracking-wider font-semibold">
-                      {dict.contact.copyTitle}
-                    </span>
-                    <span className="text-xs font-mono text-cyan-300 font-bold group-hover:translate-x-1 transition-transform">
-                      📋 SALIN
-                    </span>
-                  </div>
-
-                  <div className="text-lg sm:text-xl font-mono font-bold text-white group-hover:text-cyan-300 transition-colors truncate">
-                    {myEmail}
-                  </div>
-
-                  <div className="mt-2 text-xs">
-                    {copied ? (
-                      <span className="text-emerald-400 font-mono font-bold flex items-center gap-1">
-                        {dict.contact.copiedText}
-                      </span>
-                    ) : (
-                      <span className="text-gray-300 font-mono text-xs">
-                        {dict.contact.copyText}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Upwork & Location Split */}
-                <div className="grid grid-cols-2 gap-3 flex-1">
-                  <a
-                    href={upworkLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative p-5 rounded-2xl bg-white/[0.03] hover:bg-[#14a800]/15 border border-white/15 hover:border-[#14a800]/60 transition-colors text-center group flex flex-col justify-center"
-                  >
-                    <div className="text-xs font-mono text-gray-300 uppercase mb-1 font-semibold">
-                      {dict.contact.freelance}
-                    </div>
-                    <div className="text-lg font-bold text-white group-hover:text-[#14a800] transition-colors flex items-center justify-center gap-1">
-                      <span>Upwork</span>
-                      <span className="text-xs">↗</span>
-                    </div>
-                  </a>
-
-                  <div className="relative p-5 rounded-2xl bg-white/[0.03] border border-white/15 text-center flex flex-col justify-center">
-                    <div className="text-xs font-mono text-gray-300 uppercase mb-1 font-semibold">
-                      {dict.contact.location}
-                    </div>
-                    <div className="text-lg font-bold text-white">
-                      Surabaya, ID
-                    </div>
-                    <div className="text-xs text-emerald-400 font-mono font-semibold mt-0.5">
-                      ● Remote Ready
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
             </div>
-
           </motion.div>
         </section>
+
+        {/* ── UNIFIED FLOATING DOCK (Floats bottom-right while scrolling, locks right above footer) ── */}
+        <FloatingDock />
 
       </main>
 

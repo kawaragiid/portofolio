@@ -9,7 +9,6 @@ export default function HiddenTerminal() {
   const t = dict.terminal;
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isDocked, setIsDocked] = useState(false);
 
   const [hasBooted, setHasBooted] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -55,33 +54,15 @@ export default function HiddenTerminal() {
     };
     const handleClose = () => setIsOpen(false);
 
-    const handleScroll = () => {
-      const terminus = document.getElementById("terminus");
-      if (!terminus) return;
-      const rect = terminus.getBoundingClientRect();
-      const docked = rect.top < window.innerHeight - 80;
-      setIsDocked((prev) => (prev !== docked ? docked : prev));
-    };
-
     window.addEventListener("toggle-terminal", handleToggle);
     window.addEventListener("close-all-modals", handleClose);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
 
     return () => {
       window.removeEventListener("toggle-terminal", handleToggle);
       window.removeEventListener("close-all-modals", handleClose);
-      window.removeEventListener("scroll", handleScroll);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasBooted]);
-
-  const handleOpenTerminal = () => {
-    setIsOpen(true);
-    if (!hasBooted) {
-      startBootSequence();
-    }
-  };
 
   const handleCommand = (cmd: string) => {
     if (isTyping || !cmd.trim()) return;
@@ -250,40 +231,6 @@ export default function HiddenTerminal() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Tombol Trigger: Melayang di Desktop dan Mengunci (Dock) saat Mendekati Footer */}
-      <motion.div
-        animate={{
-          x: isDocked ? -24 : 0,
-          y: isDocked ? -12 : 0,
-          scale: isDocked ? 1.05 : 1,
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className={`fixed bottom-6 right-6 z-[9997] hidden md:flex flex-col items-end transition-opacity duration-300 ${
-          isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
-        }`}
-      >
-        <motion.button
-          type="button"
-          onClick={handleOpenTerminal}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className={`w-14 h-14 rounded-2xl flex flex-col items-center justify-center transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.7)] backdrop-blur-3xl ${
-            isDocked
-              ? "bg-cyan-950/80 border-2 border-cyan-400 text-cyan-300 shadow-[0_0_25px_rgba(34,211,238,0.6)]"
-              : "bg-black/70 border border-white/20 text-cyan-400 hover:border-cyan-400/50"
-          }`}
-          aria-label="Buka Terminal AI"
-        >
-          <span className="font-mono font-bold text-sm">{">_"}</span>
-          {isDocked && (
-            <span className="text-[7px] font-mono tracking-widest text-cyan-300 font-bold -mt-0.5">
-              LOCKED
-            </span>
-          )}
-        </motion.button>
-      </motion.div>
     </>
   );
 }

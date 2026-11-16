@@ -6,7 +6,7 @@ import KeyboardShortcuts from "../components/KeyboardShortcuts";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black text-gray-50 font-sans selection:bg-cyan-500/30 selection:text-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-black text-gray-50 font-sans selection:bg-cyan-500/30 selection:text-white relative overflow-x-clip">
       {/* Navigasi Utama */}
       <Navbar />
 

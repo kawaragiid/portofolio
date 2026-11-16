@@ -91,13 +91,13 @@ export default function Navbar() {
         layout={tier === "high"}
         className="pointer-events-auto w-full max-w-7xl bg-[#08090d]/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_15px_45px_rgba(0,0,0,0.8)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all"
       >
-        <div className="px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
+        <div className="px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sm:gap-4">
           
           {/* Left: Branding & Telemetry */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
             <Link
               href="#origin"
-              className="text-sm sm:text-base font-black tracking-tight text-white flex items-center gap-1.5 group"
+              className="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-1 group"
             >
               <span>ILMI</span>
               <span className="text-cyan-400 group-hover:animate-ping inline-block">.</span>
@@ -106,18 +106,18 @@ export default function Navbar() {
             <span className="text-white/20 hidden sm:inline">|</span>
 
             {/* Screen Resolution Telemetry Badge */}
-            <span className="hidden xl:inline-flex items-center px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] font-mono text-cyan-300">
+            <span className="hidden 2xl:inline-flex items-center px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono text-cyan-300">
               {screen.displayStr}
             </span>
 
-            <span className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded">
+            <span className="flex items-center gap-1.5 text-[11px] sm:text-xs font-mono font-semibold text-emerald-300 bg-emerald-950/50 border border-emerald-700/50 px-2.5 py-0.5 rounded-md">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="hidden sm:inline">ONLINE</span>
             </span>
           </div>
 
-          {/* Center: Desktop Waypoint Navigation Stations */}
-          <div className="hidden lg:flex items-center space-x-1 font-mono text-[11px]">
+          {/* Center: Desktop Waypoint Navigation Stations (Readable & Clean) */}
+          <div className="hidden lg:flex items-center space-x-1 font-mono text-xs xl:text-sm">
             {stations.map((st) => {
               const isActive = activeSection === st.id;
 
@@ -125,10 +125,10 @@ export default function Navbar() {
                 <Link
                   key={st.id}
                   href={st.href}
-                  className={`px-3 py-1 rounded-lg transition-all relative ${
+                  className={`px-3 xl:px-3.5 py-1.5 rounded-xl transition-all relative whitespace-nowrap ${
                     isActive
-                      ? "text-cyan-300 font-bold bg-cyan-500/10 border border-cyan-400/30 shadow-[0_0_10px_rgba(34,211,238,0.2)]"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                      ? "text-cyan-200 font-bold bg-cyan-500/15 border border-cyan-400/40 shadow-[0_0_12px_rgba(34,211,238,0.2)]"
+                      : "text-gray-300 hover:text-white hover:bg-white/10 font-medium"
                   }`}
                 >
                   {st.label}
@@ -137,25 +137,25 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Right: Clock, Language, Quick Triggers & Mobile Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Right: Clock, Language, Mobile Quick Triggers & Hamburger */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             
             {/* Live Surabaya Clock */}
-            <div className="hidden sm:flex items-center gap-1 font-mono text-[11px] text-gray-300 bg-black/50 px-2.5 py-1 rounded-lg border border-white/10">
-              <span className="text-cyan-400 text-[10px]">WIB:</span>
-              <span>{timeStr || "--:--:--"}</span>
+            <div className="hidden md:flex items-center gap-1.5 font-mono text-xs text-gray-200 bg-black/60 px-3 py-1.5 rounded-xl border border-white/15">
+              <span className="text-cyan-400 font-bold">WIB</span>
+              <span className="font-semibold">{timeStr || "--:--:--"}</span>
             </div>
 
             {/* Language HUD Selector */}
-            <div className="flex p-0.5 rounded-lg bg-black/60 border border-white/10">
+            <div className="flex p-0.5 rounded-xl bg-black/60 border border-white/15">
               {languages.map((l) => (
                 <button
                   key={l}
                   onClick={() => handleLanguageChange(l)}
-                  className={`px-2 py-0.5 text-[10px] font-mono rounded transition-colors ${
+                  className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-colors ${
                     lang === l
-                      ? "bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-400/30"
-                      : "text-gray-400 hover:text-white"
+                      ? "bg-cyan-500/25 text-cyan-200 font-bold border border-cyan-400/40"
+                      : "text-gray-300 hover:text-white"
                   }`}
                 >
                   {l}
@@ -163,12 +163,12 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Quick Action Triggers (Music & Terminal) */}
-            <div className="flex items-center gap-1 sm:gap-1.5">
+            {/* Quick Action Triggers (Only on Mobile/Tablet; on Wide Screen they live in the bottom-right Dock) */}
+            <div className="flex lg:hidden items-center gap-1">
               <button
                 type="button"
                 onClick={toggleMusic}
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center text-xs text-white transition-all active:scale-90"
+                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center text-xs text-white transition-all active:scale-90"
                 aria-label="Toggle Audio Player"
                 title="Buka Audio Playlist"
               >
@@ -177,7 +177,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={toggleTerminal}
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center font-mono text-[11px] font-bold text-cyan-400 transition-all active:scale-90"
+                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center font-mono text-xs font-bold text-cyan-400 transition-all active:scale-90"
                 aria-label="Toggle AI Terminal"
                 title="Buka AI Terminal"
               >

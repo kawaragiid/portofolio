@@ -75,7 +75,7 @@ export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
       />
 
       {/* Frame Container */}
-      <div className="relative w-64 sm:w-72 md:w-80 aspect-[3/4] rounded-2xl overflow-hidden border border-white/20 bg-[#08090d] shadow-[0_20px_50px_rgba(0,0,0,0.9)] transition-colors duration-500 group-hover:border-cyan-400/60">
+      <div className="relative w-56 sm:w-64 md:w-72 lg:w-80 aspect-[3/4] rounded-2xl overflow-hidden border border-white/20 bg-[#08090d] shadow-[0_20px_50px_rgba(0,0,0,0.9)] transition-colors duration-500 group-hover:border-cyan-400/60">
         
         {/* Base Photo Image with Filter Transitions */}
         <div

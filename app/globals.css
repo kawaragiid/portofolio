@@ -17,6 +17,8 @@
 body {
   background-color: #000000;
   color: #ffffff;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* Animasi untuk efek Liquid Background */
@@ -37,15 +39,22 @@ body {
   100% { transform: translate(0px, 0px) scale(1); }
 }
 
-/* Matikan cursor bawaan hanya pada desktop spek tinggi dengan fine pointer */
-@media (hover: hover) and (pointer: fine) {
-  html[data-perf="high"],
-  html[data-perf="high"] body,
-  html[data-perf="high"] *,
-  html[data-perf="high"] *::before,
-  html[data-perf="high"] *::after {
-    cursor: none !important;
-  }
+/* Matikan cursor bawaan hanya pada device spek tinggi yang terdeteksi memakai mouse/trackpad (PC, iPadOS/Tablet + Mouse) */
+html[data-perf="high"][data-pointer="mouse"],
+html[data-perf="high"][data-pointer="mouse"] body,
+html[data-perf="high"][data-pointer="mouse"] *,
+html[data-perf="high"][data-pointer="mouse"] *::before,
+html[data-perf="high"][data-pointer="mouse"] *::after {
+  cursor: none !important;
+}
+
+/* Tactile Touch Feedback untuk iPadOS, Tablet Android, iOS & HP tanpa mouse */
+html[data-pointer="touch"] button:active,
+html[data-pointer="touch"] a:active,
+html[data-pointer="touch"] .touch-interactive:active {
+  transform: scale(0.97);
+  transition: transform 0.12s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.12s ease;
+  box-shadow: 0 0 22px rgba(34, 211, 238, 0.25);
 }
 
 /* Optimasi GPU untuk HP spek menengah/rendah (mis. Redmi Note 9 / Mali-G52):

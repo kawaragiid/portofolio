@@ -1,32 +1,12 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { usePerformance } from "./PerformanceProvider";
 
-function subscribePointer(callback: () => void) {
-  const media = window.matchMedia("(pointer: coarse)");
-  media.addEventListener("change", callback);
-  return () => media.removeEventListener("change", callback);
-}
-
-function getPointerSnapshot() {
-  return window.matchMedia("(pointer: coarse)").matches;
-}
-
-function getServerPointerSnapshot() {
-  return true;
-}
-
 export default function CustomCursor() {
-  const { tier } = usePerformance();
-  const isMobile = useSyncExternalStore(
-    subscribePointer,
-    getPointerSnapshot,
-    getServerPointerSnapshot
-  );
-
-  const isDisabled = isMobile || tier === "low";
+  const { tier, hasMouse } = usePerformance();
+  const isDisabled = !hasMouse || tier === "low";
 
   const [isHovering, setIsHovering] = useState(false);
   const [isMouseDown, setIsMouseDown] = useState(false);
