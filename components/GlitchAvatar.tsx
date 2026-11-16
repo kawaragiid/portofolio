@@ -2,51 +2,66 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { usePerformance } from "./PerformanceProvider";
 
 interface GlitchAvatarProps {
   className?: string;
 }
 
 export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
-  const { tier } = usePerformance();
   // Phase: "grayscale" (initial) -> "glitching" (active on scroll) -> "color" (normal color revealed)
   const [phase, setPhase] = useState<"grayscale" | "glitching" | "color">("grayscale");
+  const containerRef = useRef<HTMLDivElement>(null);
   const glitchTimerRef = useRef<NodeJS.Timeout | null>(null);
   const hasTriggeredRef = useRef(false);
+  const isInViewRef = useRef(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const triggerReveal = () => {
+      if (hasTriggeredRef.current) return;
+      hasTriggeredRef.current = true;
+      setPhase("glitching");
+
+      if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
+      glitchTimerRef.current = setTimeout(() => {
+        setPhase("color");
+      }, 650);
+    };
+
+    const checkTrigger = () => {
       const scrollY = window.scrollY;
-
-      // Scroll a little bit (> 30px) triggers the glitch into full color
-      if (scrollY > 30) {
-        if (!hasTriggeredRef.current) {
-          hasTriggeredRef.current = true;
-          setPhase("glitching");
-
-          if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
-          glitchTimerRef.current = setTimeout(() => {
-            setPhase("color");
-          }, 650);
-        }
+      if (scrollY > 25 && isInViewRef.current) {
+        triggerReveal();
       } else if (scrollY < 8) {
-        // Reset when user scrolls all the way back to the top
         hasTriggeredRef.current = false;
         setPhase("grayscale");
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    const el = containerRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isInViewRef.current = entry.isIntersecting;
+        if (entry.isIntersecting && window.scrollY > 25) {
+          triggerReveal();
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    if (el) observer.observe(el);
+
+    window.addEventListener("scroll", checkTrigger, { passive: true });
+    checkTrigger();
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+      window.removeEventListener("scroll", checkTrigger);
       if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
     };
   }, []);
 
   const triggerManualGlitch = () => {
+    hasTriggeredRef.current = true;
     setPhase("glitching");
     if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
     glitchTimerRef.current = setTimeout(() => {
@@ -59,6 +74,7 @@ export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
 
   return (
     <div
+      ref={containerRef}
       onClick={triggerManualGlitch}
       className={`relative inline-block select-none group cursor-pointer ${className}`}
       title="Scroll untuk reveal warna / klik untuk efek glitch"
@@ -81,24 +97,24 @@ export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
         <div
           className={`relative w-full h-full transition-all duration-700 ease-out ${
             isColor
-              ? "filter-none brightness-100 contrast-100 scale-100"
+              ? "grayscale-0 brightness-100 contrast-100 scale-100"
               : isGlitching
-              ? "filter contrast-150 brightness-115 scale-[1.02]"
-              : "filter grayscale brightness-90 contrast-125 scale-100"
+              ? "grayscale-0 contrast-150 brightness-115 scale-[1.03]"
+              : "grayscale brightness-90 contrast-125 scale-100"
           }`}
         >
           <Image
             src="/images/avatar-transit.jpg"
             alt="Miftakhul Ilmi"
             fill
-            sizes="(max-width: 640px) 256px, (max-width: 768px) 288px, 320px"
+            sizes="(max-width: 640px) 224px, (max-width: 768px) 256px, 320px"
             priority
             className="object-cover object-top"
           />
         </div>
 
-        {/* Dynamic Glitch Chromatic Aberration Layers (when glitching) */}
-        {isGlitching && tier !== "low" && (
+        {/* Dynamic Glitch Chromatic Aberration Layers (Enabled on ALL devices including smartphones) */}
+        {isGlitching && (
           <>
             {/* Cyan Glitch Slice */}
             <div
@@ -113,7 +129,7 @@ export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
                 alt=""
                 fill
                 sizes="320px"
-                className="object-cover object-top filter hue-rotate-90 saturate-200"
+                className="object-cover object-top hue-rotate-90 saturate-200"
               />
             </div>
 
@@ -130,7 +146,7 @@ export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
                 alt=""
                 fill
                 sizes="320px"
-                className="object-cover object-top filter hue-rotate-270 saturate-200"
+                className="object-cover object-top hue-rotate-270 saturate-200"
               />
             </div>
 

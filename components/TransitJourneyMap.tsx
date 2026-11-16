@@ -176,13 +176,11 @@ export default function TransitJourneyMap() {
       </div>
 
       {/* ── MOBILE METRO TRANSIT LINE (Smartphone & Tablet Portrait) ── */}
-      <div className="absolute top-20 bottom-0 left-3 sm:left-5 w-[1px] bg-white/10 pointer-events-none z-10 lg:hidden">
-        {tier === "high" && (
-          <motion.div
-            className="w-full bg-cyan-400 origin-top shadow-[0_0_12px_rgba(34,211,238,0.9)]"
-            style={{ scaleY: smoothProgress, height: "100%" }}
-          />
-        )}
+      <div className="absolute top-20 bottom-0 left-3 sm:left-5 w-[2px] bg-white/10 pointer-events-none z-10 lg:hidden">
+        <motion.div
+          className="w-full bg-gradient-to-b from-cyan-400 via-sky-400 to-emerald-400 origin-top shadow-[0_0_10px_rgba(34,211,238,0.85)]"
+          style={{ scaleY: smoothProgress, height: "100%" }}
+        />
       </div>
 
       {/* ── EXPANSIVE FULL-WIDTH JOURNEY CANVAS ── */}
