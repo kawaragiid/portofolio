@@ -5,12 +5,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MusicWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [hasOpened, setHasOpened] = useState(false);
 
   // ID Playlist YT Music
   const playlistId = "PL-W6TZk0nvH6YD_Fi1LtUxGxGVb7F5sYj";
 
   useEffect(() => {
-    const handleToggle = () => setIsOpen((prev) => !prev);
+    const handleToggle = () => {
+      setIsOpen((prev) => {
+        const next = !prev;
+        if (next) setHasOpened(true);
+        return next;
+      });
+    };
     const handleClose = () => setIsOpen(false);
     window.addEventListener("toggle-music", handleToggle);
     window.addEventListener("close-all-modals", handleClose);
@@ -68,16 +75,18 @@ export default function MusicWidget() {
             Pilih lagu di pojok kanan ↗
           </div>
 
-          <iframe
-            width="100%"
-            height="280"
-            src={`https://www.youtube.com/embed/videoseries?list=${playlistId}`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="rounded-b-2xl max-md:rounded-b-3xl"
-          ></iframe>
+          {hasOpened && (
+            <iframe
+              width="100%"
+              height="280"
+              src={`https://www.youtube.com/embed/videoseries?list=${playlistId}`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="rounded-b-2xl max-md:rounded-b-3xl"
+            ></iframe>
+          )}
         </div>
       </motion.div>
     </>

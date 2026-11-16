@@ -26,7 +26,6 @@ export default function TransitJourneyMap() {
 
   const [cvMenuOpen, setCvMenuOpen] = useState(false);
   const [activeProjectModal, setActiveProjectModal] = useState<number | null>(null);
-  const [activeSkillModal, setActiveSkillModal] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [senderEmail, setSenderEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -65,7 +64,6 @@ export default function TransitJourneyMap() {
     const handleCloseAll = () => {
       setCvMenuOpen(false);
       setActiveProjectModal(null);
-      setActiveSkillModal(null);
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -78,7 +76,7 @@ export default function TransitJourneyMap() {
 
   // Lock scroll when modal is active
   useEffect(() => {
-    if (activeProjectModal !== null || activeSkillModal !== null) {
+    if (activeProjectModal !== null) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -86,7 +84,7 @@ export default function TransitJourneyMap() {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [activeProjectModal, activeSkillModal]);
+  }, [activeProjectModal]);
 
   const copyToClipboard = () => {
     if (typeof window !== "undefined" && navigator.vibrate) {
@@ -116,7 +114,6 @@ export default function TransitJourneyMap() {
   };
 
   const selectedProject = activeProjectModal !== null ? dict.projects.items[activeProjectModal] : null;
-  const selectedSkill = activeSkillModal !== null ? dict.expertise.items.find((item) => item.id === activeSkillModal) : null;
 
   return (
     <div
@@ -208,7 +205,7 @@ export default function TransitJourneyMap() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-800/40 text-xs font-mono text-emerald-300 font-semibold">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Aktif Mengajar &amp; Freelance</span>
+                  <span>{dict.hero.statusBadge}</span>
                 </span>
               </div>
 
@@ -219,46 +216,28 @@ export default function TransitJourneyMap() {
 
               {/* Core Role Badges */}
               <div className="text-base sm:text-lg md:text-xl font-semibold text-cyan-300 mb-6 flex flex-wrap items-center gap-2">
-                <span>Guru Ekstrakurikuler Coding @ SMP Pancasila</span>
+                <span>{dict.hero.role1}</span>
                 <span className="text-white/30 hidden sm:inline">•</span>
-                <span className="text-gray-200">Freelance Subtitler &amp; Video Editor</span>
+                <span className="text-gray-200">{dict.hero.role2}</span>
               </div>
 
               {/* High-Contrast Key Points Summary (Clean, Bold, Easy to Read) */}
               <div className="space-y-3.5 mb-8 bg-white/[0.03] border border-white/10 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
-                <div className="flex items-start gap-3">
-                  <span className="text-xl shrink-0 mt-0.5">🏫</span>
-                  <div>
-                    <div className="text-sm sm:text-base font-bold text-white">Edukasi Coding SMP Pancasila</div>
-                    <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
-                      Membimbing siswa kelas 7–9 memahami Web Dasar (HTML, CSS, JavaScript) &amp; Logika Python melalui modul praktik interaktif.
+                {dict.hero.highlights.map((hl, idx) => (
+                  <div key={idx} className="flex items-start gap-3">
+                    <span className="text-xl shrink-0 mt-0.5">{hl.icon}</span>
+                    <div>
+                      <div className="text-sm sm:text-base font-bold text-white">{hl.title}</div>
+                      <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                        {hl.desc}
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <span className="text-xl shrink-0 mt-0.5">🎬</span>
-                  <div>
-                    <div className="text-sm sm:text-base font-bold text-white">Lokalisasi Subtitle &amp; Video Editing</div>
-                    <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
-                      Penerjemahan kontekstual bahasa Inggris &amp; Jepang ke Indonesia (Subtitle Edit / Aegisub) serta editing video kreatif (CapCut Pro).
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <span className="text-xl shrink-0 mt-0.5">🌐</span>
-                  <div>
-                    <div className="text-sm sm:text-base font-bold text-white">Infrastruktur &amp; Workstation</div>
-                    <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
-                      Konfigurasi router OpenWrt untuk jaringan stabil dan PC Workstation AMD Ryzen untuk rendering multimedia.
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
 
               {/* Tactical Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="relative flex flex-wrap items-center gap-3">
                 <a
                   href="#academy"
                   className="bg-white text-black hover:bg-cyan-300 px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-[0_0_20px_rgba(255,255,255,0.25)] flex items-center gap-2"
@@ -268,7 +247,7 @@ export default function TransitJourneyMap() {
                 </a>
 
                 {/* CV Download Selector */}
-                <div ref={cvMenuRef} className="relative">
+                <div ref={cvMenuRef} className="sm:relative">
                   <button
                     type="button"
                     onClick={() => setCvMenuOpen((prev) => !prev)}
@@ -294,7 +273,7 @@ export default function TransitJourneyMap() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.96 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-72 bg-[#0c0d14] border border-white/20 rounded-xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] z-50 text-left"
+                        className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-[min(18rem,100%)] sm:w-72 bg-[#0c0d14] border border-white/20 rounded-xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] z-50 text-left"
                       >
                         <div className="px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-cyan-400 border-b border-white/10 mb-1 font-bold">
                           {dict.hero.cvSelectTitle}
@@ -338,7 +317,7 @@ export default function TransitJourneyMap() {
               <GlitchAvatar />
               <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-300">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                <span>Gulir sedikit untuk reveal warna normal</span>
+                <span>{dict.hero.scrollRevealHint}</span>
               </div>
             </motion.div>
 
@@ -362,7 +341,7 @@ export default function TransitJourneyMap() {
                 {dict.hud.transit.wp01}
               </span>
               <span className="text-white/20">/</span>
-              <span className="text-xs sm:text-sm font-mono text-emerald-400 font-semibold">SMP PANCASILA SURABAYA</span>
+              <span className="text-xs sm:text-sm font-mono text-emerald-400 font-semibold">{dict.sections.academy.orgBadge}</span>
             </div>
 
             {/* Expansive Card Container */}
@@ -378,40 +357,48 @@ export default function TransitJourneyMap() {
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
                 <div>
                   <div className="inline-block px-3 py-1 rounded-md bg-emerald-950/60 border border-emerald-700/60 text-xs font-mono text-emerald-300 font-bold mb-3">
-                    AKTIF MENGAJAR (2026 - SEKARANG)
+                    {dict.sections.academy.activeBadge}
                   </div>
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white mb-3">
-                    Guru Ekstrakurikuler Coding
+                    {dict.sections.academy.title}
                   </h2>
                   <p className="text-sm sm:text-base md:text-lg text-gray-100 leading-relaxed font-normal max-w-2xl">
-                    Membimbing siswa kelas 7–9 mempelajari dasar pemrograman web (HTML, CSS, JavaScript) dan pengenalan logika Python melalui modul interaktif dan sesi live coding terarah.
+                    {dict.sections.academy.desc}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap md:flex-col gap-2 shrink-0">
-                  <span className="px-3.5 py-1.5 rounded-lg bg-white/10 border border-white/20 text-xs sm:text-sm font-mono font-medium text-white">
-                    HTML5 &amp; CSS3
-                  </span>
-                  <span className="px-3.5 py-1.5 rounded-lg bg-white/10 border border-white/20 text-xs sm:text-sm font-mono font-medium text-white">
-                    JavaScript Dasar
-                  </span>
-                  <span className="px-3.5 py-1.5 rounded-lg bg-white/10 border border-white/20 text-xs sm:text-sm font-mono font-medium text-white">
-                    Logika Python
-                  </span>
-                  <span className="px-3.5 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-400/40 text-xs sm:text-sm font-mono font-semibold text-cyan-200">
-                    Modul Web Interaktif
-                  </span>
+                  {dict.sections.academy.tags.map((tag, idx) => (
+                    <span
+                      key={idx}
+                      className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-mono ${
+                        idx === dict.sections.academy.tags.length - 1
+                          ? "bg-cyan-500/20 border border-cyan-400/40 font-semibold text-cyan-200"
+                          : "bg-white/10 border border-white/20 font-medium text-white"
+                      }`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
 
               {/* Real Teaching Module Screenshot */}
               <div
+                role="button"
+                tabIndex={0}
                 onClick={() => setActiveProjectModal(3)}
-                className="group/mod relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-black/60 border border-white/15 hover:border-cyan-400/60 cursor-pointer transition-all"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveProjectModal(3);
+                  }
+                }}
+                className="touch-interactive group/mod relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-black/60 border border-white/15 hover:border-cyan-400/60 cursor-pointer transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
               >
                 <Image
                   src="/images/project-4.png"
-                  alt="Modul Materi Ekskul Coding SMP Pancasila"
+                  alt={dict.sections.academy.docTitle}
                   fill
                   className="object-cover opacity-85 group-hover/mod:opacity-100 group-hover/mod:scale-[1.02] transition-all duration-500"
                 />
@@ -419,14 +406,14 @@ export default function TransitJourneyMap() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-2">
                     <div>
                       <div className="text-xs font-mono text-cyan-300 uppercase font-semibold">
-                        DOKUMENTASI MODUL AJAR
+                        {dict.sections.academy.docLabel}
                       </div>
                       <div className="text-base sm:text-lg md:text-xl font-bold text-white">
-                        Materi Pekan 2 — Modul Web Dark Mode SMP Pancasila
+                        {dict.sections.academy.docTitle}
                       </div>
                     </div>
                     <span className="text-xs sm:text-sm font-mono text-cyan-300 font-semibold group-hover/mod:translate-x-1 transition-transform">
-                      Buka Gambar Penuh →
+                      {dict.sections.academy.docAction}
                     </span>
                   </div>
                 </div>
@@ -441,7 +428,7 @@ export default function TransitJourneyMap() {
             WAYPOINT 02 // STUDIO (Multilingual Localization & Video Production)
             Position: Far-Right Offset (Asymmetric Node 2)
         ════════════════════════════════════════════════════════════════════════ */}
-        <section id="projects" className="relative pl-10 sm:pl-14 lg:pl-0">
+        <section id="projects" className="relative pl-7 sm:pl-11 lg:pl-0">
           <div className="w-full lg:w-[85%] xl:w-[80%] lg:ml-auto">
             
             {/* Station Header Node */}
@@ -451,7 +438,7 @@ export default function TransitJourneyMap() {
                 {dict.hud.transit.wp02}
               </span>
               <span className="text-white/20">/</span>
-              <span className="text-xs sm:text-sm font-mono text-gray-300 font-semibold">SUBTITLING &amp; VIDEO PRODUCTION</span>
+              <span className="text-xs sm:text-sm font-mono text-gray-300 font-semibold">{dict.sections.studio.subBadge}</span>
             </div>
 
             {/* Asymmetric Dual Cards */}
@@ -459,30 +446,38 @@ export default function TransitJourneyMap() {
               
               {/* Work A: Subtitling */}
               <motion.div
+                role="button"
+                tabIndex={0}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6 }}
                 onClick={() => setActiveProjectModal(0)}
-                className="group relative bg-white/[0.03] border border-white/15 hover:border-cyan-500/50 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] cursor-pointer transition-all flex flex-col justify-between"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveProjectModal(0);
+                  }
+                }}
+                className="touch-interactive group relative bg-white/[0.03] border border-white/15 hover:border-cyan-500/50 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] cursor-pointer transition-all flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
               >
                 <HudCorner />
 
                 <div>
                   <div className="text-xs font-mono text-cyan-300 uppercase font-bold mb-2">
-                    LOKALISASI SUBTITLE (EN / JP → ID)
+                    {dict.sections.studio.card1Badge}
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors mb-2">
-                    Inggris &amp; Jepang ke Indonesia
+                    {dict.sections.studio.card1Title}
                   </h3>
                   <p className="text-sm sm:text-base text-gray-100 font-normal leading-relaxed mb-6">
-                    Penerjemahan kontekstual, penyelarasan timing dialog, dan hardcoding video (contoh serial Piece of Safe) dengan Subtitle Edit &amp; Aegisub.
+                    {dict.sections.studio.card1Desc}
                   </p>
                 </div>
 
                 <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black mb-4 border border-white/10">
                   <Image
-                    src="/images/project-1.png"
+                    src="/images/project-1.webp"
                     alt="Subtitle Edit Project Piece of Safe"
                     fill
                     className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
@@ -491,30 +486,38 @@ export default function TransitJourneyMap() {
 
                 <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-gray-300 pt-3 border-t border-white/10">
                   <span className="font-medium text-gray-200">Subtitle Edit • Aegisub</span>
-                  <span className="text-cyan-300 font-bold group-hover:translate-x-1 transition-transform">Lihat Detail →</span>
+                  <span className="text-cyan-300 font-bold group-hover:translate-x-1 transition-transform">{dict.sections.studio.viewDetail}</span>
                 </div>
               </motion.div>
 
               {/* Work B: Video Editing */}
               <motion.div
+                role="button"
+                tabIndex={0}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
                 onClick={() => setActiveProjectModal(1)}
-                className="group relative bg-white/[0.03] border border-white/15 hover:border-cyan-500/50 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] cursor-pointer transition-all flex flex-col justify-between lg:translate-y-8"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveProjectModal(1);
+                  }
+                }}
+                className="touch-interactive group relative bg-white/[0.03] border border-white/15 hover:border-cyan-500/50 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] cursor-pointer transition-all flex flex-col justify-between lg:translate-y-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
               >
                 <HudCorner />
 
                 <div>
                   <div className="text-xs font-mono text-cyan-300 uppercase font-bold mb-2">
-                    VIDEO PRODUCTION &amp; DOKUMENTASI
+                    {dict.sections.studio.card2Badge}
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors mb-2">
-                    Editing Video &amp; Dokumentasi Acara
+                    {dict.sections.studio.card2Title}
                   </h3>
                   <p className="text-sm sm:text-base text-gray-100 font-normal leading-relaxed mb-6">
-                    Penyuntingan video dokumentasi acara dan konten pendek ritmis dengan CapCut Pro dual-screen workstation, Canva, dan OBS Studio.
+                    {dict.sections.studio.card2Desc}
                   </p>
                 </div>
 
@@ -529,7 +532,7 @@ export default function TransitJourneyMap() {
 
                 <div className="flex items-center justify-between text-xs sm:text-sm font-mono text-gray-300 pt-3 border-t border-white/10">
                   <span className="font-medium text-gray-200">CapCut Pro • OBS Studio</span>
-                  <span className="text-cyan-300 font-bold group-hover:translate-x-1 transition-transform">Lihat Detail →</span>
+                  <span className="text-cyan-300 font-bold group-hover:translate-x-1 transition-transform">{dict.sections.studio.viewDetail}</span>
                 </div>
               </motion.div>
 
@@ -543,7 +546,7 @@ export default function TransitJourneyMap() {
             WAYPOINT 03 // GATEWAY (Network Router & Workstation Rig Lab)
             Position: Center-Left Diagonal (Asymmetric Node 3)
         ════════════════════════════════════════════════════════════════════════ */}
-        <section id="gateway" className="relative pl-10 sm:pl-14 lg:pl-0">
+        <section id="gateway" className="relative pl-7 sm:pl-11 lg:pl-0">
           <div className="w-full lg:w-[78%] xl:w-[72%] lg:ml-[6%]">
             
             {/* Station Header Node */}
@@ -553,7 +556,7 @@ export default function TransitJourneyMap() {
                 {dict.hud.transit.wp03}
               </span>
               <span className="text-white/20">/</span>
-              <span className="text-xs sm:text-sm font-mono text-gray-300 font-semibold">JARINGAN &amp; HARDWARE</span>
+              <span className="text-xs sm:text-sm font-mono text-gray-300 font-semibold">{dict.sections.gateway.subBadge}</span>
             </div>
 
             <motion.div
@@ -569,8 +572,16 @@ export default function TransitJourneyMap() {
                 
                 {/* Left: Router Status Screenshot */}
                 <div
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setActiveProjectModal(2)}
-                  className="lg:col-span-7 group/net relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-white/15 hover:border-cyan-400/60 cursor-pointer"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setActiveProjectModal(2);
+                    }
+                  }}
+                  className="touch-interactive lg:col-span-7 group/net relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-white/15 hover:border-cyan-400/60 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                 >
                   <Image
                     src="/images/project-3.png"
@@ -580,7 +591,7 @@ export default function TransitJourneyMap() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent flex items-end p-4">
                     <span className="text-xs sm:text-sm font-mono text-cyan-300 font-semibold">
-                      OpenWrt LuCI Gateway Status ↗
+                      {dict.sections.gateway.imgLabel}
                     </span>
                   </div>
                 </div>
@@ -588,23 +599,23 @@ export default function TransitJourneyMap() {
                 {/* Right: Technical Specs & Rig Details */}
                 <div className="lg:col-span-5">
                   <div className="text-xs font-mono text-cyan-300 mb-1 font-bold">
-                    INFRASTRUKTUR JARINGAN &amp; RIG
+                    {dict.sections.gateway.eyebrow}
                   </div>
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3">
-                    Jaringan OpenWrt &amp; PC Workstation
+                    {dict.sections.gateway.title}
                   </h3>
                   <p className="text-sm sm:text-base text-gray-100 font-normal leading-relaxed mb-6">
-                    Konfigurasi firmware custom OpenWrt untuk manajemen port LAN/WAN dan transfer data multimedia stabil, didukung PC Workstation AMD Ryzen untuk editing video dan edukasi coding.
+                    {dict.sections.gateway.desc}
                   </p>
 
                   <div className="space-y-2.5 text-xs sm:text-sm font-mono mb-6">
                     <div className="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-white/10">
-                      <span className="text-gray-300 font-medium">ROUTER GATEWAY:</span>
-                      <span className="text-cyan-300 font-bold">OpenWrt Gigabit</span>
+                      <span className="text-gray-300 font-medium">{dict.sections.gateway.gatewayLabel}</span>
+                      <span className="text-cyan-300 font-bold">{dict.sections.gateway.gatewayVal}</span>
                     </div>
                     <div className="flex justify-between items-center p-3 rounded-xl bg-black/60 border border-white/10">
-                      <span className="text-gray-300 font-medium">WORKSTATION:</span>
-                      <span className="text-white font-bold">AMD Ryzen Dual-Screen</span>
+                      <span className="text-gray-300 font-medium">{dict.sections.gateway.rigLabel}</span>
+                      <span className="text-white font-bold">{dict.sections.gateway.rigVal}</span>
                     </div>
                   </div>
 
@@ -616,7 +627,7 @@ export default function TransitJourneyMap() {
                       className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-cyan-500/25 border border-white/20 text-xs sm:text-sm font-mono font-semibold text-gray-100 hover:text-white transition-colors flex items-center gap-2"
                     >
                       <span>🎵</span>
-                      <span>Audio Player</span>
+                      <span>{dict.sections.gateway.btnAudio}</span>
                     </button>
                     <button
                       type="button"
@@ -624,7 +635,7 @@ export default function TransitJourneyMap() {
                       className="px-4 py-2.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/30 border border-cyan-400/40 text-xs sm:text-sm font-mono font-semibold text-cyan-300 hover:text-cyan-200 transition-colors flex items-center gap-2"
                     >
                       <span>&gt;_</span>
-                      <span>Terminal AI</span>
+                      <span>{dict.sections.gateway.btnTerminal}</span>
                     </button>
                   </div>
                 </div>
@@ -686,7 +697,7 @@ export default function TransitJourneyMap() {
                           <span>{job.company}</span>
                           {isCurrent && (
                             <span className="text-[10px] bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 px-2 py-0.5 rounded font-mono font-bold">
-                              AKTIF SEKARANG
+                              {dict.sections.experience.activeNow}
                             </span>
                           )}
                         </div>
@@ -743,8 +754,16 @@ export default function TransitJourneyMap() {
                 
                 {/* 1-Click Copy Email Card */}
                 <div
+                  role="button"
+                  tabIndex={0}
                   onClick={copyToClipboard}
-                  className="touch-interactive relative cursor-pointer bg-white/[0.03] hover:bg-white/[0.06] border border-white/15 hover:border-cyan-400/50 rounded-2xl p-6 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all group"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      copyToClipboard();
+                    }
+                  }}
+                  className="touch-interactive relative cursor-pointer bg-white/[0.03] hover:bg-white/[0.06] border border-white/15 hover:border-cyan-400/50 rounded-2xl p-6 backdrop-blur-xl shadow-[0_15px_45px_rgba(0,0,0,0.7)] transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
                 >
                   <HudCorner />
 
@@ -753,7 +772,7 @@ export default function TransitJourneyMap() {
                       {dict.contact.copyTitle}
                     </span>
                     <span className="px-2.5 py-1 rounded-lg bg-cyan-500/15 border border-cyan-400/30 text-xs font-mono text-cyan-200 font-semibold group-hover:bg-cyan-500/25 transition-colors">
-                      {copied ? "✓ TERSALIN" : "📋 SALIN"}
+                      {copied ? "✓" : "📋"}
                     </span>
                   </div>
 
@@ -786,7 +805,7 @@ export default function TransitJourneyMap() {
                       <span className="text-sm opacity-75 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
                     </div>
                     <div className="text-xs text-gray-400 mt-1">
-                      Profil Freelancer Resmi
+                      {dict.sections.contactExtra.upworkSub}
                     </div>
                   </a>
 
@@ -799,7 +818,7 @@ export default function TransitJourneyMap() {
                     </div>
                     <div className="text-xs text-emerald-400 font-mono font-semibold mt-1 flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>Remote Ready</span>
+                      <span>{dict.sections.contactExtra.remoteReady}</span>
                     </div>
                   </div>
                 </div>
@@ -815,16 +834,17 @@ export default function TransitJourneyMap() {
                     {dict.contact.quickMessage}
                   </span>
                   <span className="text-xs font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-2.5 py-0.5 rounded-md">
-                    DIRECT EMAIL
+                    {dict.sections.contactExtra.formTag}
                   </span>
                 </div>
 
                 <form onSubmit={handleSendMessage} className="space-y-4">
                   <div>
-                    <label className="block text-xs sm:text-sm font-mono text-gray-200 uppercase font-semibold mb-1.5">
-                      Email Pengirim
+                    <label htmlFor="contact-email" className="block text-xs sm:text-sm font-mono text-gray-200 uppercase font-semibold mb-1.5">
+                      {dict.sections.contactExtra.senderLabel}
                     </label>
                     <input
+                      id="contact-email"
                       type="email"
                       required
                       placeholder={dict.contact.emailPlaceholder}
@@ -835,10 +855,11 @@ export default function TransitJourneyMap() {
                   </div>
 
                   <div>
-                    <label className="block text-xs sm:text-sm font-mono text-gray-200 uppercase font-semibold mb-1.5">
-                      Pesan
+                    <label htmlFor="contact-message" className="block text-xs sm:text-sm font-mono text-gray-200 uppercase font-semibold mb-1.5">
+                      {dict.sections.contactExtra.msgLabel}
                     </label>
                     <textarea
+                      id="contact-message"
                       rows={4}
                       required
                       placeholder={dict.contact.msgPlaceholder}
@@ -954,97 +975,6 @@ export default function TransitJourneyMap() {
                           {tool}
                         </span>
                       ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>,
-        document.body
-      )}
-
-      {/* ── MODAL FULL DETAIL KEAHLIAN ── */}
-      {isClient && createPortal(
-        <AnimatePresence>
-          {activeSkillModal !== null && selectedSkill && (
-            <div className="fixed inset-0 z-[999999] flex items-center justify-center px-4 md:px-10 py-6 md:py-10 pointer-events-auto">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setActiveSkillModal(null)}
-                className="absolute inset-0 bg-black/75 backdrop-blur-sm cursor-pointer"
-              />
-
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 15 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 15 }}
-                className="relative bg-[#0d0d14] border border-white/15 w-full max-w-3xl max-h-[90vh] flex flex-col rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.9)] z-10 overflow-hidden"
-              >
-                <HudCorner color="text-cyan-400/80" />
-
-                <div className="bg-white/5 border-b border-white/10 p-5 md:p-6 flex justify-between items-center z-20 shrink-0">
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl p-2.5 rounded-xl bg-white/10 border border-white/15">
-                      {selectedSkill.icon}
-                    </span>
-                    <div>
-                      <h3 className="text-lg md:text-xl font-bold text-white">
-                        {selectedSkill.title}
-                      </h3>
-                      <p className="text-xs text-cyan-400 font-mono mt-0.5">
-                        {selectedSkill.desc}
-                      </p>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => setActiveSkillModal(null)}
-                    className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white transition-colors"
-                    aria-label="Close modal"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-
-                <div className="p-6 md:p-8 space-y-6 overflow-y-auto flex-1 text-gray-300">
-                  <p className="text-sm md:text-base leading-relaxed font-light">
-                    {selectedSkill.fullDesc}
-                  </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/10">
-                    <div>
-                      <h4 className="text-xs font-mono tracking-wider uppercase text-cyan-400 mb-3">
-                        {dict.expertise.techStack}
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedSkill.tools.map((tool, i) => (
-                          <span
-                            key={i}
-                            className="px-3 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-gray-200"
-                          >
-                            {tool}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <h4 className="text-xs font-mono tracking-wider uppercase text-cyan-400 mb-3">
-                        {dict.expertise.coreSkills}
-                      </h4>
-                      <ul className="space-y-2">
-                        {selectedSkill.capabilities.map((cap, i) => (
-                          <li key={i} className="flex items-start gap-2 text-xs text-gray-300">
-                            <span className="text-cyan-400 mt-0.5">▹</span>
-                            <span>{cap}</span>
-                          </li>
-                        ))}
-                      </ul>
                     </div>
                   </div>
                 </div>

@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "./LanguageProvider";
 
 export default function FloatingDock() {
+  const { dict } = useLanguage();
   const [isDocked, setIsDocked] = useState(false);
   const slotRef = useRef<HTMLDivElement>(null);
 
@@ -45,12 +47,12 @@ export default function FloatingDock() {
         type="button"
         onClick={triggerMusic}
         className="group flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-cyan-500/20 border border-transparent hover:border-cyan-400/40 text-xs sm:text-sm font-mono text-gray-200 hover:text-white transition-all active:scale-95"
-        aria-label="Buka Pemutar Musik"
-        title="Pemutar Musik (Shortcut: M)"
+        aria-label={dict.sections.dock.music}
+        title={`${dict.sections.dock.music} (M)`}
       >
         <span className="text-base leading-none">🎵</span>
         <span className={docked ? "inline font-semibold" : "hidden md:inline font-semibold"}>
-          Musik
+          {dict.sections.dock.music}
         </span>
       </button>
 
@@ -61,12 +63,12 @@ export default function FloatingDock() {
         type="button"
         onClick={triggerTerminal}
         className="group flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-cyan-500/20 border border-transparent hover:border-cyan-400/40 text-xs sm:text-sm font-mono text-cyan-300 hover:text-cyan-200 transition-all active:scale-95"
-        aria-label="Buka Terminal AI"
-        title="Terminal CMD (Shortcut: T)"
+        aria-label={dict.sections.dock.terminal}
+        title={`${dict.sections.dock.terminal} (T)`}
       >
         <span className="font-bold text-sm leading-none">{">_"}</span>
         <span className={docked ? "inline font-semibold" : "hidden md:inline font-semibold"}>
-          Terminal
+          {dict.sections.dock.terminal}
         </span>
       </button>
 
@@ -76,14 +78,14 @@ export default function FloatingDock() {
         type="button"
         onClick={triggerShortcuts}
         className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/15 border border-transparent hover:border-white/25 text-xs sm:text-sm font-mono text-gray-300 hover:text-white transition-all active:scale-95"
-        aria-label="Info Shortcut Keyboard"
-        title="Pintasan Keyboard (Shortcut: ?)"
+        aria-label={dict.sections.dock.shortcut}
+        title={`${dict.sections.dock.shortcut} (?)`}
       >
         <span className="w-5 h-5 rounded-md bg-white/10 border border-white/15 flex items-center justify-center text-[11px] font-bold text-cyan-300">
           ?
         </span>
         <span className={docked ? "inline font-medium" : "hidden lg:inline font-medium"}>
-          Shortcut
+          {dict.sections.dock.shortcut}
         </span>
       </button>
     </>
@@ -116,7 +118,7 @@ export default function FloatingDock() {
         >
           <span className="hidden md:inline-flex items-center gap-1.5 pl-2.5 pr-1 text-[11px] font-mono text-gray-400">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-            <span>QUICK TOOLS</span>
+            <span>{dict.sections.dock.quickTools}</span>
           </span>
           {renderButtons(true)}
         </div>

@@ -10,7 +10,7 @@ import { useScreenSize } from "./useScreenSize";
 type Language = "ID" | "EN" | "JP";
 
 export default function Navbar() {
-  const { lang, setLang } = useLanguage();
+  const { lang, setLang, dict } = useLanguage();
   const { tier } = usePerformance();
   const screen = useScreenSize();
   const [isOpen, setIsOpen] = useState(false);
@@ -76,14 +76,7 @@ export default function Navbar() {
     window.dispatchEvent(new CustomEvent("toggle-terminal"));
   };
 
-  const stations = [
-    { href: "#origin", id: "origin", label: "00 PROFIL" },
-    { href: "#academy", id: "academy", label: "01 EDUKASI" },
-    { href: "#projects", id: "projects", label: "02 KARYA" },
-    { href: "#gateway", id: "gateway", label: "03 LAB" },
-    { href: "#experience", id: "experience", label: "04 PENGALAMAN" },
-    { href: "#terminus", id: "terminus", label: "05 KONTAK" },
-  ];
+  const stations = dict.nav.stations;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] pointer-events-none flex justify-center px-2 sm:px-6 pt-3 sm:pt-4">
@@ -214,7 +207,7 @@ export default function Navbar() {
               className="lg:hidden border-t border-white/10 px-4 py-3 bg-black/95 rounded-b-2xl overflow-hidden font-mono"
             >
               <div className="text-[10px] uppercase tracking-widest text-cyan-400 mb-2 font-bold">
-                NAVIGASI HALAMAN:
+                {dict.nav.menuTitle}
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {stations.map((st) => (

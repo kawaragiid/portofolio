@@ -75,9 +75,18 @@ export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
   return (
     <div
       ref={containerRef}
+      role="button"
+      tabIndex={0}
       onClick={triggerManualGlitch}
-      className={`relative inline-block select-none group cursor-pointer ${className}`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          triggerManualGlitch();
+        }
+      }}
+      className={`relative inline-block select-none group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-2xl ${className}`}
       title="Scroll untuk reveal warna / klik untuk efek glitch"
+      aria-label="Foto Miftakhul Ilmi - klik atau tekan Enter untuk efek glitch"
     >
       {/* Ambient Backlight Glow */}
       <div
