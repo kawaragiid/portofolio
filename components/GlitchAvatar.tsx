@@ -5,9 +5,11 @@ import Image from "next/image";
 
 interface GlitchAvatarProps {
   className?: string;
+  /** Controlled trigger: stays grayscale until true, then glitches into full color. */
+  shouldRevealColor?: boolean;
 }
 
-export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
+export default function GlitchAvatar({ className = "", shouldRevealColor }: GlitchAvatarProps) {
   // Phase: "grayscale" (initial) -> "glitching" (active on scroll) -> "color" (normal color revealed)
   const [phase, setPhase] = useState<"grayscale" | "glitching" | "color">("grayscale");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -15,7 +17,38 @@ export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
   const hasTriggeredRef = useRef(false);
   const isInViewRef = useRef(false);
 
+  const isControlled = shouldRevealColor !== undefined;
+
+  // Controlled mode: wait until shouldRevealColor becomes true before glitching to color
   useEffect(() => {
+    if (!isControlled) return;
+
+    if (shouldRevealColor) {
+      if (!hasTriggeredRef.current) {
+        hasTriggeredRef.current = true;
+        const startTimer = setTimeout(() => {
+          setPhase("glitching");
+          if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
+          glitchTimerRef.current = setTimeout(() => {
+            setPhase("color");
+          }, 650);
+        }, 0);
+        return () => clearTimeout(startTimer);
+      }
+    } else {
+      hasTriggeredRef.current = false;
+      const resetTimer = setTimeout(() => {
+        if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
+        setPhase("grayscale");
+      }, 0);
+      return () => clearTimeout(resetTimer);
+    }
+  }, [isControlled, shouldRevealColor]);
+
+  // Fallback uncontrolled mode
+  useEffect(() => {
+    if (isControlled) return;
+
     const triggerReveal = () => {
       if (hasTriggeredRef.current) return;
       hasTriggeredRef.current = true;
@@ -58,7 +91,7 @@ export default function GlitchAvatar({ className = "" }: GlitchAvatarProps) {
       window.removeEventListener("scroll", checkTrigger);
       if (glitchTimerRef.current) clearTimeout(glitchTimerRef.current);
     };
-  }, []);
+  }, [isControlled]);
 
   const triggerManualGlitch = () => {
     hasTriggeredRef.current = true;

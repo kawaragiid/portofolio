@@ -76,25 +76,46 @@ export default function TransitJourneyMap() {
     };
   }, []);
 
-  // Progressive scroll-driven glitch assembly stages
+  // Progressive scroll-driven glitch assembly stages (0..7)
+  // Desktop (>=1024px) uses a sticky Hero runway (~700px) before scrolling down to Section 01.
+  // Mobile/Tablet (<1024px) uses tighter thresholds with normal scrolling.
   useEffect(() => {
     const handleScrollAssemble = () => {
       const y = window.scrollY;
+      const isDesktop = window.innerWidth >= 1024;
       let nextStage = 0;
-      if (y >= 260) nextStage = 6;
-      else if (y >= 210) nextStage = 5;
-      else if (y >= 160) nextStage = 4;
-      else if (y >= 110) nextStage = 3;
-      else if (y >= 65) nextStage = 2;
-      else if (y >= 20) nextStage = 1;
-      else if (y < 8) nextStage = 0;
-      else return;
+
+      if (isDesktop) {
+        if (y >= 540) nextStage = 7;
+        else if (y >= 440) nextStage = 6;
+        else if (y >= 350) nextStage = 5;
+        else if (y >= 260) nextStage = 4;
+        else if (y >= 170) nextStage = 3;
+        else if (y >= 80) nextStage = 2;
+        else if (y >= 20) nextStage = 1;
+        else if (y < 8) nextStage = 0;
+        else return;
+      } else {
+        if (y >= 280) nextStage = 7;
+        else if (y >= 220) nextStage = 6;
+        else if (y >= 180) nextStage = 5;
+        else if (y >= 140) nextStage = 4;
+        else if (y >= 100) nextStage = 3;
+        else if (y >= 55) nextStage = 2;
+        else if (y >= 20) nextStage = 1;
+        else if (y < 8) nextStage = 0;
+        else return;
+      }
 
       setScrollStage((prev) => (prev !== nextStage ? nextStage : prev));
     };
     window.addEventListener("scroll", handleScrollAssemble, { passive: true });
+    window.addEventListener("resize", handleScrollAssemble, { passive: true });
     handleScrollAssemble();
-    return () => window.removeEventListener("scroll", handleScrollAssemble);
+    return () => {
+      window.removeEventListener("scroll", handleScrollAssemble);
+      window.removeEventListener("resize", handleScrollAssemble);
+    };
   }, []);
 
   // Lock scroll when modal is active
@@ -210,11 +231,11 @@ export default function TransitJourneyMap() {
             WAYPOINT 00 // ORIGIN (Profile & Core Identity)
             Position: Full-Width 2-Column Responsive Layout
         ════════════════════════════════════════════════════════════════════════ */}
-        <section id="origin" className="relative pt-2 md:pt-6">
-          
+        <section id="origin" className="relative pt-2 md:pt-6 lg:min-h-[175vh]">
+          <div className="lg:sticky lg:top-24 lg:min-h-[calc(100vh-7rem)] lg:flex lg:items-center w-full">
           {scrollStage === 0 ? (
             /* ── INITIAL EMPTY STAGE: FULL-SCREEN NAME ONLY ── */
-            <div className="min-h-[calc(100svh-6.5rem)] flex flex-col items-center justify-center text-center max-w-7xl mx-auto px-2">
+            <div className="min-h-[calc(100svh-6.5rem)] w-full flex flex-col items-center justify-center text-center max-w-7xl mx-auto px-2">
               <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[10.5rem] font-black tracking-tight text-white leading-[0.95] select-none">
                 Miftakhul Ilmi<span className="text-cyan-400">.</span>
               </h1>
@@ -225,7 +246,7 @@ export default function TransitJourneyMap() {
             </div>
           ) : (
             /* ── ASSEMBLED HERO STAGE: SEQUENTIAL GLITCH FORMATION ON SCROLL ── */
-            <div className="min-h-[calc(100svh-6.5rem)] flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 max-w-7xl mx-auto">
+            <div className="min-h-[calc(100svh-6.5rem)] lg:min-h-0 w-full flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 max-w-7xl mx-auto">
               
               {/* Left Column: Core Identity & Key Highlights */}
               <div className="flex-1 text-left w-full">
@@ -346,19 +367,20 @@ export default function TransitJourneyMap() {
                 </GlitchReveal>
               </div>
 
-              {/* Right Column: Glitch Photo Avatar Component (Stage 2) + Hint (Stage 6) */}
+              {/* Right Column: Glitch Photo Avatar Component (Grayscale at Stage 2, Color Glitch at Stage 7) */}
               <GlitchReveal revealed={scrollStage >= 2} className="flex flex-col items-center shrink-0 w-full sm:w-auto">
-                <GlitchAvatar />
-                <GlitchReveal revealed={scrollStage >= 6}>
+                <GlitchAvatar shouldRevealColor={scrollStage >= 7} />
+                <GlitchReveal revealed={scrollStage >= 2}>
                   <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-300">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                    <span>{dict.hero.scrollRevealHint}</span>
+                    <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${scrollStage >= 7 ? "bg-emerald-400" : "bg-cyan-400"}`} />
+                    <span>{scrollStage >= 7 ? dict.hud.transit.scrollPrompt : dict.hero.scrollRevealHint}</span>
                   </div>
                 </GlitchReveal>
               </GlitchReveal>
 
             </div>
           )}
+          </div>
         </section>
 
 
