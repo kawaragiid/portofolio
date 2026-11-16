@@ -11,6 +11,7 @@ import HudCorner from "./HudCorner";
 import AnimeShape from "./AnimeShape";
 import AnimeCircuit from "./AnimeCircuit";
 import GlitchAvatar from "./GlitchAvatar";
+import GlitchReveal from "./GlitchReveal";
 import FloatingDock from "./FloatingDock";
 
 const cvOptions = [
@@ -24,6 +25,7 @@ export default function TransitJourneyMap() {
   const { tier } = usePerformance();
   const screen = useScreenSize();
 
+  const [isAssembled, setIsAssembled] = useState(false);
   const [cvMenuOpen, setCvMenuOpen] = useState(false);
   const [activeProjectModal, setActiveProjectModal] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
@@ -72,6 +74,21 @@ export default function TransitJourneyMap() {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("close-all-modals", handleCloseAll);
     };
+  }, []);
+
+  // Trigger Hero glitch assembly on scroll
+  useEffect(() => {
+    const handleScrollAssemble = () => {
+      const y = window.scrollY;
+      if (y > 20) {
+        setIsAssembled(true);
+      } else if (y < 8) {
+        setIsAssembled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScrollAssemble, { passive: true });
+    handleScrollAssemble();
+    return () => window.removeEventListener("scroll", handleScrollAssemble);
   }, []);
 
   // Lock scroll when modal is active
@@ -192,134 +209,140 @@ export default function TransitJourneyMap() {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 max-w-7xl mx-auto">
             
             {/* Left Column: Core Identity & Key Highlights */}
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="flex-1 text-left w-full"
-            >
+            <div className="flex-1 text-left w-full">
               {/* Station Tag & Active Status */}
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/60 text-xs font-mono font-bold tracking-wider text-cyan-300 uppercase">
-                  {dict.hud.transit.wp00}
-                </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-800/40 text-xs font-mono text-emerald-300 font-semibold">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>{dict.hero.statusBadge}</span>
-                </span>
-              </div>
+              <GlitchReveal revealed={isAssembled} delay={0}>
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                  <span className="px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/60 text-xs font-mono font-bold tracking-wider text-cyan-300 uppercase">
+                    {dict.hud.transit.wp00}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-800/40 text-xs font-mono text-emerald-300 font-semibold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>{dict.hero.statusBadge}</span>
+                  </span>
+                </div>
+              </GlitchReveal>
 
-              {/* Main Name Heading */}
+              {/* Main Name Heading (Always visible even before scroll) */}
               <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white mb-3 leading-none">
                 Miftakhul Ilmi<span className="text-cyan-400">.</span>
               </h1>
 
+              {/* Minimal scroll cue when only name is visible */}
+              {!isAssembled && (
+                <div className="mt-4 flex items-center gap-2 text-xs font-mono text-cyan-400/80 animate-pulse">
+                  <span>↓</span>
+                  <span>{dict.hud.transit.scrollPrompt}</span>
+                </div>
+              )}
+
               {/* Core Role Badges */}
-              <div className="text-base sm:text-lg md:text-xl font-semibold text-cyan-300 mb-6 flex flex-wrap items-center gap-2">
-                <span>{dict.hero.role1}</span>
-                <span className="text-white/30 hidden sm:inline">•</span>
-                <span className="text-gray-200">{dict.hero.role2}</span>
-              </div>
+              <GlitchReveal revealed={isAssembled} delay={70}>
+                <div className="text-base sm:text-lg md:text-xl font-semibold text-cyan-300 mb-6 flex flex-wrap items-center gap-2">
+                  <span>{dict.hero.role1}</span>
+                  <span className="text-white/30 hidden sm:inline">•</span>
+                  <span className="text-gray-200">{dict.hero.role2}</span>
+                </div>
+              </GlitchReveal>
 
               {/* High-Contrast Key Points Summary (Clean, Bold, Easy to Read) */}
-              <div className="space-y-3.5 mb-8 bg-white/[0.03] border border-white/10 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
-                {dict.hero.highlights.map((hl, idx) => (
-                  <div key={idx} className="flex items-start gap-3">
-                    <span className="text-xl shrink-0 mt-0.5">{hl.icon}</span>
-                    <div>
-                      <div className="text-sm sm:text-base font-bold text-white">{hl.title}</div>
-                      <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
-                        {hl.desc}
+              <GlitchReveal revealed={isAssembled} delay={140}>
+                <div className="space-y-3.5 mb-8 bg-white/[0.03] border border-white/10 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
+                  {dict.hero.highlights.map((hl, idx) => (
+                    <div key={idx} className="flex items-start gap-3">
+                      <span className="text-xl shrink-0 mt-0.5">{hl.icon}</span>
+                      <div>
+                        <div className="text-sm sm:text-base font-bold text-white">{hl.title}</div>
+                        <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                          {hl.desc}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </GlitchReveal>
 
               {/* Tactical Action Buttons */}
-              <div className="relative flex flex-wrap items-center gap-3">
-                <a
-                  href="#academy"
-                  className="bg-white text-black hover:bg-cyan-300 px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-[0_0_20px_rgba(255,255,255,0.25)] flex items-center gap-2"
-                >
-                  <span>{dict.hero.btnWork}</span>
-                  <span>↓</span>
-                </a>
-
-                {/* CV Download Selector */}
-                <div ref={cvMenuRef} className="sm:relative">
-                  <button
-                    type="button"
-                    onClick={() => setCvMenuOpen((prev) => !prev)}
-                    aria-expanded={cvMenuOpen}
-                    className="bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/50 text-cyan-200 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all shadow-[0_0_15px_rgba(34,211,238,0.15)] flex items-center gap-2"
+              <GlitchReveal revealed={isAssembled} delay={210}>
+                <div className="relative flex flex-wrap items-center gap-3">
+                  <a
+                    href="#academy"
+                    className="bg-white text-black hover:bg-cyan-300 px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-[0_0_20px_rgba(255,255,255,0.25)] flex items-center gap-2"
                   >
+                    <span>{dict.hero.btnWork}</span>
                     <span>↓</span>
-                    <span>{dict.hero.btnResume}</span>
-                    <svg
-                      className={`w-4 h-4 transition-transform duration-200 ${cvMenuOpen ? "rotate-180" : ""}`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                  </a>
+
+                  {/* CV Download Selector */}
+                  <div ref={cvMenuRef} className="sm:relative">
+                    <button
+                      type="button"
+                      onClick={() => setCvMenuOpen((prev) => !prev)}
+                      aria-expanded={cvMenuOpen}
+                      className="bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/50 text-cyan-200 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all shadow-[0_0_15px_rgba(34,211,238,0.15)] flex items-center gap-2"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-
-                  <AnimatePresence>
-                    {cvMenuOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                        transition={{ duration: 0.15 }}
-                        className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-[min(18rem,100%)] sm:w-72 bg-[#0c0d14] border border-white/20 rounded-xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] z-50 text-left"
+                      <span>↓</span>
+                      <span>{dict.hero.btnResume}</span>
+                      <svg
+                        className={`w-4 h-4 transition-transform duration-200 ${cvMenuOpen ? "rotate-180" : ""}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
                       >
-                        <div className="px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-cyan-400 border-b border-white/10 mb-1 font-bold">
-                          {dict.hero.cvSelectTitle}
-                        </div>
-                        {cvOptions.map((opt) => (
-                          <a
-                            key={opt.code}
-                            href={opt.file}
-                            download={opt.filename}
-                            onClick={() => setCvMenuOpen(false)}
-                            className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-gray-100 hover:text-white hover:bg-cyan-500/20 transition-colors"
-                          >
-                            <span className="flex items-center gap-2.5">
-                              <span className="text-base">{opt.flag}</span>
-                              <span className="font-semibold">{opt.label}</span>
-                            </span>
-                            <span className="text-xs font-mono text-cyan-300 font-bold">PDF</span>
-                          </a>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
 
-                <a
-                  href="#terminus"
-                  className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-3.5 rounded-xl font-medium text-sm transition-colors"
-                >
-                  {dict.hero.btnContact}
-                </a>
-              </div>
-            </motion.div>
+                    <AnimatePresence>
+                      {cvMenuOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-[min(18rem,100%)] sm:w-72 bg-[#0c0d14] border border-white/20 rounded-xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] z-50 text-left"
+                        >
+                          <div className="px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-cyan-400 border-b border-white/10 mb-1 font-bold">
+                            {dict.hero.cvSelectTitle}
+                          </div>
+                          {cvOptions.map((opt) => (
+                            <a
+                              key={opt.code}
+                              href={opt.file}
+                              download={opt.filename}
+                              onClick={() => setCvMenuOpen(false)}
+                              className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-gray-100 hover:text-white hover:bg-cyan-500/20 transition-colors"
+                            >
+                              <span className="flex items-center gap-2.5">
+                                <span className="text-base">{opt.flag}</span>
+                                <span className="font-semibold">{opt.label}</span>
+                              </span>
+                              <span className="text-xs font-mono text-cyan-300 font-bold">PDF</span>
+                            </a>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  <a
+                    href="#terminus"
+                    className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-3.5 rounded-xl font-medium text-sm transition-colors"
+                  >
+                    {dict.hero.btnContact}
+                  </a>
+                </div>
+              </GlitchReveal>
+            </div>
 
             {/* Right Column: Glitch Photo Avatar Component */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex flex-col items-center shrink-0 w-full sm:w-auto"
-            >
+            <GlitchReveal revealed={isAssembled} delay={120} className="flex flex-col items-center shrink-0 w-full sm:w-auto">
               <GlitchAvatar />
               <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-300">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                 <span>{dict.hero.scrollRevealHint}</span>
               </div>
-            </motion.div>
+            </GlitchReveal>
 
           </div>
         </section>
@@ -332,7 +355,7 @@ export default function TransitJourneyMap() {
         <section id="academy" className="relative pl-10 sm:pl-14 lg:pl-0">
           <div id="expertise" className="absolute -top-24 pointer-events-none" />
           
-          <div className="w-full lg:w-[75%] xl:w-[70%] lg:mr-auto">
+          <GlitchReveal className="w-full lg:w-[75%] xl:w-[70%] lg:mr-auto">
             
             {/* Station Header Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
@@ -420,7 +443,7 @@ export default function TransitJourneyMap() {
               </div>
             </motion.div>
 
-          </div>
+          </GlitchReveal>
         </section>
 
 
@@ -429,7 +452,7 @@ export default function TransitJourneyMap() {
             Position: Far-Right Offset (Asymmetric Node 2)
         ════════════════════════════════════════════════════════════════════════ */}
         <section id="projects" className="relative pl-7 sm:pl-11 lg:pl-0">
-          <div className="w-full lg:w-[85%] xl:w-[80%] lg:ml-auto">
+          <GlitchReveal className="w-full lg:w-[85%] xl:w-[80%] lg:ml-auto">
             
             {/* Station Header Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
@@ -538,7 +561,7 @@ export default function TransitJourneyMap() {
 
             </div>
 
-          </div>
+          </GlitchReveal>
         </section>
 
 
@@ -547,7 +570,7 @@ export default function TransitJourneyMap() {
             Position: Center-Left Diagonal (Asymmetric Node 3)
         ════════════════════════════════════════════════════════════════════════ */}
         <section id="gateway" className="relative pl-7 sm:pl-11 lg:pl-0">
-          <div className="w-full lg:w-[78%] xl:w-[72%] lg:ml-[6%]">
+          <GlitchReveal className="w-full lg:w-[78%] xl:w-[72%] lg:ml-[6%]">
             
             {/* Station Header Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
@@ -643,7 +666,7 @@ export default function TransitJourneyMap() {
               </div>
             </motion.div>
 
-          </div>
+          </GlitchReveal>
         </section>
 
 
@@ -652,7 +675,7 @@ export default function TransitJourneyMap() {
             Position: Expansive Asymmetric Grid (Asymmetric Node 4)
         ════════════════════════════════════════════════════════════════════════ */}
         <section id="experience" className="relative pl-10 sm:pl-14 lg:pl-0">
-          <div className="w-full lg:w-[88%] xl:w-[84%] lg:mx-auto">
+          <GlitchReveal className="w-full lg:w-[88%] xl:w-[84%] lg:mx-auto">
             
             {/* Station Header Node */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6">
@@ -712,7 +735,7 @@ export default function TransitJourneyMap() {
               </div>
             </motion.div>
 
-          </div>
+          </GlitchReveal>
         </section>
 
 
@@ -722,13 +745,7 @@ export default function TransitJourneyMap() {
         <section id="terminus" className="relative pt-4 sm:pt-8">
           <div id="contact" className="absolute -top-24 pointer-events-none" />
 
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.55 }}
-            className="w-full max-w-6xl mx-auto"
-          >
+          <GlitchReveal className="w-full max-w-6xl mx-auto">
             {/* Clean Section Header */}
             <div className="flex flex-col items-center text-center mb-8 sm:mb-12">
               <div className="flex items-center gap-2.5 mb-3">
@@ -881,7 +898,7 @@ export default function TransitJourneyMap() {
               </div>
 
             </div>
-          </motion.div>
+          </GlitchReveal>
         </section>
 
         {/* ── UNIFIED FLOATING DOCK (Floats bottom-right while scrolling, locks right above footer) ── */}

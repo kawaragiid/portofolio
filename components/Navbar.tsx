@@ -15,6 +15,7 @@ export default function Navbar() {
   const screen = useScreenSize();
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("origin");
+  const [hasScrolled, setHasScrolled] = useState(false);
   const [timeStr, setTimeStr] = useState("");
 
   const languages: Language[] = ["ID", "EN", "JP"];
@@ -41,11 +42,17 @@ export default function Navbar() {
     return () => clearInterval(interval);
   }, []);
 
-  // Track active section for waypoints indicator
+  // Track active section & scroll state for mobile bottom-docking
   useEffect(() => {
     const sectionIds = ["origin", "academy", "projects", "gateway", "experience", "terminus"];
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 200;
+      const y = window.scrollY;
+      setHasScrolled((prev) => {
+        const next = y > 25;
+        return prev !== next ? next : prev;
+      });
+
+      const scrollPos = y + 200;
       for (let i = sectionIds.length - 1; i >= 0; i--) {
         const el = document.getElementById(sectionIds[i]);
         if (el && el.offsetTop <= scrollPos) {
@@ -79,15 +86,23 @@ export default function Navbar() {
   const stations = dict.nav.stations;
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] pointer-events-none flex justify-center px-2 sm:px-6 pt-3 sm:pt-4">
+    <div
+      className={`fixed left-0 right-0 z-[100] pointer-events-none flex justify-center px-2 sm:px-6 transition-all duration-300 md:top-0 md:bottom-auto md:pt-4 md:pb-0 ${
+        hasScrolled ? "max-md:bottom-0 max-md:pb-3" : "max-md:top-0 max-md:pt-3"
+      }`}
+    >
       <motion.nav
         layout={tier === "high"}
-        className="pointer-events-auto w-full max-w-7xl bg-[#08090d]/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_15px_45px_rgba(0,0,0,0.8)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] transition-all"
+        className={`pointer-events-auto w-full max-w-7xl bg-[#08090d]/90 backdrop-blur-2xl border rounded-2xl shadow-[0_15px_45px_rgba(0,0,0,0.8)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] transition-colors flex ${
+          hasScrolled
+            ? "max-md:flex-col-reverse max-md:border-cyan-400/35 md:flex-col md:border-white/10"
+            : "flex-col border-white/10"
+        }`}
       >
-        <div className="px-4 sm:px-6 py-3 flex items-center justify-between gap-3 sm:gap-4">
+        <div className="px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Left: Branding & Telemetry */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Link
               href="#origin"
               className="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-1 group"
@@ -103,7 +118,7 @@ export default function Navbar() {
               {screen.displayStr}
             </span>
 
-            <span className="flex items-center gap-1.5 text-[11px] sm:text-xs font-mono font-semibold text-emerald-300 bg-emerald-950/50 border border-emerald-700/50 px-2.5 py-0.5 rounded-md">
+            <span className="flex items-center gap-1.5 text-[11px] sm:text-xs font-mono font-semibold text-emerald-300 bg-emerald-950/50 border border-emerald-700/50 px-2 sm:px-2.5 py-0.5 rounded-md">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="hidden sm:inline">ONLINE</span>
             </span>
@@ -130,8 +145,8 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Right: Clock, Language, Mobile Quick Triggers & Hamburger */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* Right: Clock, Language, Merged Mobile Dock & Hamburger */}
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             
             {/* Live Surabaya Clock */}
             <div className="hidden md:flex items-center gap-1.5 font-mono text-xs text-gray-200 bg-black/60 px-3 py-1.5 rounded-xl border border-white/15">
@@ -145,7 +160,7 @@ export default function Navbar() {
                 <button
                   key={l}
                   onClick={() => handleLanguageChange(l)}
-                  className={`px-2.5 py-1 text-xs font-mono rounded-lg transition-colors ${
+                  className={`px-2 sm:px-2.5 py-1 text-xs font-mono rounded-lg transition-colors ${
                     lang === l
                       ? "bg-cyan-500/25 text-cyan-200 font-bold border border-cyan-400/40"
                       : "text-gray-300 hover:text-white"
@@ -156,27 +171,29 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Quick Action Triggers (Only on Mobile/Tablet; on Wide Screen they live in the bottom-right Dock) */}
-            <div className="flex lg:hidden items-center gap-1">
-              <button
-                type="button"
-                onClick={toggleMusic}
-                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center text-xs text-white transition-all active:scale-90"
-                aria-label="Toggle Audio Player"
-                title="Buka Audio Playlist"
-              >
-                🎵
-              </button>
-              <button
-                type="button"
-                onClick={toggleTerminal}
-                className="w-8 h-8 rounded-xl bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center font-mono text-xs font-bold text-cyan-400 transition-all active:scale-90"
-                aria-label="Toggle AI Terminal"
-                title="Buka AI Terminal"
-              >
-                {">_"}
-              </button>
-            </div>
+            {/* Merged Dock Triggers on Mobile (ONLY shown after scrolling when Navbar drops to bottom) */}
+            {hasScrolled && (
+              <div className="flex md:hidden items-center gap-1 animate-glitch-assemble">
+                <button
+                  type="button"
+                  onClick={toggleMusic}
+                  className="w-8 h-8 rounded-xl bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center text-xs text-white transition-all active:scale-90"
+                  aria-label="Toggle Audio Player"
+                  title="Buka Audio Playlist"
+                >
+                  🎵
+                </button>
+                <button
+                  type="button"
+                  onClick={toggleTerminal}
+                  className="w-8 h-8 rounded-xl bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center font-mono text-xs font-bold text-cyan-400 transition-all active:scale-90"
+                  aria-label="Toggle AI Terminal"
+                  title="Buka AI Terminal"
+                >
+                  {">_"}
+                </button>
+              </div>
+            )}
 
             {/* Hamburger Button for Mobile Stations */}
             <button
@@ -197,14 +214,18 @@ export default function Navbar() {
 
         </div>
 
-        {/* Mobile Dropdown Stations Menu */}
+        {/* Mobile Dropdown Stations Menu (opens downward at top, upward when docked at bottom) */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden border-t border-white/10 px-4 py-3 bg-black/95 rounded-b-2xl overflow-hidden font-mono"
+              className={`lg:hidden px-4 py-3 bg-black/95 overflow-hidden font-mono ${
+                hasScrolled
+                  ? "max-md:border-b max-md:border-white/10 max-md:rounded-t-2xl md:border-t md:border-white/10 md:rounded-b-2xl"
+                  : "border-t border-white/10 rounded-b-2xl"
+              }`}
             >
               <div className="text-[10px] uppercase tracking-widest text-cyan-400 mb-2 font-bold">
                 {dict.nav.menuTitle}

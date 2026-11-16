@@ -99,3 +99,55 @@ html[data-perf="low"] nav > div {
   animation: glitch-slice-2 0.22s steps(2, start) infinite;
 }
 
+@keyframes glitch-assemble {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) skewX(-6deg) scale(0.98);
+    filter: drop-shadow(-3px 0 rgba(34, 211, 238, 0.85)) drop-shadow(3px 0 rgba(239, 68, 68, 0.85));
+  }
+  28% {
+    opacity: 0.75;
+    transform: translate(-4px, 4px) skewX(4deg);
+    filter: drop-shadow(3px 0 rgba(34, 211, 238, 0.9)) drop-shadow(-3px 0 rgba(239, 68, 68, 0.9));
+  }
+  55% {
+    opacity: 0.45;
+    transform: translate(3px, -2px) skewX(-2deg);
+    filter: drop-shadow(-2px 0 rgba(34, 211, 238, 0.55)) drop-shadow(2px 0 rgba(239, 68, 68, 0.55));
+  }
+  80% {
+    opacity: 0.95;
+    transform: translate(-1px, 1px) skewX(1deg);
+    filter: none;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) skewX(0deg) scale(1);
+    filter: none;
+  }
+}
+
+@keyframes glitch-assemble-lite {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) skewX(-4deg);
+  }
+  45% {
+    opacity: 0.6;
+    transform: translate(-2px, 3px) skewX(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) skewX(0deg);
+  }
+}
+
+.animate-glitch-assemble {
+  animation: glitch-assemble 0.48s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html[data-perf="low"] .animate-glitch-assemble {
+  animation: glitch-assemble-lite 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+
