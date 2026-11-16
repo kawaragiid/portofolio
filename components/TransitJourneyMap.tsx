@@ -25,7 +25,7 @@ export default function TransitJourneyMap() {
   const { tier } = usePerformance();
   const screen = useScreenSize();
 
-  const [isAssembled, setIsAssembled] = useState(false);
+  const [scrollStage, setScrollStage] = useState(0);
   const [cvMenuOpen, setCvMenuOpen] = useState(false);
   const [activeProjectModal, setActiveProjectModal] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
@@ -76,15 +76,21 @@ export default function TransitJourneyMap() {
     };
   }, []);
 
-  // Trigger Hero glitch assembly on scroll
+  // Progressive scroll-driven glitch assembly stages
   useEffect(() => {
     const handleScrollAssemble = () => {
       const y = window.scrollY;
-      if (y > 20) {
-        setIsAssembled(true);
-      } else if (y < 8) {
-        setIsAssembled(false);
-      }
+      let nextStage = 0;
+      if (y >= 260) nextStage = 6;
+      else if (y >= 210) nextStage = 5;
+      else if (y >= 160) nextStage = 4;
+      else if (y >= 110) nextStage = 3;
+      else if (y >= 65) nextStage = 2;
+      else if (y >= 20) nextStage = 1;
+      else if (y < 8) nextStage = 0;
+      else return;
+
+      setScrollStage((prev) => (prev !== nextStage ? nextStage : prev));
     };
     window.addEventListener("scroll", handleScrollAssemble, { passive: true });
     handleScrollAssemble();
@@ -206,145 +212,153 @@ export default function TransitJourneyMap() {
         ════════════════════════════════════════════════════════════════════════ */}
         <section id="origin" className="relative pt-2 md:pt-6">
           
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 max-w-7xl mx-auto">
-            
-            {/* Left Column: Core Identity & Key Highlights */}
-            <div className="flex-1 text-left w-full">
-              {/* Station Tag & Active Status */}
-              <GlitchReveal revealed={isAssembled} delay={0}>
-                <div className="flex flex-wrap items-center gap-3 mb-4">
-                  <span className="px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/60 text-xs font-mono font-bold tracking-wider text-cyan-300 uppercase">
-                    {dict.hud.transit.wp00}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-800/40 text-xs font-mono text-emerald-300 font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>{dict.hero.statusBadge}</span>
-                  </span>
-                </div>
-              </GlitchReveal>
-
-              {/* Main Name Heading (Always visible even before scroll) */}
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white mb-3 leading-none">
+          {scrollStage === 0 ? (
+            /* ── INITIAL EMPTY STAGE: FULL-SCREEN NAME ONLY ── */
+            <div className="min-h-[calc(100svh-6.5rem)] flex flex-col items-center justify-center text-center max-w-7xl mx-auto px-2">
+              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[10.5rem] font-black tracking-tight text-white leading-[0.95] select-none">
                 Miftakhul Ilmi<span className="text-cyan-400">.</span>
               </h1>
+              <div className="mt-8 flex items-center gap-2.5 text-xs sm:text-sm font-mono text-cyan-400/80 animate-pulse tracking-widest uppercase">
+                <span>↓</span>
+                <span>{dict.hud.transit.scrollPrompt}</span>
+              </div>
+            </div>
+          ) : (
+            /* ── ASSEMBLED HERO STAGE: SEQUENTIAL GLITCH FORMATION ON SCROLL ── */
+            <div className="min-h-[calc(100svh-6.5rem)] flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 max-w-7xl mx-auto">
+              
+              {/* Left Column: Core Identity & Key Highlights */}
+              <div className="flex-1 text-left w-full">
+                {/* Stage 1: Station Tag & Active Status */}
+                <GlitchReveal revealed={scrollStage >= 1}>
+                  <div className="flex flex-wrap items-center gap-3 mb-4">
+                    <span className="px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/60 text-xs font-mono font-bold tracking-wider text-cyan-300 uppercase">
+                      {dict.hud.transit.wp00}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-800/40 text-xs font-mono text-emerald-300 font-semibold">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>{dict.hero.statusBadge}</span>
+                    </span>
+                  </div>
+                </GlitchReveal>
 
-              {/* Minimal scroll cue when only name is visible */}
-              {!isAssembled && (
-                <div className="mt-4 flex items-center gap-2 text-xs font-mono text-cyan-400/80 animate-pulse">
-                  <span>↓</span>
-                  <span>{dict.hud.transit.scrollPrompt}</span>
-                </div>
-              )}
+                {/* Main Name Heading */}
+                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white mb-3 leading-none animate-glitch-assemble">
+                  Miftakhul Ilmi<span className="text-cyan-400">.</span>
+                </h1>
 
-              {/* Core Role Badges */}
-              <GlitchReveal revealed={isAssembled} delay={70}>
-                <div className="text-base sm:text-lg md:text-xl font-semibold text-cyan-300 mb-6 flex flex-wrap items-center gap-2">
-                  <span>{dict.hero.role1}</span>
-                  <span className="text-white/30 hidden sm:inline">•</span>
-                  <span className="text-gray-200">{dict.hero.role2}</span>
-                </div>
-              </GlitchReveal>
+                {/* Stage 2: Core Role Badges */}
+                <GlitchReveal revealed={scrollStage >= 2}>
+                  <div className="text-base sm:text-lg md:text-xl font-semibold text-cyan-300 mb-6 flex flex-wrap items-center gap-2">
+                    <span>{dict.hero.role1}</span>
+                    <span className="text-white/30 hidden sm:inline">•</span>
+                    <span className="text-gray-200">{dict.hero.role2}</span>
+                  </div>
+                </GlitchReveal>
 
-              {/* High-Contrast Key Points Summary (Clean, Bold, Easy to Read) */}
-              <GlitchReveal revealed={isAssembled} delay={140}>
+                {/* Stage 3-5: High-Contrast Key Points Summary (One by One as You Scroll) */}
                 <div className="space-y-3.5 mb-8 bg-white/[0.03] border border-white/10 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
                   {dict.hero.highlights.map((hl, idx) => (
-                    <div key={idx} className="flex items-start gap-3">
-                      <span className="text-xl shrink-0 mt-0.5">{hl.icon}</span>
-                      <div>
-                        <div className="text-sm sm:text-base font-bold text-white">{hl.title}</div>
-                        <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
-                          {hl.desc}
+                    <GlitchReveal key={idx} revealed={scrollStage >= 3 + idx}>
+                      <div className="flex items-start gap-3">
+                        <span className="text-xl shrink-0 mt-0.5">{hl.icon}</span>
+                        <div>
+                          <div className="text-sm sm:text-base font-bold text-white">{hl.title}</div>
+                          <div className="text-xs sm:text-sm text-gray-200 font-normal leading-relaxed">
+                            {hl.desc}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </GlitchReveal>
                   ))}
                 </div>
-              </GlitchReveal>
 
-              {/* Tactical Action Buttons */}
-              <GlitchReveal revealed={isAssembled} delay={210}>
-                <div className="relative flex flex-wrap items-center gap-3">
-                  <a
-                    href="#academy"
-                    className="bg-white text-black hover:bg-cyan-300 px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-[0_0_20px_rgba(255,255,255,0.25)] flex items-center gap-2"
-                  >
-                    <span>{dict.hero.btnWork}</span>
-                    <span>↓</span>
-                  </a>
-
-                  {/* CV Download Selector */}
-                  <div ref={cvMenuRef} className="sm:relative">
-                    <button
-                      type="button"
-                      onClick={() => setCvMenuOpen((prev) => !prev)}
-                      aria-expanded={cvMenuOpen}
-                      className="bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/50 text-cyan-200 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all shadow-[0_0_15px_rgba(34,211,238,0.15)] flex items-center gap-2"
+                {/* Stage 6: Tactical Action Buttons */}
+                <GlitchReveal revealed={scrollStage >= 6}>
+                  <div className="relative flex flex-wrap items-center gap-3">
+                    <a
+                      href="#academy"
+                      className="bg-white text-black hover:bg-cyan-300 px-7 py-3.5 rounded-xl font-bold text-sm tracking-wide transition-all shadow-[0_0_20px_rgba(255,255,255,0.25)] flex items-center gap-2"
                     >
+                      <span>{dict.hero.btnWork}</span>
                       <span>↓</span>
-                      <span>{dict.hero.btnResume}</span>
-                      <svg
-                        className={`w-4 h-4 transition-transform duration-200 ${cvMenuOpen ? "rotate-180" : ""}`}
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+                    </a>
+
+                    {/* CV Download Selector */}
+                    <div ref={cvMenuRef} className="sm:relative">
+                      <button
+                        type="button"
+                        onClick={() => setCvMenuOpen((prev) => !prev)}
+                        aria-expanded={cvMenuOpen}
+                        className="bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/50 text-cyan-200 px-6 py-3.5 rounded-xl font-semibold text-sm transition-all shadow-[0_0_15px_rgba(34,211,238,0.15)] flex items-center gap-2"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-
-                    <AnimatePresence>
-                      {cvMenuOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                          transition={{ duration: 0.15 }}
-                          className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-[min(18rem,100%)] sm:w-72 bg-[#0c0d14] border border-white/20 rounded-xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] z-50 text-left"
+                        <span>↓</span>
+                        <span>{dict.hero.btnResume}</span>
+                        <svg
+                          className={`w-4 h-4 transition-transform duration-200 ${cvMenuOpen ? "rotate-180" : ""}`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
                         >
-                          <div className="px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-cyan-400 border-b border-white/10 mb-1 font-bold">
-                            {dict.hero.cvSelectTitle}
-                          </div>
-                          {cvOptions.map((opt) => (
-                            <a
-                              key={opt.code}
-                              href={opt.file}
-                              download={opt.filename}
-                              onClick={() => setCvMenuOpen(false)}
-                              className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-gray-100 hover:text-white hover:bg-cyan-500/20 transition-colors"
-                            >
-                              <span className="flex items-center gap-2.5">
-                                <span className="text-base">{opt.flag}</span>
-                                <span className="font-semibold">{opt.label}</span>
-                              </span>
-                              <span className="text-xs font-mono text-cyan-300 font-bold">PDF</span>
-                            </a>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+
+                      <AnimatePresence>
+                        {cvMenuOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                            transition={{ duration: 0.15 }}
+                            className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-[min(18rem,100%)] sm:w-72 bg-[#0c0d14] border border-white/20 rounded-xl p-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] z-50 text-left"
+                          >
+                            <div className="px-3 py-1.5 text-xs font-mono uppercase tracking-wider text-cyan-400 border-b border-white/10 mb-1 font-bold">
+                              {dict.hero.cvSelectTitle}
+                            </div>
+                            {cvOptions.map((opt) => (
+                              <a
+                                key={opt.code}
+                                href={opt.file}
+                                download={opt.filename}
+                                onClick={() => setCvMenuOpen(false)}
+                                className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-gray-100 hover:text-white hover:bg-cyan-500/20 transition-colors"
+                              >
+                                <span className="flex items-center gap-2.5">
+                                  <span className="text-base">{opt.flag}</span>
+                                  <span className="font-semibold">{opt.label}</span>
+                                </span>
+                                <span className="text-xs font-mono text-cyan-300 font-bold">PDF</span>
+                              </a>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    <a
+                      href="#terminus"
+                      className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-3.5 rounded-xl font-medium text-sm transition-colors"
+                    >
+                      {dict.hero.btnContact}
+                    </a>
                   </div>
-
-                  <a
-                    href="#terminus"
-                    className="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-3.5 rounded-xl font-medium text-sm transition-colors"
-                  >
-                    {dict.hero.btnContact}
-                  </a>
-                </div>
-              </GlitchReveal>
-            </div>
-
-            {/* Right Column: Glitch Photo Avatar Component */}
-            <GlitchReveal revealed={isAssembled} delay={120} className="flex flex-col items-center shrink-0 w-full sm:w-auto">
-              <GlitchAvatar />
-              <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                <span>{dict.hero.scrollRevealHint}</span>
+                </GlitchReveal>
               </div>
-            </GlitchReveal>
 
-          </div>
+              {/* Right Column: Glitch Photo Avatar Component (Stage 2) + Hint (Stage 6) */}
+              <GlitchReveal revealed={scrollStage >= 2} className="flex flex-col items-center shrink-0 w-full sm:w-auto">
+                <GlitchAvatar />
+                <GlitchReveal revealed={scrollStage >= 6}>
+                  <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                    <span>{dict.hero.scrollRevealHint}</span>
+                  </div>
+                </GlitchReveal>
+              </GlitchReveal>
+
+            </div>
+          )}
         </section>
 
 
@@ -702,8 +716,9 @@ export default function TransitJourneyMap() {
                   const isCurrent = index === 0;
 
                   return (
-                    <div
+                    <GlitchReveal
                       key={index}
+                      delay={index * 110}
                       className="relative p-5 sm:p-6 rounded-xl bg-white/[0.02] border border-white/10 hover:border-cyan-500/40 transition-all flex flex-col justify-between group"
                     >
                       <div>
@@ -729,7 +744,7 @@ export default function TransitJourneyMap() {
                           {job.desc}
                         </p>
                       </div>
-                    </div>
+                    </GlitchReveal>
                   );
                 })}
               </div>
