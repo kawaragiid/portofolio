@@ -14,6 +14,11 @@ export default function FloatingDock() {
       const scrolled = window.scrollY > 25;
       setHasScrolled((prev) => (prev !== scrolled ? scrolled : prev));
 
+      if (window.innerWidth < 768) {
+        setIsDocked(false);
+        return;
+      }
+
       const slot = slotRef.current;
       if (!slot) return;
       const rect = slot.getBoundingClientRect();
@@ -97,16 +102,17 @@ export default function FloatingDock() {
 
   return (
     <>
-      {/* 1. Floating Capsule (Visible while floating; on mobile hides once merged into bottom Navbar) */}
+      {/* 1. Floating Capsule (Adapts position: centered at intro, bottom-right on scroll, hidden on mobile once merged into bottom Navbar) */}
       <div
-        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[90] transition-all duration-300 ${
+        className={`fixed !m-0 bottom-4 right-4 sm:bottom-6 z-[90] transition-all duration-300 ${
           isDocked
-            ? "opacity-0 translate-y-3 pointer-events-none scale-95"
+            ? "sm:right-6 opacity-0 translate-y-3 pointer-events-none scale-95"
             : hasScrolled
-            ? "max-md:opacity-0 max-md:translate-y-4 max-md:pointer-events-none max-md:scale-90 md:opacity-100 md:translate-y-0 md:pointer-events-auto md:scale-100"
-            : "opacity-100 translate-y-0 pointer-events-auto scale-100"
+            ? "sm:right-6 max-md:opacity-0 max-md:translate-y-4 max-md:pointer-events-none max-md:scale-90 md:opacity-100 md:translate-y-0 md:pointer-events-auto md:scale-100"
+            : "md:right-1/2 md:translate-x-1/2 opacity-100 translate-y-0 pointer-events-auto scale-100"
         }`}
         aria-hidden={isDocked}
+        inert={isDocked ? true : undefined}
       >
         <div className="inline-flex items-center gap-1 sm:gap-1.5 p-1.5 rounded-2xl bg-[#0a0b10]/90 backdrop-blur-2xl border border-white/15 hover:border-cyan-400/40 shadow-[0_12px_40px_rgba(0,0,0,0.85)]">
           {renderButtons(false)}
@@ -114,7 +120,12 @@ export default function FloatingDock() {
       </div>
 
       {/* 2. Static Docked Slot (Merged into page right above footer on desktop/tablet) */}
-      <div ref={slotRef} className="hidden md:flex w-full max-w-6xl mx-auto pt-4 justify-end">
+      <div
+        ref={slotRef}
+        className="hidden md:flex w-full max-w-6xl mx-auto pt-4 justify-end"
+        aria-hidden={!isDocked}
+        inert={!isDocked ? true : undefined}
+      >
         <div
           className={`inline-flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-2xl bg-white/[0.03] border border-white/15 transition-all duration-300 ${
             isDocked

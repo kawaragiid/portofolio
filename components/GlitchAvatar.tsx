@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useLanguage } from "./LanguageProvider";
 
 interface GlitchAvatarProps {
   className?: string;
@@ -10,6 +11,7 @@ interface GlitchAvatarProps {
 }
 
 export default function GlitchAvatar({ className = "", shouldRevealColor }: GlitchAvatarProps) {
+  const { dict } = useLanguage();
   // Phase: "grayscale" (initial) -> "glitching" (active on scroll) -> "color" (normal color revealed)
   const [phase, setPhase] = useState<"grayscale" | "glitching" | "color">("grayscale");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -118,8 +120,8 @@ export default function GlitchAvatar({ className = "", shouldRevealColor }: Glit
         }
       }}
       className={`relative inline-block select-none group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-2xl ${className}`}
-      title="Scroll untuk reveal warna / klik untuk efek glitch"
-      aria-label="Foto Miftakhul Ilmi - klik atau tekan Enter untuk efek glitch"
+      title={dict.hero.scrollRevealHint}
+      aria-label={`Miftakhul Ilmi — ${dict.hero.scrollRevealHint}`}
     >
       {/* Ambient Backlight Glow */}
       <div
@@ -170,7 +172,8 @@ export default function GlitchAvatar({ className = "", shouldRevealColor }: Glit
                 src="/images/avatar-transit.jpg"
                 alt=""
                 fill
-                sizes="320px"
+                priority
+                sizes="(max-width: 640px) 224px, (max-width: 768px) 256px, 320px"
                 className="object-cover object-top hue-rotate-90 saturate-200"
               />
             </div>
@@ -187,7 +190,8 @@ export default function GlitchAvatar({ className = "", shouldRevealColor }: Glit
                 src="/images/avatar-transit.jpg"
                 alt=""
                 fill
-                sizes="320px"
+                priority
+                sizes="(max-width: 640px) 224px, (max-width: 768px) 256px, 320px"
                 className="object-cover object-top hue-rotate-270 saturate-200"
               />
             </div>
@@ -212,7 +216,7 @@ export default function GlitchAvatar({ className = "", shouldRevealColor }: Glit
 
         {/* Scroll / Color Status Badge */}
         <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-black/80 border border-white/20 backdrop-blur-md text-[10px] font-mono tracking-wider text-gray-200 z-30 shadow-md">
-          {isColor ? "NORMAL COLOR" : "GULIR KE BAWAH ↓"}
+          {isColor ? "NORMAL COLOR" : dict.hud.transit.scrollPrompt}
         </div>
       </div>
     </div>

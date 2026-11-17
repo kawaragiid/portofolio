@@ -236,8 +236,8 @@ export default function TransitJourneyMap() {
           <div className="lg:sticky lg:top-24 lg:min-h-[calc(100vh-7rem)] lg:flex lg:items-center w-full">
           {scrollStage === 0 ? (
             /* ── INITIAL EMPTY STAGE: FULL-SCREEN NAME ONLY ── */
-            <div className="min-h-[calc(100svh-6.5rem)] w-full flex flex-col items-center justify-center text-center max-w-7xl mx-auto px-2">
-              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] xl:text-[10.5rem] font-black tracking-tight text-white leading-[0.95] select-none">
+            <div className="min-h-[calc(100svh-12rem)] pb-14 w-full flex flex-col items-center justify-center text-center max-w-7xl mx-auto px-2">
+              <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[8.5rem] xl:text-[10rem] font-black tracking-tight text-white leading-[0.95] select-none">
                 Miftakhul Ilmi<span className="text-cyan-400">.</span>
               </h1>
               <div className="mt-8 flex items-center gap-2.5 text-xs sm:text-sm font-mono text-cyan-400/80 animate-pulse tracking-widest uppercase">
@@ -371,12 +371,10 @@ export default function TransitJourneyMap() {
               {/* Right Column: Glitch Photo Avatar Component (Grayscale at Stage 2, Color Glitch at Stage 7) */}
               <GlitchReveal revealed={scrollStage >= 2} className="flex flex-col items-center shrink-0 w-full sm:w-auto">
                 <GlitchAvatar shouldRevealColor={scrollStage >= 7} />
-                <GlitchReveal revealed={scrollStage >= 2}>
-                  <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-300">
-                    <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${scrollStage >= 7 ? "bg-emerald-400" : "bg-cyan-400"}`} />
-                    <span>{scrollStage >= 7 ? dict.hud.transit.scrollPrompt : dict.hero.scrollRevealHint}</span>
-                  </div>
-                </GlitchReveal>
+                <div className="mt-3 flex items-center gap-2 text-xs font-mono text-gray-300">
+                  <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${scrollStage >= 7 ? "bg-emerald-400" : "bg-cyan-400"}`} />
+                  <span>{scrollStage >= 7 ? dict.hud.transit.scrollPrompt : dict.hero.scrollRevealHint}</span>
+                </div>
               </GlitchReveal>
 
             </div>
@@ -583,7 +581,7 @@ export default function TransitJourneyMap() {
 
                 <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black mb-4 border border-white/10">
                   <Image
-                    src="/images/project-2.png"
+                    src="/images/project-2.webp"
                     alt="CapCut Pro Dual Screen Setup"
                     fill
                     className="object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
@@ -977,7 +975,7 @@ export default function TransitJourneyMap() {
                 transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 className="relative bg-[#0d0d14] border border-white/20 w-full max-w-4xl max-h-[90vh] flex flex-col rounded-2xl shadow-[0_25px_70px_rgba(0,0,0,0.9)] z-10 overflow-hidden"
               >
-                <HudCorner color="text-cyan-400/80" />
+                <HudCorner color="rgba(34, 211, 238, 0.8)" />
 
                 <div className="p-4 md:p-6 bg-white/[0.03] border-b border-white/10 flex items-center justify-between shrink-0">
                   <div>

@@ -73,6 +73,17 @@ export default function CustomCursor() {
     };
   }, [isDisabled, mouseX, mouseY]);
 
+  useEffect(() => {
+    if (isDisabled || !isVisible) {
+      delete document.documentElement.dataset.cursorActive;
+    } else {
+      document.documentElement.dataset.cursorActive = "true";
+    }
+    return () => {
+      delete document.documentElement.dataset.cursorActive;
+    };
+  }, [isDisabled, isVisible]);
+
   if (isDisabled || !isVisible) return null;
 
   return (

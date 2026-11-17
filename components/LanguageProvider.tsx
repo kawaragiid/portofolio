@@ -244,7 +244,7 @@ const dictionary = {
           category: "Video Production",
           details: "Penyuntingan video dokumentasi acara dan konten pendek menggunakan CapCut Pro. Mencakup pemotongan klip sesuai ritme musik, penyesuaian warna dasar, serta penggabungan aset grafis.",
           tools: ["CapCut Pro", "Canva", "OBS Studio"],
-          image: "/images/project-2.png",
+          image: "/images/project-2.webp",
           video: ""
         },
         { 
@@ -274,7 +274,8 @@ const dictionary = {
       terminal: "Terminal AI",
       music: "Pemutar Musik",
       lang: "Ganti Bahasa",
-      esc: "Tutup Modal"
+      esc: "Tutup Modal",
+      footerHint: "Tekan tombol kapan saja di halaman ini."
     },
     experience: {
       title: "Riwayat Kerja & Mengajar.",
@@ -559,7 +560,7 @@ const dictionary = {
           category: "Video Production",
           details: "Editing event documentation and short-form clips using CapCut Pro. Includes music-synced cuts, basic color correction, and clean graphic overlays.",
           tools: ["CapCut Pro", "Canva", "OBS Studio"],
-          image: "/images/project-2.png",
+          image: "/images/project-2.webp",
           video: ""
         },
         { 
@@ -589,7 +590,8 @@ const dictionary = {
       terminal: "AI Terminal",
       music: "Music Player",
       lang: "Cycle Language",
-      esc: "Close Modal"
+      esc: "Close Modal",
+      footerHint: "Press any shortcut key anywhere on this page."
     },
     experience: {
       title: "Work & Teaching History.",
@@ -874,7 +876,7 @@ const dictionary = {
           category: "Video Production",
           details: "CapCut Proを用いたイベント記録映像およびショート動画の編集。音楽のリズムに合わせたカット割り、基本的な色補正、グラフィック素材の合成を担当しました。",
           tools: ["CapCut Pro", "Canva", "OBS Studio"],
-          image: "/images/project-2.png",
+          image: "/images/project-2.webp",
           video: ""
         },
         { 
@@ -904,7 +906,8 @@ const dictionary = {
       terminal: "AIターミナル",
       music: "音楽プレイヤー",
       lang: "言語切替",
-      esc: "モーダルを閉じる"
+      esc: "モーダルを閉じる",
+      footerHint: "このページのどこでもショートカットキーを使えます。"
     },
     experience: {
       title: "職歴・指導歴。",

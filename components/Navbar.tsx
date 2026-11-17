@@ -58,7 +58,10 @@ export default function Navbar() {
         if (slot) {
           const rect = slot.getBoundingClientRect();
           const shouldDock = rect.top <= window.innerHeight - 16;
-          setIsDocked((prev) => (prev !== shouldDock ? shouldDock : prev));
+          setIsDocked((prev) => {
+            if (prev !== shouldDock && shouldDock) setIsOpen(false);
+            return prev !== shouldDock ? shouldDock : prev;
+          });
         }
       } else {
         setIsDocked(false);
@@ -111,6 +114,7 @@ export default function Navbar() {
           : "max-md:opacity-100 max-md:translate-y-0"
       }`}
       aria-hidden={isDocked}
+      inert={isDocked ? true : undefined}
     >
       <motion.nav
         layout={tier === "high"}
@@ -199,8 +203,8 @@ export default function Navbar() {
                   type="button"
                   onClick={toggleMusic}
                   className="w-8 h-8 rounded-xl bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center text-xs text-white transition-all active:scale-90"
-                  aria-label="Toggle Audio Player"
-                  title="Buka Audio Playlist"
+                  aria-label={dict.sections.dock.music}
+                  title={`${dict.sections.dock.music} (M)`}
                 >
                   🎵
                 </button>
@@ -208,8 +212,8 @@ export default function Navbar() {
                   type="button"
                   onClick={toggleTerminal}
                   className="w-8 h-8 rounded-xl bg-white/5 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/30 flex items-center justify-center font-mono text-xs font-bold text-cyan-400 transition-all active:scale-90"
-                  aria-label="Toggle AI Terminal"
-                  title="Buka AI Terminal"
+                  aria-label={dict.sections.dock.terminal}
+                  title={`${dict.sections.dock.terminal} (T)`}
                 >
                   {">_"}
                 </button>
@@ -295,7 +299,10 @@ export function MobileFooterNavbarSlot() {
       if (!slot) return;
       const rect = slot.getBoundingClientRect();
       const shouldDock = rect.top <= window.innerHeight - 16;
-      setIsDocked((prev) => (prev !== shouldDock ? shouldDock : prev));
+      setIsDocked((prev) => {
+        if (prev !== shouldDock && !shouldDock) setIsOpen(false);
+        return prev !== shouldDock ? shouldDock : prev;
+      });
     };
 
     window.addEventListener("scroll", checkDock, { passive: true });
@@ -318,6 +325,8 @@ export function MobileFooterNavbarSlot() {
   return (
     <div id="mobile-nav-footer-slot" className="md:hidden w-full pt-4">
       <div
+        aria-hidden={!isDocked}
+        inert={!isDocked ? true : undefined}
         className={`w-full bg-[#08090d]/95 border rounded-2xl shadow-[0_15px_45px_rgba(0,0,0,0.8)] transition-all duration-300 flex flex-col-reverse ${
           isDocked
             ? "opacity-100 translate-y-0 border-cyan-400/35 pointer-events-auto"

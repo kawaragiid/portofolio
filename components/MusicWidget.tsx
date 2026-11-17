@@ -17,6 +17,11 @@ export default function MusicWidget() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const playlistId = "PL-W6TZk0nvH6YD_Fi1LtUxGxGVb7F5sYj";
 
+  const isPlayingRef = useRef(isPlaying);
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+
   useEffect(() => {
     const handleToggle = () => {
       setIsOpen((prev) => {
@@ -24,20 +29,38 @@ export default function MusicWidget() {
         if (next) {
           setHasOpened(true);
           setIsMinimized(false);
+          if (window.innerWidth < 768) {
+            window.dispatchEvent(new CustomEvent("close-terminal"));
+          }
         }
         return next;
       });
     };
     const handleClose = () => {
-      setIsOpen(false);
+      setIsOpen((prevOpen) => {
+        if (prevOpen && isPlayingRef.current) {
+          setIsMinimized(true);
+        }
+        return false;
+      });
+    };
+    const handleMinimizeEvent = () => {
+      setIsOpen((prevOpen) => {
+        if (prevOpen) {
+          setIsMinimized(true);
+        }
+        return false;
+      });
     };
 
     window.addEventListener("toggle-music", handleToggle);
     window.addEventListener("close-all-modals", handleClose);
+    window.addEventListener("minimize-music", handleMinimizeEvent);
 
     return () => {
       window.removeEventListener("toggle-music", handleToggle);
       window.removeEventListener("close-all-modals", handleClose);
+      window.removeEventListener("minimize-music", handleMinimizeEvent);
     };
   }, []);
 
@@ -158,7 +181,7 @@ export default function MusicWidget() {
           max-md:bottom-20 max-md:left-3 max-md:right-3 max-md:rounded-2xl
           md:bottom-6 md:left-6 md:w-[370px] md:rounded-2xl"
       >
-        <HudCorner color="text-cyan-400/75" />
+        <HudCorner color="rgba(34, 211, 238, 0.75)" />
 
         {/* Header Bar */}
         <div className="bg-white/[0.04] border-b border-white/10 px-4 py-3 flex items-center justify-between">

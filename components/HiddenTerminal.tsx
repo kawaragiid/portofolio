@@ -61,19 +61,30 @@ export default function HiddenTerminal() {
     }
   }, [isOpen, isTyping]);
 
+  const bootIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const latestBootRef = useRef(t.boot);
+  useEffect(() => {
+    latestBootRef.current = t.boot;
+  }, [t.boot]);
+
   const startBootSequence = () => {
     setHasBooted(true);
     setIsTyping(true);
+    if (bootIntervalRef.current) clearInterval(bootIntervalRef.current);
 
     let i = 0;
-    const interval = setInterval(() => {
-      const line = t.boot[i];
+    const bootLines = latestBootRef.current;
+    bootIntervalRef.current = setInterval(() => {
+      const line = bootLines[i];
       if (line) {
         setHistory((prev) => [...prev, { kind: "system", text: line }]);
       }
       i++;
-      if (i >= t.boot.length) {
-        clearInterval(interval);
+      if (i >= bootLines.length) {
+        if (bootIntervalRef.current) {
+          clearInterval(bootIntervalRef.current);
+          bootIntervalRef.current = null;
+        }
         setIsTyping(false);
       }
     }, 220);
@@ -83,8 +94,11 @@ export default function HiddenTerminal() {
     const handleToggle = () => {
       setIsOpen((prev) => {
         const next = !prev;
-        if (next && !hasBooted) {
-          startBootSequence();
+        if (next) {
+          if (!hasBooted) startBootSequence();
+          if (window.innerWidth < 768) {
+            window.dispatchEvent(new CustomEvent("minimize-music"));
+          }
         }
         return next;
       });
@@ -92,14 +106,21 @@ export default function HiddenTerminal() {
     const handleClose = () => setIsOpen(false);
 
     window.addEventListener("toggle-terminal", handleToggle);
+    window.addEventListener("close-terminal", handleClose);
     window.addEventListener("close-all-modals", handleClose);
 
     return () => {
       window.removeEventListener("toggle-terminal", handleToggle);
+      window.removeEventListener("close-terminal", handleClose);
       window.removeEventListener("close-all-modals", handleClose);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasBooted]);
+
+  useEffect(() => {
+    return () => {
+      if (bootIntervalRef.current) clearInterval(bootIntervalRef.current);
+    };
+  }, []);
 
   const handleCommand = (cmd: string) => {
     if (isTyping || !cmd.trim()) return;
@@ -173,6 +194,9 @@ export default function HiddenTerminal() {
           if (el) {
             el.scrollIntoView({ behavior: "smooth" });
             response = `[NAVIGATING] Scrolling to #${sectionId}...`;
+            if (window.innerWidth < 768) {
+              setTimeout(() => setIsOpen(false), 450);
+            }
           } else {
             response = `[NAV ERROR] Section #${sectionId} not found.`;
           }
@@ -294,7 +318,7 @@ export default function HiddenTerminal() {
               max-md:inset-x-3 max-md:top-16 max-md:bottom-20 max-md:rounded-2xl
               md:bottom-6 md:right-6 md:w-[640px] md:h-[440px] md:rounded-2xl"
           >
-            <HudCorner color="text-cyan-400/75" />
+            <HudCorner color="rgba(34, 211, 238, 0.75)" />
 
             {/* Subtle Scanline Overlay */}
             <div

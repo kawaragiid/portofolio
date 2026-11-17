@@ -39,12 +39,12 @@ body {
   100% { transform: translate(0px, 0px) scale(1); }
 }
 
-/* Matikan cursor bawaan hanya pada device spek tinggi yang terdeteksi memakai mouse/trackpad (PC, iPadOS/Tablet + Mouse) */
-html[data-perf="high"][data-pointer="mouse"],
-html[data-perf="high"][data-pointer="mouse"] body,
-html[data-perf="high"][data-pointer="mouse"] *,
-html[data-perf="high"][data-pointer="mouse"] *::before,
-html[data-perf="high"][data-pointer="mouse"] *::after {
+/* Matikan cursor bawaan hanya pada device spek tinggi yang terdeteksi memakai mouse/trackpad & CustomCursor sudah aktif */
+html[data-perf="high"][data-pointer="mouse"][data-cursor-active="true"],
+html[data-perf="high"][data-pointer="mouse"][data-cursor-active="true"] body,
+html[data-perf="high"][data-pointer="mouse"][data-cursor-active="true"] *,
+html[data-perf="high"][data-pointer="mouse"][data-cursor-active="true"] *::before,
+html[data-perf="high"][data-pointer="mouse"][data-cursor-active="true"] *::after {
   cursor: none !important;
 }
 

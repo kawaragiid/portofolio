@@ -120,7 +120,7 @@ export default function KeyboardShortcuts() {
               </div>
 
               <p className="mt-6 pt-4 border-t border-white/5 text-[10px] text-gray-500 text-center">
-                Tekan tombol kapan saja di halaman ini.
+                {t.footerHint}
               </p>
             </motion.div>
           </div>
